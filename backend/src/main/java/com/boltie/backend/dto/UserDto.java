@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class UserDto {
 
     private Long id;
-    private String login;
+    private String username;
     private String token;
 
 }
