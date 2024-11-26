@@ -3,8 +3,10 @@ package com.boltie.backend.services;
 import com.boltie.backend.dto.RegisterDto;
 import com.boltie.backend.dto.UserDto;
 import com.boltie.backend.entities.User;
+import com.boltie.backend.exceptions.AppException;
 import com.boltie.backend.mappers.UserMapper;
 import com.boltie.backend.repositories.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +31,7 @@ public class UserService {
     public UserDto registerUser(RegisterDto registerDto) {
         Optional<User> optionalUser = userRepository.findByUsername(registerDto.username());
         if (optionalUser.isPresent()) {
-            return null; //TODO
+            throw new AppException("User already exists", HttpStatus.BAD_REQUEST);
         }
 
         User user = userMapper.registerToUser(registerDto);
@@ -43,10 +45,10 @@ public class UserService {
 
     public UserDto findByUsername(String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
-        if (optionalUser.isEmpty()) {
+        if (optionalUser.isPresent()) {
             return userMapper.toUserDto(optionalUser.get());
         }
-        return null; //TODO
+        throw new AppException("Unknown user", HttpStatus.NOT_FOUND);
     }
 
 
