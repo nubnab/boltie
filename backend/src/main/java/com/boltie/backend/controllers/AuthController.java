@@ -24,7 +24,9 @@ public class AuthController {
 
         UserDto user = userService.registerUser(registerDto);
 
-        return ResponseEntity.created(URI.create("/users/" + user.getId())).body(user);
+        URI uri = URI.create("/users/" + user.getId());
+
+        return ResponseEntity.created(uri).body(user);
     }
 
 }
