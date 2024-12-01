@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
-import {RouterOutlet} from '@angular/router';
-import {NavPageComponent} from './nav-page/nav-page.component';
+import {NavTestComponent} from './nav-test/nav-test.component';
+
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavPageComponent],
+  imports: [NavTestComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'frontend';
+  
 }

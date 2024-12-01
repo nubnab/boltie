@@ -1,0 +1,16 @@
+<div class="sidenav-header">
+  <img ngSrc="/default-profile-picture.png" alt="default-profile-picture"
+       width="100" height="100"
+       class="profile-pic"/>
+  <div class="header-text">
+    <h2> Username </h2>
+  </div>
+</div>
+<mat-nav-list class="sidenav-list">
+  @for (item of menuItems(); track item.label) {
+    <a mat-list-item class="sidenav-links">
+      <mat-icon matListItemIcon class="sidenav-icon">{{ item.icon }}</mat-icon>
+      <span matListItemTitle>{{ item.label }}</span>
+    </a>
+  }
+</mat-nav-list>

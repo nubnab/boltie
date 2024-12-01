@@ -1,0 +1,30 @@
+.sidenav-header {
+  padding-top: 24px;
+  text-align: center;
+
+  > img {
+      border-radius: 100%;
+      object-fit: cover;
+      margin-bottom: 10px;
+  }
+
+  .header-text {
+    > h2 {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.5rem;
+    }
+  }
+}
+
+.sidenav-list {
+  margin-top: 12px;
+  > a {
+    padding: 24px 10px;
+
+    > .sidenav-icon {
+     opacity: 50%;
+    }
+  }
+}
+
