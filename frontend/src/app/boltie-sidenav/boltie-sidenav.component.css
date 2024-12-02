@@ -14,13 +14,16 @@
 }
 
 .sidenav-list {
-  margin-top: 12px;
+  margin-left: 4px;
 }
-.sidenav-list > a {
-  padding: 24px 10px;
-}
-.sidenav-list > a > .sidenav-icon {
+
+.sidenav-icon {
   opacity: 50%;
+}
+
+.header-text {
+  opacity: 0;
+  height: 0;
 }
 
 /*# sourceMappingURL=boltie-sidenav.component.css.map */

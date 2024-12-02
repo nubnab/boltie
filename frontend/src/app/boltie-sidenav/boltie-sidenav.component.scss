@@ -18,13 +18,14 @@
 }
 
 .sidenav-list {
-  margin-top: 12px;
-  > a {
-    padding: 24px 10px;
-
-    > .sidenav-icon {
-     opacity: 50%;
-    }
-  }
+  margin-left: 4px;
 }
 
+.sidenav-icon {
+  opacity: 50%;
+}
+
+.header-text {
+  opacity: 0;
+  height: 0;
+}

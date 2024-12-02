@@ -1,13 +1,14 @@
 <mat-toolbar>
-  <button mat-icon-button>
+  <button mat-icon-button (click)="this.toggleCollapse()">
     <mat-icon>menu</mat-icon>
   </button>
 </mat-toolbar>
 <mat-sidenav-container>
-  <mat-sidenav opened mode="side" class="sidenav">
+  <mat-sidenav opened mode="side" class="sidenav" [style.width]="sidenavWidth()">
     <app-boltie-sidenav></app-boltie-sidenav>
   </mat-sidenav>
-  <mat-sidenav-content class="content">
+  <mat-sidenav-content class="content" [style.margin-left]="sidenavWidth()">
+    Sup
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

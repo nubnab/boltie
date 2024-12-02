@@ -1,7 +1,8 @@
-import {Component, signal} from '@angular/core';
+import {Component, computed, Input, Signal, signal, WritableSignal} from '@angular/core';
 import {NgOptimizedImage} from '@angular/common';
 import {MatListItem, MatListItemIcon, MatListItemTitle, MatNavList} from '@angular/material/list';
 import {MatIcon} from '@angular/material/icon';
+import {SidenavStateService} from '../sidenav-state.service';
 
 export type MenuItem = {
   icon: string;
@@ -12,7 +13,6 @@ export type MenuItem = {
 @Component({
   selector: 'app-boltie-sidenav',
   imports: [
-    NgOptimizedImage,
     MatNavList,
     MatListItem,
     MatIcon,
@@ -23,6 +23,12 @@ export type MenuItem = {
   styleUrl: './boltie-sidenav.component.scss'
 })
 export class BoltieSidenavComponent {
+
+  constructor(public sidenavState: SidenavStateService) {
+    this.sidenavState = sidenavState;
+  }
+
+  profilePicSize = computed(() => this.sidenavState.getState() ? '32' : '100');
 
   menuItems = signal<MenuItem[]>([
     {

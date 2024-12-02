@@ -1,8 +1,9 @@
 <div class="sidenav-header">
-  <img ngSrc="/default-profile-picture.png" alt="default-profile-picture"
-       width="100" height="100"
-       class="profile-pic"/>
-  <div class="header-text">
+  <img src="/default-profile-picture.png" alt="default-profile-picture"
+       [width]="profilePicSize()" [height]="profilePicSize()"
+       class="profile-pic"
+       />
+  <div class="header-text" [class.header-text]="sidenavState.getState()">
     <h2> Username </h2>
   </div>
 </div>

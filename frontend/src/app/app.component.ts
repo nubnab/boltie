@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {NavTestComponent} from './nav-test/nav-test.component';
 
 
@@ -10,5 +10,7 @@ import {NavTestComponent} from './nav-test/nav-test.component';
 })
 export class AppComponent {
   title = 'frontend';
-  
+
+
+
 }
