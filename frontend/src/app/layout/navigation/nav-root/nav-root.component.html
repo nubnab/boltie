@@ -5,10 +5,9 @@
 </mat-toolbar>
 <mat-sidenav-container>
   <mat-sidenav opened mode="side" class="sidenav" [style.width]="sidenavWidth()">
-    <app-boltie-sidenav></app-boltie-sidenav>
+    <app-custom-sidenav></app-custom-sidenav>
   </mat-sidenav>
   <mat-sidenav-content class="content" [style.margin-left]="sidenavWidth()">
-    Sup
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

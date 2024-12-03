@@ -5,13 +5,13 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import {RouterOutlet} from "@angular/router";
-import {BoltieSidenavComponent} from "../boltie-sidenav/boltie-sidenav.component";
-import {SidenavStateService} from '../sidenav-state.service';
+import {CustomSidenavComponent} from "../custom-sidenav/custom-sidenav.component";
+import {SidenavStateService} from '../../../services/sidenav/sidenav-state.service';
 
 @Component({
   selector: 'app-nav-test',
-  templateUrl: './nav-test.component.html',
-  styleUrl: './nav-test.component.scss',
+  templateUrl: './nav-root.component.html',
+  styleUrl: './nav-root.component.scss',
   standalone: true,
     imports: [
         MatToolbarModule,
@@ -20,10 +20,10 @@ import {SidenavStateService} from '../sidenav-state.service';
         MatListModule,
         MatIconModule,
         RouterOutlet,
-        BoltieSidenavComponent,
+        CustomSidenavComponent,
     ]
 })
-export class NavTestComponent {
+export class NavRootComponent {
 
   constructor(private sidenavState: SidenavStateService) {
     this.sidenavState = sidenavState;

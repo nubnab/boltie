@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BoltieSidenavComponent } from './boltie-sidenav.component';
+import { WatchLaterComponent } from './watch-later.component';
 
-describe('BoltieSidenavComponent', () => {
-  let component: BoltieSidenavComponent;
-  let fixture: ComponentFixture<BoltieSidenavComponent>;
+describe('WatchLaterComponent', () => {
+  let component: WatchLaterComponent;
+  let fixture: ComponentFixture<WatchLaterComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BoltieSidenavComponent]
+      imports: [WatchLaterComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(BoltieSidenavComponent);
+    fixture = TestBed.createComponent(WatchLaterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
