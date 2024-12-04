@@ -1,29 +1,17 @@
-.sidenav-header {
-  padding-top: 24px;
-  text-align: center;
-}
-.sidenav-header > img {
-  border-radius: 100%;
-  object-fit: cover;
-  margin-bottom: 10px;
-}
-.sidenav-header .header-text > h2 {
-  margin: 0;
-  font-size: 1rem;
-  line-height: 1.5rem;
-}
+/* Error: Can't find stylesheet to import.
+ *   ,
+ * 1 | @use '@angular/material' as mat;
+ *   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ *   '
+ *   custom-sidenav.component.scss 1:1  root stylesheet */
 
-.sidenav-list {
-  margin-left: 4px;
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Can't find stylesheet to import.\a   \2577 \a 1 \2502  @use '@angular/material' as mat;\a   \2502  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\a   \2575 \a   custom-sidenav.component.scss 1:1  root stylesheet";
 }
-
-.sidenav-icon {
-  opacity: 50%;
-}
-
-.header-text {
-  opacity: 0;
-  height: 0;
-}
-
-/*# sourceMappingURL=custom-sidenav.component.css.map */

@@ -23,6 +23,17 @@
   padding: 24px;
 }
 
-mat-sidenav-container {
+.mat-sidenav-container {
   height: calc(100vh - 56px);
 }
+
+.mat-drawer {
+  border-radius: 0px;
+  box-shadow: 1px 1px 4px rgba(128, 128, 128, 0.11);
+}
+
+.mat-drawer-side {
+  border: none;
+}
+
+

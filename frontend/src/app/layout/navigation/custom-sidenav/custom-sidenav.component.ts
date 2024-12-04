@@ -3,7 +3,7 @@ import {NgOptimizedImage} from '@angular/common';
 import {MatListItem, MatListItemIcon, MatListItemTitle, MatNavList} from '@angular/material/list';
 import {MatIcon} from '@angular/material/icon';
 import {SidenavStateService} from '../../../services/sidenav/sidenav-state.service';
-import {RouterLink} from '@angular/router';
+import {RouterLink, RouterLinkActive} from '@angular/router';
 
 export type MenuItem = {
   icon: string;
@@ -19,7 +19,8 @@ export type MenuItem = {
     MatIcon,
     MatListItemIcon,
     MatListItemTitle,
-    RouterLink
+    RouterLink,
+    RouterLinkActive
   ],
   templateUrl: './custom-sidenav.component.html',
   styleUrl: './custom-sidenav.component.scss'

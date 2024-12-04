@@ -33,6 +33,6 @@ export class NavRootComponent {
     this.sidenavState.toggleCollapse();
   }
 
-  sidenavWidth = computed(() => this.sidenavState.getState() ? '64px' : '250px');
+  sidenavWidth = computed(() => this.sidenavState.getState() ? '60px' : '250px');
 
 }

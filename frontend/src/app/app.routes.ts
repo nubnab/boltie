@@ -9,13 +9,13 @@ import {AboutComponent} from './pages/about/about.component';
 import {PageNotFoundComponent} from './pages/page-not-found/page-not-found.component';
 
 export const routes: Routes = [
-  {path: '', pathMatch: 'full', component: HomeComponent},
   {path: 'live', pathMatch: 'full', component: LiveComponent},
   {path: 'videos', pathMatch: 'full', component: VideosComponent},
   {path: 'categories', pathMatch: 'full', component: CategoriesComponent},
   {path: 'history', pathMatch: 'full', component: HistoryComponent},
   {path: 'watch-later', pathMatch: 'full', component: WatchLaterComponent},
   {path: 'about', pathMatch: 'full', component: AboutComponent},
+  {path: '', pathMatch: 'full', component: HomeComponent},
   {path: 'home', pathMatch: 'full', redirectTo: ''},
   {path: '**', component: PageNotFoundComponent},
 ];

@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 .sidenav-header {
   padding-top: 24px;
   text-align: center;
@@ -17,15 +19,39 @@
   }
 }
 
-.sidenav-list {
-  margin-left: 4px;
-}
-
 .sidenav-icon {
   opacity: 50%;
+
 }
 
 .header-text {
   opacity: 0;
   height: 0;
+}
+
+.mdc-list-item:focus::before {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.sidenav-links {
+  @include mat.list-overrides((
+    active-indicator-shape: 0px,
+    active-indicator-color: rgba(211, 211, 211, 0.58),
+
+  ))
+}
+
+.selected-menu-item {
+  border-left: 5px solid;
+  border-left-color: var(--mat-sys-primary);
+
+  @include mat.list-overrides((
+    list-item-leading-icon-color: var(--mat-sys-primary),
+    list-item-hover-leading-icon-color: var(--mat-sys-primary),
+    list-item-label-text-color: var(--mat-sys-primary),
+    list-item-focus-label-text-color: var(--mat-sys-primary),
+    list-item-hover-label-text-color: var(--mat-sys-primary),
+    list-item-hover-state-layer-opacity: 5%,
+  ))
+
 }
