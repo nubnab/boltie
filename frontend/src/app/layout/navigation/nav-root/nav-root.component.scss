@@ -24,16 +24,25 @@
 }
 
 .mat-sidenav-container {
-  height: calc(100vh - 56px);
+  height: calc(100vh - 56px); //todo
 }
 
 .mat-drawer {
-  border-radius: 0px;
+  border-radius: 0;
   box-shadow: 1px 1px 4px rgba(128, 128, 128, 0.11);
 }
 
 .mat-drawer-side {
   border: none;
+}
+
+.mat-sidenav, .mat-sidenav-content {
+  transition: all 250ms ease-in-out;
+}
+
+.mat-toolbar-single-row {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 
