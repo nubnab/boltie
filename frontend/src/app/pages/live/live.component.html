@@ -1,1 +1,11 @@
-<p>live works!</p>
+<div class="responsive-grid">
+  @for(card of cards(); track card.title) {
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{ card.title }}</mat-card-title>
+      </mat-card-header>
+      <br />
+      <img mat-card-image [src]="card.imageUrl" />
+    </mat-card>
+  }
+</div>

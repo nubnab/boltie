@@ -16,7 +16,7 @@
        [routerLinkActiveOptions]="{exact: true}"
        [activated]="rla.isActive"
        >
-      <mat-icon matListItemIcon class="sidenav-icon">{{ item.icon }}</mat-icon>
+      <mat-icon [fontSet]="rla.isActive ? 'material-icons' : 'material-icons-outlined'" matListItemIcon class="sidenav-icon">{{ item.icon }}</mat-icon>
       <span matListItemTitle [class.hide-link-text]="sidenavState.getState()">{{ item.label }}</span>
     </a>
   }
