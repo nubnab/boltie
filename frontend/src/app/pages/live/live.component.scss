@@ -1,7 +1,11 @@
-mat-grid-list {
-  height: 1440px !important;
+img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
 }
 
-mat-grid-tile {
-  background: gray;
+.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
 }

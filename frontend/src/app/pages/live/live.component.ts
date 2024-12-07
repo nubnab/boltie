@@ -1,5 +1,5 @@
 import {Component, signal} from '@angular/core';
-import {MatCard, MatCardHeader, MatCardImage, MatCardTitle} from '@angular/material/card';
+import {MatCard, MatCardFooter, MatCardHeader, MatCardImage, MatCardTitle} from '@angular/material/card';
 
 export type StreamCardContent = {
   title: string;
@@ -12,7 +12,8 @@ export type StreamCardContent = {
     MatCardTitle,
     MatCardHeader,
     MatCard,
-    MatCardImage
+    MatCardImage,
+    MatCardFooter
   ],
   templateUrl: './live.component.html',
   styleUrl: './live.component.scss'
@@ -37,7 +38,7 @@ export class LiveComponent {
 
     for(let i = 0; i < this.images.length; i++) {
       cards.push({
-        title: `Card ${i + 1}`,
+        title: `${this.images[i].substring(12).replaceAll(".jpeg", '')}`,
         imageUrl: this.images[i],
       })
     }
