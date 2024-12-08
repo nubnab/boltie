@@ -1,48 +1,17 @@
-.sidenav-container {
-  height: 100%;
-}
+/* Error: Can't find stylesheet to import.
+ *   ,
+ * 1 | @use '@angular/material' as mat;
+ *   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ *   '
+ *   nav-root.component.scss 1:1  root stylesheet */
 
-.sidenav {
-  background-color: white;
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Can't find stylesheet to import.\a   \2577 \a 1 \2502  @use '@angular/material' as mat;\a   \2502  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\a   \2575 \a   nav-root.component.scss 1:1  root stylesheet";
 }
-
-.sidenav .mat-toolbar {
-  background: inherit;
-}
-
-.mat-toolbar {
-  position: relative;
-  z-index: 5;
-  height: 56px;
-  color: var(--mat-sys-primary);
-  background: var(--mat-sys-primary-container);
-  box-shadow: 1px 1px 10px gray;
-}
-
-.content {
-  padding: 24px;
-}
-
-.mat-sidenav-container {
-  height: calc(100vh - 56px);
-}
-
-.mat-drawer {
-  border-radius: 0;
-  box-shadow: 1px 1px 4px rgba(128, 128, 128, 0.11);
-}
-
-.mat-drawer-side {
-  border: none;
-}
-
-.mat-sidenav, .mat-sidenav-content {
-  transition: all 250ms ease-in-out;
-}
-
-.mat-toolbar-single-row {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-/*# sourceMappingURL=nav-root.component.css.map */

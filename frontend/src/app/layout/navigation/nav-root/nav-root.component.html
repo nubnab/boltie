@@ -2,6 +2,14 @@
   <button mat-icon-button (click)="this.toggleCollapse()">
     <mat-icon>menu</mat-icon>
   </button>
+  <div class="buttonsss">
+    <a mat-flat-button
+       class="login-button"
+       routerLink="/login">Login</a>
+    <a mat-flat-button
+       class="register-button"
+       routerLink="/register">Register</a>
+  </div>
 </mat-toolbar>
 <mat-sidenav-container>
   <mat-sidenav opened mode="side" class="sidenav" [style.width]="sidenavWidth()">

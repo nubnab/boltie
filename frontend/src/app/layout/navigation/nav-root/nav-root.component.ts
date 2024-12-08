@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import {RouterOutlet} from "@angular/router";
+import {RouterLink, RouterOutlet} from "@angular/router";
 import {CustomSidenavComponent} from "../custom-sidenav/custom-sidenav.component";
 import {SidenavStateService} from '../../../services/sidenav/sidenav-state.service';
 
@@ -13,15 +13,16 @@ import {SidenavStateService} from '../../../services/sidenav/sidenav-state.servi
   templateUrl: './nav-root.component.html',
   styleUrl: './nav-root.component.scss',
   standalone: true,
-    imports: [
-        MatToolbarModule,
-        MatButtonModule,
-        MatSidenavModule,
-        MatListModule,
-        MatIconModule,
-        RouterOutlet,
-        CustomSidenavComponent,
-    ]
+  imports: [
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatListModule,
+    MatIconModule,
+    RouterOutlet,
+    CustomSidenavComponent,
+    RouterLink,
+  ]
 })
 export class NavRootComponent {
 
