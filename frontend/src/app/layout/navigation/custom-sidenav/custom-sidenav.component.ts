@@ -4,6 +4,7 @@ import {MatListItem, MatListItemIcon, MatListItemTitle, MatNavList} from '@angul
 import {MatIcon} from '@angular/material/icon';
 import {SidenavStateService} from '../../../services/sidenav/sidenav-state.service';
 import {RouterLink, RouterLinkActive} from '@angular/router';
+import {MatDivider} from '@angular/material/divider';
 
 export type MenuItem = {
   icon: string;
@@ -20,7 +21,8 @@ export type MenuItem = {
     MatListItemIcon,
     MatListItemTitle,
     RouterLink,
-    RouterLinkActive
+    RouterLinkActive,
+    MatDivider
   ],
   templateUrl: './custom-sidenav.component.html',
   styleUrl: './custom-sidenav.component.scss'

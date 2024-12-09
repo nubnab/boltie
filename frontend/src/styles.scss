@@ -9,3 +9,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-drawer-inner-container {
   overflow: hidden !important;
 }
+
+:root {
+  @include mat.dialog-overrides((
+    container-shape: 6px,
+  ))
+}

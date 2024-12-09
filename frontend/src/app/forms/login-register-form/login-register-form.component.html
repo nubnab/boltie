@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>{{ isLogin ? 'Login' : 'Register' }}</h2>
+@if (isLogin) {
+  <p>Login test</p>
+} @else {
+  <p>Register Test</p>
+  <mat-dialog-content>
+    <p>Register Padding text</p>
+  </mat-dialog-content>
+}
+<button mat-button (click)="toggleForm()">Switch</button>
