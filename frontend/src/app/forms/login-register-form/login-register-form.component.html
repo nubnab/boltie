@@ -1,10 +1,75 @@
-<h2 mat-dialog-title>{{ isLogin ? 'Login' : 'Register' }}</h2>
+<h2 mat-dialog-title class="dialog-title">{{ isLogin ? 'Login' : 'Register' }}</h2>
 @if (isLogin) {
-  <p>Login test</p>
-} @else {
-  <p>Register Test</p>
-  <mat-dialog-content>
-    <p>Register Padding text</p>
+  <mat-dialog-content class="login-container">
+    <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username" />
+          @if (loginForm.get('username')?.hasError('minlength')) {
+            <mat-error>Username must be at least 5 characters!</mat-error>
+          }
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput [type]="loginPasswordHidden() ? 'password' : 'text'" formControlName="password" />
+          <button mat-icon-button
+                  matSuffix
+                  (click)="hideLoginPassword($event)"
+                  [attr.aria-label]="'Hide Password'"
+                  [attr.aria-pressed]="loginPasswordHidden()">
+            <mat-icon>{{loginPasswordHidden() ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+      </p>
+    </form>
   </mat-dialog-content>
+} @else {
+  <mat-dialog-content class="register-container">
+    <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username" />
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput [type]="registerPasswordHidden() ? 'password' : 'text'" formControlName="password" />
+          <button mat-icon-button
+                  matSuffix
+                  (click)="hidePassword($event)"
+                  [attr.aria-label]="'Hide Password'"
+                  [attr.aria-pressed]="registerPasswordHidden()">
+            <mat-icon>{{registerPasswordHidden() ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Confirm Password</mat-label>
+          <input matInput [type]="confirmPasswordHidden() ? 'password' : 'text'" formControlName="confirmPassword" />
+          <button mat-icon-button
+                  matSuffix
+                  (click)="hideConfirmPassword($event)"
+                  [attr.aria-label]="'Hide Confirm Password'"
+                  [attr.aria-pressed]="confirmPasswordHidden()">
+            <mat-icon>{{confirmPasswordHidden() ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          @if ((registerForm.get('confirmPassword')?.hasError('mismatch'))) {
+            <mat-error>Passwords do not match</mat-error>
+          }
+        </mat-form-field>
+      </p>
+    </form>
+  </mat-dialog-content>
+
 }
-<button mat-button (click)="toggleForm()">Switch</button>
+<mat-dialog-actions class="form-buttons">
+  <button mat-button (click)="toggleForm()">{{isLogin ? 'Register' : 'Login'}}</button>
+  <button mat-button>Submit</button>
+</mat-dialog-actions>
+

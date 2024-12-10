@@ -1,3 +1,17 @@
+.dialog-title {
+  text-align: center;
+}
 
+.login-container, .register-container {
+  text-align: center;
+}
+
+.form-buttons {
+  justify-content: space-between;
+}
+
+mat-form-field {
+  width: 300px;
+}
 
 /*# sourceMappingURL=login-register-form.component.css.map */
