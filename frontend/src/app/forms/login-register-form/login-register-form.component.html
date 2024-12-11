@@ -66,10 +66,9 @@
       </p>
     </form>
   </mat-dialog-content>
-
 }
 <mat-dialog-actions class="form-buttons">
   <button mat-button (click)="toggleForm()">{{isLogin ? 'Register' : 'Login'}}</button>
-  <button mat-button>Submit</button>
+  <button mat-button (click)="onLoginSubmit()">Submit</button>
 </mat-dialog-actions>
 

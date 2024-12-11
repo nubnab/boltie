@@ -14,6 +14,7 @@ import {MatError, MatFormField, MatSuffix} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {MatLabel} from '@angular/material/form-field';
 import {MatIcon} from '@angular/material/icon';
+import {RequestsService} from '../../services/requests.service';
 
 @Component({
   selector: 'app-login-register-form',
@@ -35,6 +36,7 @@ import {MatIcon} from '@angular/material/icon';
   styleUrl: './login-register-form.component.scss'
 })
 export class LoginRegisterFormComponent {
+    private requestsService = inject(RequestsService);
     data = inject(MAT_DIALOG_DATA);
     isLogin: boolean = this.data.isLogin;
     loginForm: FormGroup;
