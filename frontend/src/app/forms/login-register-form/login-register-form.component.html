@@ -52,6 +52,7 @@
         <mat-form-field appearance="outline">
           <mat-label>Confirm Password</mat-label>
           <input matInput [type]="confirmPasswordHidden() ? 'password' : 'text'" formControlName="confirmPassword" />
+          <!-- TODO: Adjust hide button to not send forms -->
           <button mat-icon-button
                   matSuffix
                   (click)="hideConfirmPassword($event)"
@@ -68,7 +69,8 @@
   </mat-dialog-content>
 }
 <mat-dialog-actions class="form-buttons">
+  <!-- TODO: Separate toggleForm(), rename content for clarity -->
   <button mat-button (click)="toggleForm()">{{isLogin ? 'Register' : 'Login'}}</button>
-  <button mat-button (click)="onLoginSubmit()">Submit</button>
+  <button mat-button (click)="isLogin ? onLoginSubmit() : onRegisterSubmit()">Submit</button>
 </mat-dialog-actions>
 

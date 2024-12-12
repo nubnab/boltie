@@ -15,6 +15,7 @@ import {MatInput} from '@angular/material/input';
 import {MatLabel} from '@angular/material/form-field';
 import {MatIcon} from '@angular/material/icon';
 import {RequestsService} from '../../services/requests.service';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-login-register-form',
@@ -37,6 +38,8 @@ import {RequestsService} from '../../services/requests.service';
 })
 export class LoginRegisterFormComponent {
     private requestsService = inject(RequestsService);
+    private authService = inject(AuthService);
+
     data = inject(MAT_DIALOG_DATA);
     isLogin: boolean = this.data.isLogin;
     loginForm: FormGroup;
@@ -79,11 +82,22 @@ export class LoginRegisterFormComponent {
     }
 
     onLoginSubmit() {
-
+      this.requestsService.getTest().subscribe(res => {
+        console.log(res);
+      })
     }
 
     onRegisterSubmit() {
+      if(this.registerForm.valid) {
+        let username: string = this.registerForm.get('username')?.value
+        let password: string = this.registerForm.get('password')?.value
+        console.log(password);
+        console.log(username);
 
+        this.authService.register(username, password).subscribe(res => {
+          console.log(res);
+        })
+      }
     }
 
     confirmPasswordValidator(): ValidatorFn {
