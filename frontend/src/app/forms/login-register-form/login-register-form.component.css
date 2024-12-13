@@ -6,12 +6,33 @@
   text-align: center;
 }
 
+.password-requirements {
+  text-align: start;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+}
+
 .form-buttons {
   justify-content: space-between;
 }
 
 mat-form-field {
   width: 300px;
+}
+
+.invalid-condition {
+  color: red;
+}
+
+.valid-condition {
+  color: green;
+}
+
+.pass-req-heading {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 0;
 }
 
 /*# sourceMappingURL=login-register-form.component.css.map */

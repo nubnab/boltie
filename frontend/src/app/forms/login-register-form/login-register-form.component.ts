@@ -10,12 +10,19 @@ import {
   Validators
 } from '@angular/forms';
 import {MatButton, MatIconButton} from '@angular/material/button';
-import {MatError, MatFormField, MatSuffix} from '@angular/material/form-field';
+import {MatError, MatFormField, MatHint, MatSuffix} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {MatLabel} from '@angular/material/form-field';
 import {MatIcon} from '@angular/material/icon';
 import {RequestsService} from '../../services/requests.service';
 import {AuthService} from '../../services/auth.service';
+
+interface PasswordErrors {
+  lowercase?: string;
+  uppercase?: string;
+  number?: string;
+  symbol?: string;
+}
 
 @Component({
   selector: 'app-login-register-form',
@@ -36,7 +43,9 @@ import {AuthService} from '../../services/auth.service';
   templateUrl: './login-register-form.component.html',
   styleUrl: './login-register-form.component.scss'
 })
+
 export class LoginRegisterFormComponent {
+
     private requestsService = inject(RequestsService);
     private authService = inject(AuthService);
 
@@ -47,18 +56,17 @@ export class LoginRegisterFormComponent {
 
     constructor(private formBuilder: FormBuilder) {
       this.loginForm = this.formBuilder.group({
-        username: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
-        password: ['', [Validators.required, Validators.minLength(6)]],
+        username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(512)]],
+        password: ['', [Validators.required, Validators.minLength(8)]],
       });
 
       this.registerForm = this.formBuilder.group({
-        username: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
-        password: ['', [Validators.required, Validators.minLength(6)]],
-        confirmPassword: ['', [Validators.required, Validators.minLength(6), this.confirmPasswordValidator()]],
+        username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(512)]],
+        password: ['', [Validators.required, this.minLengthValidator(8), this.passwordRequirementValidator()]],
+        confirmPassword: ['', [Validators.required, Validators.minLength(8), this.confirmPasswordValidator()]],
       });
 
     }
-
 
     toggleForm() {
       this.isLogin = !this.isLogin;
@@ -100,6 +108,29 @@ export class LoginRegisterFormComponent {
       }
     }
 
+    passwordRequirementValidator(): ValidatorFn {
+      return (control: AbstractControl): ValidationErrors | null => {
+        const password = control.value;
+
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasNumeric = /[0-9]/.test(password);
+        const hasSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+
+        const isPasswordValid =
+          hasLowerCase && hasUpperCase && hasNumeric && hasSymbol;
+
+        const validationErrors = {
+          hasLowerCase: !hasLowerCase,
+          hasUpperCase: !hasUpperCase,
+          hasNumeric: !hasNumeric,
+          hasSymbol: !hasSymbol,
+        }
+
+        return isPasswordValid ? null : validationErrors;
+      }
+    }
+
     confirmPasswordValidator(): ValidatorFn {
       return (control: AbstractControl): ValidationErrors | null => {
         const password = control.parent?.get('password');
@@ -110,5 +141,19 @@ export class LoginRegisterFormComponent {
       }
     }
 
+    minLengthValidator(minLength: number): ValidatorFn {
+      return (control: AbstractControl): ValidationErrors | null => {
+        const value = control.value || '';
+        if(!value || value.length < minLength) {
+          return {minLength: true};
+        }
+        return null;
+      }
+    }
+
+    hasError(errorName: string): boolean {
+      const password = this.registerForm.get('password');
+      return !!password?.errors?.[errorName];
+    }
 
 }

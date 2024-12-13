@@ -16,6 +16,7 @@
           <mat-label>Password</mat-label>
           <input matInput [type]="loginPasswordHidden() ? 'password' : 'text'" formControlName="password" />
           <button mat-icon-button
+                  type="button"
                   matSuffix
                   (click)="hideLoginPassword($event)"
                   [attr.aria-label]="'Hide Password'"
@@ -40,6 +41,7 @@
           <mat-label>Password</mat-label>
           <input matInput [type]="registerPasswordHidden() ? 'password' : 'text'" formControlName="password" />
           <button mat-icon-button
+                  type="button"
                   matSuffix
                   (click)="hidePassword($event)"
                   [attr.aria-label]="'Hide Password'"
@@ -48,12 +50,35 @@
           </button>
         </mat-form-field>
       </p>
+      <div class="password-requirements">
+        <p class="pass-req-heading">Password must contain:</p>
+        <span [class.invalid-condition]="hasError('minLength')"
+              [class.valid-condition]="!hasError('minLength')">
+          at least 8 characters
+        </span>
+        <span [class.invalid-condition]="hasError('hasUpperCase')"
+              [class.valid-condition]="!hasError('hasUpperCase')">
+          an uppercase letter
+        </span>
+        <span [class.invalid-condition]="hasError('hasLowerCase')"
+              [class.valid-condition]="!hasError('hasLowerCase')">
+          a lowercase letter
+        </span>
+        <span [class.invalid-condition]="hasError('hasNumeric')"
+              [class.valid-condition]="!hasError('hasNumeric')">
+          a number
+        </span>
+        <span [class.invalid-condition]="hasError('hasSymbol')"
+              [class.valid-condition]="!hasError('hasSymbol')">
+          a symbol
+        </span>
+      </div>
       <p>
         <mat-form-field appearance="outline">
           <mat-label>Confirm Password</mat-label>
           <input matInput [type]="confirmPasswordHidden() ? 'password' : 'text'" formControlName="confirmPassword" />
-          <!-- TODO: Adjust hide button to not send forms -->
           <button mat-icon-button
+                  type="button"
                   matSuffix
                   (click)="hideConfirmPassword($event)"
                   [attr.aria-label]="'Hide Confirm Password'"
