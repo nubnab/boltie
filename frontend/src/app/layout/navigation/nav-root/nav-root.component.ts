@@ -8,7 +8,7 @@ import {RouterOutlet} from "@angular/router";
 import {CustomSidenavComponent} from "../custom-sidenav/custom-sidenav.component";
 import {SidenavStateService} from '../../../services/sidenav/sidenav-state.service';
 import {MatDialog} from '@angular/material/dialog';
-import {LoginRegisterFormComponent} from '../../../forms/login-register-form/login-register-form.component';
+import {UserFormComponent} from '../../../forms/user-form/user-form-component';
 
 @Component({
   selector: 'app-nav-root',
@@ -39,7 +39,7 @@ export class NavRootComponent {
   sidenavWidth = computed(() => this.sidenavState.getState() ? '60px' : '250px');
 
   openTestLogin(): void {
-    const dialogRef = this.dialog.open(LoginRegisterFormComponent, {
+    const dialogRef = this.dialog.open(UserFormComponent, {
       enterAnimationDuration: 0,
       exitAnimationDuration: 0,
       data: {isLogin: true},
@@ -51,7 +51,7 @@ export class NavRootComponent {
   }
 
   openTestRegister() {
-    const dialogRef = this.dialog.open(LoginRegisterFormComponent, {
+    const dialogRef = this.dialog.open(UserFormComponent, {
       enterAnimationDuration: 0,
       exitAnimationDuration: 0,
       data: { isLogin: false },
