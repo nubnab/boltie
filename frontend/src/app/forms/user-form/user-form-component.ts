@@ -48,9 +48,10 @@ export class UserFormComponent {
       });
 
       this.registerForm = this.formBuilder.group({
-        username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(512)]],
-        password: ['', [Validators.required, PasswordValidator.minLengthValidator(8), PasswordValidator.passwordRequirementValidator()]],
-        confirmPassword: ['', [Validators.required, PasswordValidator.minLengthValidator(8), PasswordValidator.confirmPasswordValidator()]],
+        username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(255)]],
+        password: ['', [Validators.required, PasswordValidator.minLengthValidator(8),
+                        Validators.maxLength(255), PasswordValidator.passwordRequirementValidator()]],
+        confirmPassword: ['', [Validators.required, PasswordValidator.confirmPasswordValidator()]],
       });
 
     }
