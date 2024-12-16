@@ -89,6 +89,7 @@ export class UserFormComponent {
         let password: string = this.registerForm.get('password')?.value
 
         this.authService.register(username, password).subscribe(res => {
+          console.log(res);
           return null;
         })
       }

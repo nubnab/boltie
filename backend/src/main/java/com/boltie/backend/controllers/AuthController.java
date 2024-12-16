@@ -1,5 +1,6 @@
 package com.boltie.backend.controllers;
 
+import com.boltie.backend.config.UserAuthProvider;
 import com.boltie.backend.dto.RegisterDto;
 import com.boltie.backend.dto.UserDto;
 import com.boltie.backend.services.UserService;
@@ -17,13 +18,16 @@ import java.net.URI;
 public class AuthController {
 
     private final UserService userService;
+    private final UserAuthProvider userAuthProvider;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, UserAuthProvider userAuthProvider) {
         this.userService = userService;
+        this.userAuthProvider = userAuthProvider;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> register(@Valid  @RequestBody RegisterDto registerDto, BindingResult bindingResult) {
+    public ResponseEntity<UserDto> register(@Valid  @RequestBody RegisterDto registerDto,
+                                            BindingResult bindingResult) {
 
         if(bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -31,9 +35,9 @@ public class AuthController {
 
         UserDto user = userService.registerUser(registerDto);
 
-        URI uri = URI.create("/users/" + user.getId());
+        user.setToken(userAuthProvider.createToken(user));
 
-        return ResponseEntity.created(uri).body(user);
+        return ResponseEntity.created(URI.create("/users/" + user.getId())).body(user);
     }
 
 }
