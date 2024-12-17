@@ -1,5 +1,6 @@
 package com.boltie.backend.services;
 
+import com.boltie.backend.dto.LoginDto;
 import com.boltie.backend.dto.RegisterDto;
 import com.boltie.backend.dto.UserDto;
 import com.boltie.backend.entities.User;
@@ -28,6 +29,16 @@ public class UserService {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    public UserDto login(LoginDto loginDto) {
+        User user = userRepository.findByUsername(loginDto.login())
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+
+        if(passwordEncoder.matches(CharBuffer.wrap(loginDto.password()), user.getPassword())) {
+            return userMapper.toUserDto(user);
+        }
+        throw new AppException("Wrong password", HttpStatus.BAD_REQUEST);
     }
 
     public UserDto registerUser(RegisterDto registerDto) {

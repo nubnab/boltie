@@ -77,20 +77,26 @@ export class UserFormComponent {
       event.stopPropagation();
     }
 
-    onLoginSubmit() {
+    onLoginSubmit(): void {
       this.requestsService.getTest().subscribe(res => {
         return null;
       });
     }
 
-    onRegisterSubmit() {
+    onRegisterSubmit(): void {
       if(this.registerForm.valid) {
         let username: string = this.registerForm.get('username')?.value
         let password: string = this.registerForm.get('password')?.value
 
-        this.authService.register(username, password).subscribe(res => {
-          console.log(res);
-          return null;
+        this.authService.register(username, password).subscribe({
+          next: (res) => {
+            this.authService.setAuthToken(res.token);
+            console.log("Login success", res);
+          },
+            error: (err) => {
+            this.authService.setAuthToken(null);
+            console.log("Login fail", err);
+          }
         })
       }
     }

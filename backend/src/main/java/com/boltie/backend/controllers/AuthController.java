@@ -1,6 +1,7 @@
 package com.boltie.backend.controllers;
 
 import com.boltie.backend.config.UserAuthProvider;
+import com.boltie.backend.dto.LoginDto;
 import com.boltie.backend.dto.RegisterDto;
 import com.boltie.backend.dto.UserDto;
 import com.boltie.backend.services.UserService;
@@ -24,6 +25,20 @@ public class AuthController {
         this.userService = userService;
         this.userAuthProvider = userAuthProvider;
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserDto> login(@Valid @RequestBody LoginDto loginDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        UserDto user = userService.login(loginDto);
+
+        user.setToken(userAuthProvider.createToken(user));
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
 
     @PostMapping("/register")
     public ResponseEntity<UserDto> register(@Valid  @RequestBody RegisterDto registerDto,
