@@ -9,6 +9,7 @@ import {MatIcon} from '@angular/material/icon';
 import {RequestsService} from '../../services/requests.service';
 import {AuthService} from '../../services/auth.service';
 import PasswordValidator from '../../validators/password-validator.validator';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-user-form',
@@ -35,6 +36,7 @@ export class UserFormComponent {
     private requestsService = inject(RequestsService);
     private authService = inject(AuthService);
     private data = inject(MAT_DIALOG_DATA);
+    private router = inject(Router);
 
 
     isLogin: boolean = this.data.isLogin;
@@ -78,9 +80,18 @@ export class UserFormComponent {
     }
 
     onLoginSubmit(): void {
-      this.requestsService.getTest().subscribe(res => {
-        return null;
-      });
+      this.authService.login(this.loginForm.get('username')?.value,
+                             this.loginForm.get('password')?.value).subscribe({
+        next: (res) => {
+          this.authService.setAuthToken(res.token);
+          void this.router.navigateByUrl('/');
+          console.log("Successfully logged in", res);
+        },
+        error: (err) => {
+          this.authService.setAuthToken(null);
+          console.log("Login failed", err);
+        }
+      })
     }
 
     onRegisterSubmit(): void {

@@ -32,7 +32,7 @@ public class UserService {
     }
 
     public UserDto login(LoginDto loginDto) {
-        User user = userRepository.findByUsername(loginDto.login())
+        User user = userRepository.findByUsername(loginDto.username())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
         if(passwordEncoder.matches(CharBuffer.wrap(loginDto.password()), user.getPassword())) {

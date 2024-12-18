@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 public record LoginDto(
         @NotBlank(message = "Username cannot be empty!")
         @Size(min = 4, max = 255)
-        String login,
+        String username,
 
         @NotEmpty(message = "Password cannot be empty!")
         @Size(min = 8, max = 255)
