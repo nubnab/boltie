@@ -54,5 +54,13 @@ export class AuthService {
     }
   }
 
+  setRefreshToken(refreshToken: string | null): void {
+    if(refreshToken !== null) {
+      window.localStorage.setItem('refresh_token', refreshToken);
+    } else {
+      window.localStorage.removeItem('refresh_token');
+    }
+  }
+
 
 }

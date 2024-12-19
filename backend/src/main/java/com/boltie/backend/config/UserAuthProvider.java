@@ -35,7 +35,19 @@ public class UserAuthProvider {
 
     public String createToken(UserDto userDto) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + 1000 * 60 * 60 * 24);
+        //1000 * 60 * 60 * 24
+        Date expiryDate = new Date(now.getTime() + 1000 * 60); //1 minute
+
+        return JWT.create()
+                .withIssuer(userDto.getUsername())
+                .withIssuedAt(now)
+                .withExpiresAt(expiryDate)
+                .sign(Algorithm.HMAC256(secretKey));
+    }
+
+    public String createRefreshToken(UserDto userDto) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + 1000L * 60 * 60 * 24 * 30); //30 days
 
         return JWT.create()
                 .withIssuer(userDto.getUsername())
@@ -55,4 +67,15 @@ public class UserAuthProvider {
 
         return new UsernamePasswordAuthenticationToken(user, null);
     }
+
+    public UserDto validateRefreshToken(String refreshToken) {
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
+
+        JWTVerifier verifier = JWT.require(algorithm).build();
+
+        DecodedJWT jwt = verifier.verify(refreshToken);
+
+        return userService.findByUsername(jwt.getIssuer());
+    }
+
 }

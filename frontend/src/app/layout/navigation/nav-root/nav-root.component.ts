@@ -40,6 +40,7 @@ export class NavRootComponent {
 
   openTestLogin(): void {
     const dialogRef = this.dialog.open(UserFormComponent, {
+      id: 'login_dialog',
       enterAnimationDuration: 0,
       exitAnimationDuration: 0,
       data: {isLogin: true},
@@ -52,6 +53,7 @@ export class NavRootComponent {
 
   openTestRegister() {
     const dialogRef = this.dialog.open(UserFormComponent, {
+      id: 'register_dialog',
       enterAnimationDuration: 0,
       exitAnimationDuration: 0,
       data: { isLogin: false },

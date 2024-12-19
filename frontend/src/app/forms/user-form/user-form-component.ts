@@ -1,5 +1,5 @@
 import {Component, inject, signal} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatError, MatFormField, MatSuffix} from '@angular/material/form-field';
@@ -37,6 +37,7 @@ export class UserFormComponent {
     private authService = inject(AuthService);
     private data = inject(MAT_DIALOG_DATA);
     private router = inject(Router);
+    readonly dialog = inject(MatDialog);
 
 
     isLogin: boolean = this.data.isLogin;
@@ -84,11 +85,14 @@ export class UserFormComponent {
                              this.loginForm.get('password')?.value).subscribe({
         next: (res) => {
           this.authService.setAuthToken(res.token);
-          void this.router.navigateByUrl('/');
+          this.authService.setRefreshToken(res.refreshToken);
+
+          this.dialog.getDialogById("login_dialog")?.close()
           console.log("Successfully logged in", res);
         },
         error: (err) => {
           this.authService.setAuthToken(null);
+          this.authService.setRefreshToken(null);
           console.log("Login failed", err);
         }
       })
@@ -96,12 +100,11 @@ export class UserFormComponent {
 
     onRegisterSubmit(): void {
       if(this.registerForm.valid) {
-        let username: string = this.registerForm.get('username')?.value
-        let password: string = this.registerForm.get('password')?.value
-
-        this.authService.register(username, password).subscribe({
+        this.authService.register(this.registerForm.get('username')?.value,
+                                  this.registerForm.get('password')?.value).subscribe({
           next: (res) => {
             this.authService.setAuthToken(res.token);
+            this.dialog.getDialogById("register_dialog")?.close()
             console.log("Login success", res);
           },
             error: (err) => {
