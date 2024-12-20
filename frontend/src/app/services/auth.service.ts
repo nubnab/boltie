@@ -46,6 +46,21 @@ export class AuthService {
     //TODO: expand on it
   }
 
+  getAuthToken(): string | null {
+    return localStorage.getItem("auth_token");
+  }
+
+  getRefreshToken(): string | null {
+    return localStorage.getItem("refresh_token");
+  }
+
+  refreshToken(): Observable<any> {
+    const url = `${this.baseUrl}/refresh`;
+    const refreshToken = this.getRefreshToken();
+
+    return this.http.post(url, refreshToken);
+  }
+
   setAuthToken(token: string | null): void {
     if(token !== null) {
       window.localStorage.setItem('auth_token', token);

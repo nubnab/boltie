@@ -40,8 +40,6 @@ public class AuthController {
         user.setToken(userAuthProvider.createToken(user));
         user.setRefreshToken(userAuthProvider.createRefreshToken(user));
 
-        System.out.println();
-
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
