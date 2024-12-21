@@ -9,7 +9,7 @@ import java.util.List;
 @RestController
 public class TestController {
 
-    @GetMapping("/test")
+    @GetMapping("/videos")
     public ResponseEntity<List<String>> test() {
         return ResponseEntity.ok(List.of("test1", "test2", "test3"));
     }

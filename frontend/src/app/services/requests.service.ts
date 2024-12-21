@@ -13,7 +13,7 @@ export class RequestsService {
   private baseUrl = "http://localhost:8080";
 
   getTest() {
-    return this.http.get(`${this.baseUrl}/test`);
+    return this.http.get(`${this.baseUrl}/videos`);
   }
 
 }

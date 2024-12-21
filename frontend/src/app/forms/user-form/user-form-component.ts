@@ -104,6 +104,7 @@ export class UserFormComponent {
                                   this.registerForm.get('password')?.value).subscribe({
           next: (res) => {
             this.authService.setAuthToken(res.token);
+            this.authService.setRefreshToken(res.refreshToken);
             this.dialog.getDialogById("register_dialog")?.close()
             console.log("Login success", res);
           },
