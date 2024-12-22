@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.Base64;
+import java.util.Collections;
 import java.util.Date;
 
 @Component
@@ -65,7 +66,7 @@ public class UserAuthProvider {
 
         UserDto user = userService.findByUsername(jwt.getIssuer());
 
-        return new UsernamePasswordAuthenticationToken(user, null);
+        return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
     }
 
     public UserDto validateRefreshToken(String refreshToken) {

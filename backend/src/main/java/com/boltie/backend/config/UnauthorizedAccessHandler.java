@@ -15,6 +15,6 @@ public class UnauthorizedAccessHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request,
                        HttpServletResponse response,
                        AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        response.setStatus(403);
+        response.sendError(HttpServletResponse.SC_FORBIDDEN);
     }
 }

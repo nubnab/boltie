@@ -6,11 +6,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Enumeration;
 
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -30,8 +31,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             if (tokens.length == 2 && tokens[0].equals("Bearer")) {
                 try {
-                    SecurityContextHolder.getContext().setAuthentication(
-                            userAuthProvider.validateToken(tokens[1]));
+                    Authentication authentication = userAuthProvider.validateToken(tokens[1]);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
                 } catch (RuntimeException e) {
                     SecurityContextHolder.clearContext();
                     throw e;
