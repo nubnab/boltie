@@ -37,7 +37,7 @@ public class UserAuthProvider {
     public String createToken(UserDto userDto) {
         Date now = new Date();
         //1000 * 60 * 60 * 24
-        Date expiryDate = new Date(now.getTime() + 1000 * 60 * 60); //1 hour
+        Date expiryDate = new Date(now.getTime() + 1000 * 60); //1 minute
 
         return JWT.create()
                 .withIssuer(userDto.getUsername())

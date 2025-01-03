@@ -56,24 +56,24 @@ export class AuthService {
 
   refreshToken(): Observable<any> {
     const url = `${this.baseUrl}/refresh`;
-    const refreshToken = this.getRefreshToken();
+    const body = { refresh_token: this.getRefreshToken() };
 
-    return this.http.post(url, refreshToken);
+    return this.http.post(url, body);
   }
 
   setAuthToken(token: string | null): void {
     if(token !== null) {
-      window.localStorage.setItem('auth_token', token);
+      localStorage.setItem('auth_token', token);
     } else {
-      window.localStorage.removeItem('auth_token');
+      localStorage.removeItem('auth_token');
     }
   }
 
   setRefreshToken(refreshToken: string | null): void {
     if(refreshToken !== null) {
-      window.localStorage.setItem('refresh_token', refreshToken);
+      localStorage.setItem('refresh_token', refreshToken);
     } else {
-      window.localStorage.removeItem('refresh_token');
+      localStorage.removeItem('refresh_token');
     }
   }
 
