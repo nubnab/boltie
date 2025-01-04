@@ -11,7 +11,10 @@ export class HomeComponent {
 
    private authService = inject(AuthService);
 
-   loginState: boolean = this.authService.isLoggedIn();
+  loginState: boolean = this.authService.isLoggedIn();
+
+
+
 
 
 

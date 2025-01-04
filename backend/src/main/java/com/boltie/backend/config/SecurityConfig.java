@@ -22,7 +22,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                                   UnauthorizedAccessHandler unauthorizedAccessHandler, UserAuthProvider userAuthProvider) throws Exception {
+                                                   UnauthorizedAccessHandler unauthorizedAccessHandler,
+                                                   UserAuthProvider userAuthProvider) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
@@ -34,7 +35,8 @@ public class SecurityConfig {
                                 .authenticated())
                 .exceptionHandling(e -> e.accessDeniedHandler(unauthorizedAccessHandler)
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new JwtAuthFilter(userAuthProvider), BasicAuthenticationFilter.class)
                 .build();
     }

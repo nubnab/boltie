@@ -7,7 +7,6 @@ import com.boltie.backend.entities.User;
 import com.boltie.backend.exceptions.AppException;
 import com.boltie.backend.mappers.UserMapper;
 import com.boltie.backend.repositories.UserRepository;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,8 +17,8 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository,

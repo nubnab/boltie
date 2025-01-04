@@ -38,7 +38,7 @@ export class NavRootComponent {
 
   sidenavWidth = computed(() => this.sidenavState.getState() ? '60px' : '250px');
 
-  openTestLogin(): void {
+  openTestLogin() {
     const dialogRef = this.dialog.open(UserFormComponent, {
       id: 'login_dialog',
       enterAnimationDuration: 0,

@@ -1,6 +1,5 @@
 package com.boltie.backend.controllers;
 
-import com.auth0.jwt.algorithms.Algorithm;
 import com.boltie.backend.config.UserAuthProvider;
 import com.boltie.backend.dto.LoginDto;
 import com.boltie.backend.dto.RegisterDto;
@@ -58,7 +57,7 @@ public class AuthController {
 
             Map<String, String> response = new HashMap<>();
 
-            response.put("auth_token", newAuthToken);
+            response.put("authToken", newAuthToken);
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {

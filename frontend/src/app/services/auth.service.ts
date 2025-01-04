@@ -29,18 +29,18 @@ export class AuthService {
     return this.http.post(url, body);
   }
 
-  isLoggedIn(): boolean {
+  isLoggedIn() {
     const token = localStorage.getItem("auth_token");
     if (!token) { return false;}
     return !this.isTokenExpired(token);
   }
 
-  isTokenExpired(token: string): boolean {
+  isTokenExpired(token: string) {
     const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
     return Math.floor(Date.now() / 1000) >= expiry;
   }
 
-  logout(): void {
+  logout() {
     localStorage.removeItem("auth_token");
     void this.router.navigateByUrl('/');
     //TODO: expand on it
@@ -54,7 +54,7 @@ export class AuthService {
     return localStorage.getItem("refresh_token");
   }
 
-  refreshToken(): Observable<any> {
+  refreshToken() {
     const url = `${this.baseUrl}/refresh`;
     const body = { refresh_token: this.getRefreshToken() };
 

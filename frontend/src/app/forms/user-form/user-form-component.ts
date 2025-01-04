@@ -33,10 +33,8 @@ import {Router} from '@angular/router';
 
 export class UserFormComponent {
 
-    private requestsService = inject(RequestsService);
     private authService = inject(AuthService);
     private data = inject(MAT_DIALOG_DATA);
-    private router = inject(Router);
     readonly dialog = inject(MatDialog);
 
 
@@ -80,7 +78,7 @@ export class UserFormComponent {
       event.stopPropagation();
     }
 
-    onLoginSubmit(): void {
+    onLoginSubmit() {
       this.authService.login(this.loginForm.get('username')?.value,
                              this.loginForm.get('password')?.value).subscribe({
         next: (res) => {
@@ -98,7 +96,7 @@ export class UserFormComponent {
       })
     }
 
-    onRegisterSubmit(): void {
+    onRegisterSubmit() {
       if(this.registerForm.valid) {
         this.authService.register(this.registerForm.get('username')?.value,
                                   this.registerForm.get('password')?.value).subscribe({
