@@ -9,10 +9,9 @@ import {AuthService} from '../../services/auth.service';
 })
 export class HomeComponent {
 
-   private authService = inject(AuthService);
+  private authService = inject(AuthService);
 
-  loginState: boolean = this.authService.isLoggedIn();
-
+  loginState = this.authService.loginStateSignal;
 
 
 

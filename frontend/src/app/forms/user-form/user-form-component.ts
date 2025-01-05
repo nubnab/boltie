@@ -85,12 +85,17 @@ export class UserFormComponent {
           this.authService.setAuthToken(res.token);
           this.authService.setRefreshToken(res.refreshToken);
 
+          this.authService.loginStateSignal.set(true);
+
           this.dialog.getDialogById("login_dialog")?.close()
           console.log("Successfully logged in", res);
         },
         error: (err) => {
           this.authService.setAuthToken(null);
           this.authService.setRefreshToken(null);
+
+          this.authService.loginStateSignal.set(false);
+
           console.log("Login failed", err);
         }
       })
@@ -104,10 +109,14 @@ export class UserFormComponent {
             this.authService.setAuthToken(res.token);
             this.authService.setRefreshToken(res.refreshToken);
             this.dialog.getDialogById("register_dialog")?.close()
+            this.authService.loginStateSignal.set(true);
             console.log("Login success", res);
           },
             error: (err) => {
             this.authService.setAuthToken(null);
+            this.authService.setRefreshToken(null);
+            this.authService.loginStateSignal.set(false);
+
             console.log("Login fail", err);
           }
         })

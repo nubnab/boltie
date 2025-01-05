@@ -5,14 +5,28 @@
     </button>
     <img src="/favicon.ico"/>
   </div>
-  <div>
-    <button mat-flat-button
-       class="login-button"
-       (click)="openTestLogin()">Login</button>
-    <button mat-flat-button
-       class="register-button"
-       (click)="openTestRegister()">Register</button>
-  </div>
+  @if (!loginState()) {
+    <div>
+      <button mat-flat-button
+              class="login-button"
+              (click)="openLoginModal()">Login</button>
+      <button mat-flat-button
+              class="register-button"
+              (click)="openRegisterModal()">Register</button>
+    </div>
+  } @else {
+    <div class="profile-container">
+      <button class="profile-button"
+              [matMenuTriggerFor]="menu">
+        <img src="/default-profile-picture.png"/>
+        <mat-menu #menu="matMenu" class="profile-menu">
+          <button mat-menu-item>Settings</button>
+          <button mat-menu-item (click)="authService.logout()">Logout</button>
+        </mat-menu>
+      </button>
+    </div>
+  }
+
 </mat-toolbar>
 <mat-sidenav-container>
   <mat-sidenav opened mode="side" class="sidenav" [style.width]="sidenavWidth()">

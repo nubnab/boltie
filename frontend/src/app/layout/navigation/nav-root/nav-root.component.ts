@@ -9,6 +9,8 @@ import {CustomSidenavComponent} from "../custom-sidenav/custom-sidenav.component
 import {SidenavStateService} from '../../../services/sidenav/sidenav-state.service';
 import {MatDialog} from '@angular/material/dialog';
 import {UserFormComponent} from '../../../forms/user-form/user-form-component';
+import {AuthService} from '../../../services/auth.service';
+import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 
 @Component({
   selector: 'app-nav-root',
@@ -23,14 +25,19 @@ import {UserFormComponent} from '../../../forms/user-form/user-form-component';
     MatIconModule,
     RouterOutlet,
     CustomSidenavComponent,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
   ]
 })
 export class NavRootComponent {
   readonly dialog = inject(MatDialog);
 
-  constructor(private sidenavState: SidenavStateService) {
-    this.sidenavState = sidenavState;
-  }
+  private sidenavState = inject(SidenavStateService);
+  //TODO: make private
+  authService = inject(AuthService);
+
+  loginState = this.authService.loginStateSignal;
 
   toggleCollapse() {
     this.sidenavState.toggleCollapse();
@@ -38,7 +45,7 @@ export class NavRootComponent {
 
   sidenavWidth = computed(() => this.sidenavState.getState() ? '60px' : '250px');
 
-  openTestLogin() {
+  openLoginModal() {
     const dialogRef = this.dialog.open(UserFormComponent, {
       id: 'login_dialog',
       enterAnimationDuration: 0,
@@ -51,7 +58,7 @@ export class NavRootComponent {
     })
   }
 
-  openTestRegister() {
+  openRegisterModal() {
     const dialogRef = this.dialog.open(UserFormComponent, {
       id: 'register_dialog',
       enterAnimationDuration: 0,

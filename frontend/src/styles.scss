@@ -13,5 +13,30 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 :root {
   @include mat.dialog-overrides((
     container-shape: 6px,
-  ))
+  ));
+
+  @include mat.menu-overrides((
+    container-shape: 4px,
+    container-color: var(--mat-sys-surface),
+
+  ));
 }
+
+.mat-mdc-menu-panel {
+  padding: 0;
+}
+
+.mat-mdc-menu-content {
+  padding: 0 !important;
+}
+
+.profile-menu button {
+  text-align: center;
+}
+
+.mat-mdc-menu-panel {
+  margin-top: 12px;
+}
+
+
+
