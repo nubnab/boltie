@@ -10,20 +10,19 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table
-public class User {
+public class Stream {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String username;
+    private String title;
 
-    @Column(nullable = false)
-    private String password;
+    private String streamKey;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "stream_id")
-    private Stream stream;
+    private String streamViewLink;
+
+    @OneToOne(mappedBy = "stream", fetch = FetchType.EAGER)
+    private User user;
 
 }
