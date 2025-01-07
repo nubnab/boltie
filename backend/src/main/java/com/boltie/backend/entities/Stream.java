@@ -20,7 +20,7 @@ public class Stream {
 
     private String streamKey;
 
-    private String streamViewLink;
+    private String streamUrl;
 
     @OneToOne(mappedBy = "stream", fetch = FetchType.EAGER)
     private User user;

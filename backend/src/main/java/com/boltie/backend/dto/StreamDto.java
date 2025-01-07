@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class StreamDto {
 
+    private String username;
     private String title;
     private String streamUrl;
 

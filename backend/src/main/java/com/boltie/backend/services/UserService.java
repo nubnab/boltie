@@ -20,14 +20,17 @@ public class UserService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final StreamService streamService;
 
     public UserService(UserRepository userRepository,
                        UserMapper userMapper,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder,
+                       StreamService streamService) {
 
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
+        this.streamService = streamService;
     }
 
     public UserDto login(LoginDto loginDto) {
@@ -49,6 +52,8 @@ public class UserService {
         User user = userMapper.registerToUser(registerDto);
 
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(registerDto.password())));
+
+        user.setStream(streamService.generateDefaultStream(user));
 
         User savedUser = userRepository.save(user);
 
