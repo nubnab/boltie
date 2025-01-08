@@ -2,11 +2,13 @@ import {HttpInterceptorFn} from '@angular/common/http';
 import {inject} from '@angular/core';
 import {AuthService} from './services/auth.service';
 import {catchError, of, switchMap} from 'rxjs';
+import {Router} from '@angular/router';
 
 export const authInterceptor: HttpInterceptorFn = (
   req, next) => {
 
   const authService = inject(AuthService);
+  const router = inject(Router);
   const token = localStorage.getItem("auth_token");
 
   if(token && !authService.isTokenExpired(token)) {
@@ -46,6 +48,16 @@ export const authInterceptor: HttpInterceptorFn = (
           return of(error);
         }
       }
+
+      if(error.status == 404) {
+        router.navigate(['/page-not-found']);
+      }
+
+      //TODO: Change to Connection with server error / component
+      if(error.status == 0) {
+        router.navigate(['/page-not-found']);
+      }
+
       return of(error);
     })
   );

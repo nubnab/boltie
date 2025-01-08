@@ -80,6 +80,18 @@ public class StreamService {
         return ResponseEntity.ok(getStreamDetails(id));
     }
 
+    public List<StreamDto> getAllStreams() {
+        List<Stream> streams = streamRepository.findAll();
+        List<StreamDto> streamDtoList = new ArrayList<>();
+
+        for(Stream stream : streams) {
+            StreamDto streamDto = streamMapper.toStreamDto(stream);
+            streamDto.setUsername(stream.getUser().getUsername());
+            streamDtoList.add(streamDto);
+        }
+        return streamDtoList;
+    }
+
     public List<StreamDto> getAllLiveStreams() throws JsonProcessingException {
         List<Stream> streams = streamRepository.findAll();
         List<String> usernames = getLiveStreamUsernames();

@@ -16,4 +16,12 @@ export class RequestsService {
     return this.http.get(`${this.baseUrl}/videos`);
   }
 
+  getStreamByUsername(username: string) {
+    return this.http.get(`${this.baseUrl}/streams/${username}`);
+  }
+
+  getStreams() {
+    return this.http.get(`${this.baseUrl}/streams`);
+  }
+
 }
