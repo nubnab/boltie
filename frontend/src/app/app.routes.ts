@@ -9,7 +9,7 @@ import {AboutComponent} from './pages/about/about.component';
 import {PageNotFoundComponent} from './pages/page-not-found/page-not-found.component';
 import {StreamComponent} from './pages/stream/stream.component';
 import {SettingsComponent} from './pages/settings/settings.component';
-import {RecordingComponent} from './pages/recording/recording.component';
+import {UserRecordingsComponent} from './pages/user-recordings/user-recordings.component';
 import {WatchRecordingComponent} from './pages/watch-recording/watch-recording.component';
 
 export const routes: Routes = [
@@ -24,7 +24,7 @@ export const routes: Routes = [
   {path: 'settings', pathMatch: 'full', component: SettingsComponent},
   {path: 'page-not-found', pathMatch: 'full', component: PageNotFoundComponent},
   {path: ':username', component: StreamComponent},
-  {path: ':username/recordings', component: RecordingComponent},
+  {path: ':username/recordings', component: UserRecordingsComponent},
   {path: ':username/recordings/:recordingId', component: WatchRecordingComponent},
   {path: '**', component: PageNotFoundComponent},
 ];

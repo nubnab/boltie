@@ -36,6 +36,7 @@ button {
 
 mat-form-field {
   padding: 0;
+
   @include mat.form-field-overrides((
     container-height: 10px,
     container-text-font: Roboto,
