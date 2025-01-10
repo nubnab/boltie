@@ -19,11 +19,15 @@ public class RecordingDirectoryWatchService {
     private final String BASE_DIRECTORY = "/app/data";
     private final UserService userService;
     private final RecordingService recordingService;
+    private final ThumbnailGeneratorService thumbnailGeneratorService;
+
 
     public RecordingDirectoryWatchService(UserService userService,
-                                          RecordingService recordingService) {
+                                          RecordingService recordingService,
+                                          ThumbnailGeneratorService thumbnailGeneratorService) {
         this.userService = userService;
         this.recordingService = recordingService;
+        this.thumbnailGeneratorService = thumbnailGeneratorService;
     }
 
     @PostConstruct
@@ -93,6 +97,13 @@ public class RecordingDirectoryWatchService {
                 if(!recordingTitles.contains(entry.getFileName().toString())) {
                     newRecordingsFound.add(entry.getFileName().toString());
                     System.out.println("Found recording: " + entry.getFileName());
+                    try {
+                        Thread.sleep(500L);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    thumbnailGeneratorService.generateThumbnail(entry.toString(), "/thumb.jpg");
+
                 }
             }
         }
