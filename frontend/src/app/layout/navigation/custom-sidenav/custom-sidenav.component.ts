@@ -1,10 +1,11 @@
-import {Component, computed, Input, Signal, signal, WritableSignal} from '@angular/core';
+import {Component, computed, inject, Input, OnInit, Signal, signal, WritableSignal} from '@angular/core';
 import {NgOptimizedImage} from '@angular/common';
 import {MatListItem, MatListItemIcon, MatListItemTitle, MatNavList} from '@angular/material/list';
 import {MatIcon} from '@angular/material/icon';
 import {SidenavStateService} from '../../../services/sidenav/sidenav-state.service';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {MatDivider} from '@angular/material/divider';
+import {AuthService} from '../../../services/auth.service';
 
 export type MenuItem = {
   icon: string;
@@ -29,9 +30,11 @@ export type MenuItem = {
 })
 export class CustomSidenavComponent {
 
-  constructor(public sidenavState: SidenavStateService) {
-    this.sidenavState = sidenavState;
-  }
+  currentUser = computed(() => this.authService.loginStateSignal() ?
+    localStorage.getItem("username") : null);
+
+  sidenavState = inject(SidenavStateService);
+  private authService = inject(AuthService);
 
   profilePicSize = computed(() => this.sidenavState.getState() ? '32' : '100');
 

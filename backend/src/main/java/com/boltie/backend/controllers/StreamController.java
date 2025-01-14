@@ -26,7 +26,9 @@ public class StreamController {
     @GetMapping("/streams/{username}")
     public ResponseEntity<StreamDto> getStreamsByUsername(@PathVariable String username) {
         UserDto userDto = userService.findByUsername(username);
-        return ResponseEntity.ok(streamService.getStreamDetails(userDto.getId()));
+        StreamDto streamDetails = streamService.getStreamDetails(userDto.getId());
+        streamDetails.setUsername(username);
+        return ResponseEntity.ok(streamDetails);
 
     }
 

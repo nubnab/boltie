@@ -37,7 +37,6 @@ export class UserFormComponent {
     private data = inject(MAT_DIALOG_DATA);
     readonly dialog = inject(MatDialog);
 
-
     isLogin: boolean = this.data.isLogin;
     loginForm: FormGroup;
     registerForm: FormGroup;
@@ -79,9 +78,11 @@ export class UserFormComponent {
     }
 
     onLoginSubmit() {
-      this.authService.login(this.loginForm.get('username')?.value,
-                             this.loginForm.get('password')?.value).subscribe({
+      this.authService.login(
+        this.loginForm.get('username')?.value,
+        this.loginForm.get('password')?.value).subscribe({
         next: (res) => {
+          this.authService.setUsername(res.username);
           this.authService.setAuthToken(res.token);
           this.authService.setRefreshToken(res.refreshToken);
 
@@ -103,13 +104,18 @@ export class UserFormComponent {
 
     onRegisterSubmit() {
       if(this.registerForm.valid) {
-        this.authService.register(this.registerForm.get('username')?.value,
-                                  this.registerForm.get('password')?.value).subscribe({
+        this.authService.register(
+          this.registerForm.get('username')?.value,
+          this.registerForm.get('password')?.value).subscribe({
           next: (res) => {
+            this.authService.setUsername(res.username);
             this.authService.setAuthToken(res.token);
             this.authService.setRefreshToken(res.refreshToken);
+
             this.dialog.getDialogById("register_dialog")?.close()
+
             this.authService.loginStateSignal.set(true);
+
             console.log("Login success", res);
           },
             error: (err) => {

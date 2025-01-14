@@ -1,1 +1,26 @@
-<h1>Hi</h1>
+<div class="player-container">
+  <div id='player_id'></div>
+  <div class="title-container">
+  @if (testSignal()) {
+      @if (!isEditMode) {
+        <h2 class="title"> {{ streamTitle }}</h2>
+        <button
+          type="button"
+          aria-label="Edit"
+          mat-flat-button
+          (click)="editTitle()"
+          class="edit-btn">Edit</button>
+      } @else {
+        <mat-form-field [subscriptSizing]="'dynamic'" appearance="outline">
+          <input matInput [(ngModel)]="streamTitle" type="text" class="edit-title" />
+        </mat-form-field>
+        <div>
+          <button type="submit" mat-flat-button class="save-btn" (click)="saveTitle()">Save</button>
+          <button type="button" mat-flat-button class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+        </div>
+      }
+  } @else {
+    <h2 class="title"> {{ streamTitle }}</h2>
+  }
+  </div>
+</div>

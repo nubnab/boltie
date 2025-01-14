@@ -36,7 +36,6 @@ public class UserAuthProvider {
 
     public String createToken(UserDto userDto) {
         Date now = new Date();
-
         Date expiryDate = new Date(now.getTime() + 1000 * 60 * 15); //15 minutes
 
         return JWT.create()

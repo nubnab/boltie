@@ -1,0 +1,51 @@
+@use '@angular/material' as mat;
+
+.player-container {
+  height: calc(100vh - 8rem);
+}
+
+.title {
+  margin: 0 0 0 1rem;
+  padding: 0.3rem 0 0 0;
+}
+
+.title-container {
+  padding-top: 1rem;
+  padding-left: 1rem;
+  padding-right: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+button {
+  margin-left: 0.75rem;
+  padding: 4px 12px;
+  height: 30px;
+  border-radius: 6px;
+}
+
+.edit-btn {
+  margin-top: 0.2rem;
+}
+
+
+.edit-title {
+  letter-spacing: 0 !important;
+
+}
+
+mat-form-field {
+  padding: 0;
+  @include mat.form-field-overrides((
+    container-height: 10px,
+    container-text-font: Roboto,
+    container-text-size: 1.5rem,
+    container-text-weight: 700,
+    container-vertical-padding: 0.3rem,
+  ))
+
+}
+
+.mat-mdc-form-field-infix {
+  padding: 0;
+}

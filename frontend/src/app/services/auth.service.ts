@@ -1,6 +1,6 @@
 import {computed, inject, Injectable, signal, WritableSignal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {Router} from '@angular/router';
 
 @Injectable({
@@ -12,9 +12,14 @@ export class AuthService {
   private router = inject(Router);
   private http = inject(HttpClient)
   private loginState = signal<boolean>(this.isLoggedIn());
+  private currentUser = signal<string | null>(localStorage.getItem("username"));
 
   get loginStateSignal() {
     return this.loginState;
+  }
+
+  get currentUserSignal() {
+    return this.currentUser;
   }
 
   constructor() { }
@@ -47,8 +52,10 @@ export class AuthService {
   logout() {
     localStorage.removeItem("auth_token");
     localStorage.removeItem("refresh_token");
+    localStorage.removeItem("username");
 
     this.loginStateSignal.set(false);
+    this.currentUser.set(null);
 
     void this.router.navigateByUrl('/');
   }
@@ -66,6 +73,16 @@ export class AuthService {
     const body = { refresh_token: this.getRefreshToken() };
 
     return this.http.post(url, body);
+  }
+
+  setUsername(username: string) {
+    if(username !== null && username !== '') {
+      localStorage.setItem("username", username);
+      this.currentUser.set(username);
+    } else {
+      localStorage.removeItem("username");
+      this.currentUser.set(null);
+    }
   }
 
   setAuthToken(token: string | null): void {
