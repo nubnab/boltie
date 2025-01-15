@@ -1,6 +1,8 @@
 package com.boltie.backend.services;
 
+import com.boltie.backend.config.UserAuthProvider;
 import com.boltie.backend.dto.StreamDto;
+import com.boltie.backend.dto.UserDto;
 import com.boltie.backend.entities.Stream;
 import com.boltie.backend.entities.User;
 import com.boltie.backend.exceptions.AppException;
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -21,6 +25,7 @@ import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -34,11 +39,11 @@ public class StreamService {
 
     @Value("${oven.baseurl:192.168.1.2}")
     private String BASE_URL;
-    private final String API_URL = "http://" + BASE_URL + ":8081/v1/vhosts/default/apps/app/streams";
+    private final String API_URL = "http://" + BASE_URL + ":8081/v1/vhosts/default/apps/boltie/streams";
 
     public Stream generateDefaultStream(User user) {
-        String BASE_RTMP_URL = "rtmp://" + BASE_URL + ":1935/app/" + user.getUsername();
-        String BASE_WS_URL = "ws://" + BASE_URL + ":3333/app/" + user.getUsername();
+        String BASE_RTMP_URL = "rtmp://" + BASE_URL + ":1935/boltie/" + user.getUsername();
+        String BASE_WS_URL = "ws://" + BASE_URL + ":3333/boltie/" + user.getUsername();
 
         String rtmpUrl = ovenStreamKeyGenService.generate(BASE_RTMP_URL,
                 Timestamp.from(ZonedDateTime.now().plusYears(2).toInstant()).getTime(),
@@ -67,6 +72,18 @@ public class StreamService {
             return streamMapper.toStreamDto(optionalStream.get());
         }
         throw new AppException("Unknown stream", HttpStatus.NOT_FOUND);
+    }
+
+
+    public Map<String, String> getStreamKey(Long id) {
+        Optional<Stream> optionalStream = streamRepository.findById(id);
+
+        if (optionalStream.isPresent()) {
+            return Map.of("key", optionalStream.get().getStreamKey());
+        }
+
+        throw new AppException("Unknown stream", HttpStatus.NOT_FOUND);
+
     }
 
     public ResponseEntity<?> editStreamTitle(Long id, String title) {

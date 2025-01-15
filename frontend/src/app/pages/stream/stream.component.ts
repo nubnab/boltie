@@ -59,17 +59,18 @@ export class StreamComponent implements OnInit {
         if (data.streamUrl != null) {
           this.streamLink = data.streamUrl;
         }
+      },
+      error: err => {console.log(err);},
+      complete: () => {
+        const player = OvenPlayer.create('player_id', {
+          sources: [{
+            label: 'webrtc',
+            type: 'webrtc',
+            //file: "http://192.168.1.2:9998/llhls.m3u8"
+            file: this.streamLink,
+          }]
+        });
       }
-    });
-
-    const player = OvenPlayer.create('player_id', {
-      sources: [{
-        label: 'webrtc',
-        type: 'webrtc',
-        //file: "http://192.168.1.2:9998/llhls.m3u8"
-        file: 'ws://192.168.1.2:3333/app/stream'
-        //file: this.streamLink
-      }]
     });
   }
 

@@ -20,7 +20,8 @@
               [matMenuTriggerFor]="menu">
         <img src="/default-profile-picture.png"/>
         <mat-menu #menu="matMenu" class="profile-menu">
-          <button mat-menu-item>Settings</button>
+          <button mat-menu-item [routerLink]="authService.currentUserSignal()">My Channel</button>
+          <button mat-menu-item [routerLink]="'settings'">Settings</button>
           <button mat-menu-item (click)="authService.logout()">Logout</button>
         </mat-menu>
       </button>

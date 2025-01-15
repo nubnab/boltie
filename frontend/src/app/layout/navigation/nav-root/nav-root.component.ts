@@ -4,13 +4,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import {RouterOutlet} from "@angular/router";
+import {RouterLink, RouterOutlet} from "@angular/router";
 import {CustomSidenavComponent} from "../custom-sidenav/custom-sidenav.component";
 import {SidenavStateService} from '../../../services/sidenav/sidenav-state.service';
 import {MatDialog} from '@angular/material/dialog';
 import {UserFormComponent} from '../../../forms/user-form/user-form-component';
 import {AuthService} from '../../../services/auth.service';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
+import {routes} from '../../../app.routes';
 
 @Component({
   selector: 'app-nav-root',
@@ -28,6 +29,7 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
     MatMenuTrigger,
     MatMenu,
     MatMenuItem,
+    RouterLink,
   ]
 })
 export class NavRootComponent {
@@ -71,4 +73,6 @@ export class NavRootComponent {
     })
   }
 
+  protected readonly routes = routes;
+  protected readonly navigator = navigator;
 }

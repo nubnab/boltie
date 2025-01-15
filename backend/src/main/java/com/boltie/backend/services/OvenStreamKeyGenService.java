@@ -15,7 +15,7 @@ import java.util.Map;
 @Service
 public class OvenStreamKeyGenService {
 
-    private final String SECRET_KEY = "ome";
+    private final String SECRET_KEY = "aKq#1kj";
     private final String POLICY_NAME = "policy";
     private final String SIGNATURE_NAME = "signature";
 

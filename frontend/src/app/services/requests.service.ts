@@ -24,4 +24,8 @@ export class RequestsService {
     return this.http.get(`${this.baseUrl}/streams`);
   }
 
+  getStreamKey() {
+    return this.http.get(`${this.baseUrl}/streams/key`);
+  }
+
 }

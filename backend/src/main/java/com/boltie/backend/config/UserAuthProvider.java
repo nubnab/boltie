@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.boltie.backend.dto.UserDto;
 import com.boltie.backend.services.UserService;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -54,6 +55,25 @@ public class UserAuthProvider {
                 .withIssuedAt(now)
                 .withExpiresAt(expiryDate)
                 .sign(Algorithm.HMAC256(secretKey));
+    }
+
+    public String getUsernameFromRequest(HttpServletRequest request) {
+        String authorization = request.getHeader("Authorization");
+
+        if (authorization != null && authorization.startsWith("Bearer ")) {
+            String token = authorization.substring(7);
+
+            Algorithm algorithm = Algorithm.HMAC256(secretKey);
+
+            JWTVerifier verifier = JWT.require(algorithm).build();
+
+            DecodedJWT jwt = verifier.verify(token);
+
+            return jwt.getIssuer();
+
+        }
+
+        return null;
     }
 
     public Authentication validateToken(String token) {
