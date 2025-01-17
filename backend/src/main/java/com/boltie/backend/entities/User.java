@@ -26,4 +26,6 @@ public class User {
     @JoinColumn(name = "stream_id")
     private Stream stream;
 
+
+
 }

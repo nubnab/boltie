@@ -5,6 +5,7 @@ import com.boltie.backend.dto.StreamDto;
 import com.boltie.backend.dto.UserDto;
 import com.boltie.backend.services.StreamService;
 import com.boltie.backend.services.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,10 +46,8 @@ public class StreamController {
     }
 
     @GetMapping("/streams")
-    public ResponseEntity<List<StreamDto>> getStreams() {
-        return ResponseEntity.ok(streamService.getAllStreams());
+    public ResponseEntity<List<StreamDto>> getStreams() throws JsonProcessingException {
+        return ResponseEntity.ok(streamService.getAllLiveStreams());
     }
-
-
 
 }

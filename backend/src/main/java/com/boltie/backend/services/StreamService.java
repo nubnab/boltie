@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,12 @@ public class StreamService {
 
     @Value("${oven.baseurl:192.168.1.2}")
     private String BASE_URL;
-    private final String API_URL = "http://" + BASE_URL + ":8081/v1/vhosts/default/apps/boltie/streams";
+    private String API_URL;
+
+    @PostConstruct
+    public void init() {
+        API_URL = "http://" + BASE_URL + ":8081/v1/vhosts/vhost/apps/boltie/streams";
+    }
 
     public Stream generateDefaultStream(User user) {
         String BASE_RTMP_URL = "rtmp://" + BASE_URL + ":1935/boltie/" + user.getUsername();

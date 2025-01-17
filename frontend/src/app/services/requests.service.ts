@@ -1,5 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {StreamDetails} from '../pages/home/home.component';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class RequestsService {
   }
 
   getStreams() {
-    return this.http.get(`${this.baseUrl}/streams`);
+    return this.http.get<StreamDetails[]>(`${this.baseUrl}/streams`);
   }
 
   getStreamKey() {
