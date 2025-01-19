@@ -21,7 +21,7 @@ export class RequestsService {
     return this.http.get(`${this.baseUrl}/streams/${username}`);
   }
 
-  getStreams() {
+  getLiveStreamInfo() {
     return this.http.get<StreamDetails[]>(`${this.baseUrl}/streams`);
   }
 

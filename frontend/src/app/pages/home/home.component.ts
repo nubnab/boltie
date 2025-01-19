@@ -1,13 +1,15 @@
-import {AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {RequestsService} from '../../services/requests.service';
-import {filter, Subject, takeUntil} from 'rxjs';
-import {NavigationEnd, Router} from '@angular/router';
+import {Subject, takeUntil} from 'rxjs';
+import {Router} from '@angular/router';
+import {routes} from '../../app.routes';
+import {style} from '@angular/animations';
 
 export type StreamDetails = {
   username: string;
   title: string;
-  streamLink: string;
+  streamUrl: string;
 }
 
 @Component({
@@ -23,6 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private authService = inject(AuthService);
   private requestsService = inject(RequestsService);
+  private router = inject(Router);
 
   loginState = this.authService.loginStateSignal;
 
@@ -36,38 +39,85 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getStreams() {
-    return this.requestsService.getStreams()
+    return this.requestsService.getLiveStreamInfo()
       .pipe(takeUntil(this.destroy$))
       .subscribe((streams) => {
-      const thumbnails: string[] = [];
 
       if (streams && streams.length > 0) {
-
-        for (let i = 0; i < streams.length; i++) {
-          const thumbnailUrl = this.getThumbnails(streams[i].username);
-          thumbnails.push(thumbnailUrl);
-        }
-        this.renderGrid(thumbnails);
+        console.log(streams);
+        this.renderGrid(streams);
       }
     });
   }
 
-  getThumbnails(username: string) {
+  generateThumbnail(username: string) {
     return `http://192.168.1.2:20080/boltie/${username}_preview/thumb.jpg`;
   }
 
-  renderGrid(thumbnails: string[]) {
-    const documentRef = document.getElementById('grid-container');
+  renderGrid(streams: StreamDetails[]) {
+    const documentRef = document.getElementById('responsive-grid');
 
     if(documentRef) {
         documentRef.innerHTML = ``;
-        thumbnails.forEach((thumbnail => {
-          const imgElement = document.createElement('img');
-          imgElement.src = thumbnail;
-          //imgElement.classList.add('img-fluid');
-          imgElement.style.width = '100%';
-          documentRef.appendChild(imgElement);
+        streams.forEach((stream => {
+          for (let i = 0; i < 6; i++) {
+            this.renderCard(documentRef, stream);
+          }
         }));
-      }}
+      }
+  }
+
+  renderCard(documentRef: HTMLElement, stream: StreamDetails) {
+    const matCard = document.createElement('mat-card');
+    const matCardHeader = document.createElement('mat-card-header');
+    const matCardTitle = document.createElement('mat-card-title');
+    const matCardSubtitle = document.createElement('mat-card-subtitle');
+    const thumbnailImgContainer = document.createElement('div');
+    const thumbnailImg = document.createElement('img');
+
+
+    thumbnailImg.src = this.generateThumbnail(stream.username);
+    thumbnailImg.style.width = '100%';
+    thumbnailImg.style.height = 'auto';
+    thumbnailImg.style.display = 'block';
+
+
+    matCard.style.borderRadius = '8px';
+    matCard.style.overflow = 'hidden';
+    thumbnailImg.style.borderRadius = '8px';
+    thumbnailImgContainer.style.overflow = 'hidden';
+
+    matCardTitle.innerHTML = stream.title;
+    matCardTitle.style.fontSize = '1.2rem';
+    matCardTitle.style.fontWeight = '500';
+    matCardSubtitle.innerHTML = stream.username;
+    matCardSubtitle.style.fontSize = '0.9rem';
+    matCardSubtitle.style.color = '#606060';
+    matCardHeader.style.display = 'flex';
+    matCardHeader.style.flexDirection = 'column';
+    matCard.addEventListener('click', () => {
+      this.router.navigate([`/${stream.username}`]);
+    })
+
+    matCard.style.cursor = 'pointer';
+    matCard.addEventListener('mouseenter', () => {
+      matCard.style.backgroundColor = '#dfdfdf';
+    })
+    matCard.addEventListener('mouseleave', () => {
+      matCard.style.backgroundColor = '#faf9fd';
+    })
+
+    thumbnailImgContainer.appendChild(thumbnailImg);
+
+    matCardHeader.appendChild(matCardTitle);
+    matCardHeader.appendChild(matCardSubtitle);
+
+    matCard.appendChild(thumbnailImgContainer);
+
+    matCard.appendChild(matCardHeader);
+
+    documentRef.appendChild(matCard);
+  }
+
 
 }
