@@ -3,8 +3,6 @@ import {AuthService} from '../../services/auth.service';
 import {RequestsService} from '../../services/requests.service';
 import {Subject, takeUntil} from 'rxjs';
 import {Router} from '@angular/router';
-import {routes} from '../../app.routes';
-import {style} from '@angular/animations';
 
 export type StreamDetails = {
   username: string;
@@ -73,20 +71,28 @@ export class HomeComponent implements OnInit, OnDestroy {
     const matCardTitle = document.createElement('mat-card-title');
     const matCardSubtitle = document.createElement('mat-card-subtitle');
     const thumbnailImgContainer = document.createElement('div');
+    const profileImgContainer = document.createElement('div');
+    const profileImg = document.createElement('img');
     const thumbnailImg = document.createElement('img');
+    const cardContentContainer = document.createElement('div');
 
 
     thumbnailImg.src = this.generateThumbnail(stream.username);
     thumbnailImg.style.width = '100%';
     thumbnailImg.style.height = 'auto';
     thumbnailImg.style.display = 'block';
-
-
+    profileImg.style.objectFit = 'cover';
+    profileImg.style.width = '40px';
+    profileImgContainer.style.display = 'flex';
+    profileImgContainer.style.alignItems = 'center';
+    profileImgContainer.style.borderRadius = '100%';
+    profileImgContainer.style.overflow = 'hidden';
+    profileImgContainer.style.margin = '10px';
     matCard.style.borderRadius = '8px';
     matCard.style.overflow = 'hidden';
     thumbnailImg.style.borderRadius = '8px';
     thumbnailImgContainer.style.overflow = 'hidden';
-
+    profileImg.src = '/default-profile-picture.png';
     matCardTitle.innerHTML = stream.title;
     matCardTitle.style.fontSize = '1.2rem';
     matCardTitle.style.fontWeight = '500';
@@ -95,26 +101,37 @@ export class HomeComponent implements OnInit, OnDestroy {
     matCardSubtitle.style.color = '#606060';
     matCardHeader.style.display = 'flex';
     matCardHeader.style.flexDirection = 'column';
+    matCardHeader.style.justifyContent = 'center';
     matCard.addEventListener('click', () => {
       this.router.navigate([`/${stream.username}`]);
     })
+    cardContentContainer.style.display = 'flex';
 
     matCard.style.cursor = 'pointer';
+
     matCard.addEventListener('mouseenter', () => {
-      matCard.style.backgroundColor = '#dfdfdf';
-    })
+      matCard.style.backgroundColor = '#e1e1e2';
+    });
     matCard.addEventListener('mouseleave', () => {
       matCard.style.backgroundColor = '#faf9fd';
-    })
+    });
 
+
+
+    profileImgContainer.appendChild(profileImg);
     thumbnailImgContainer.appendChild(thumbnailImg);
+
 
     matCardHeader.appendChild(matCardTitle);
     matCardHeader.appendChild(matCardSubtitle);
 
     matCard.appendChild(thumbnailImgContainer);
+    matCard.appendChild(profileImgContainer);
 
-    matCard.appendChild(matCardHeader);
+    cardContentContainer.appendChild(profileImgContainer);
+    cardContentContainer.appendChild(matCardHeader);
+
+    matCard.appendChild(cardContentContainer);
 
     documentRef.appendChild(matCard);
   }

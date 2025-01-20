@@ -72,7 +72,4 @@ export class NavRootComponent {
       console.log('Dialog was closed.');
     })
   }
-
-  protected readonly routes = routes;
-  protected readonly navigator = navigator;
 }
