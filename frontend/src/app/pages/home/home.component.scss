@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 .responsive-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -5,3 +7,71 @@
   padding: 10px;
 }
 
+.thumbnail-img {
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.thumbnail-img-container {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.profile-img {
+  width: 42px;
+  border-radius: 100%;
+  order: -1;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.profile-img-container {
+  width: 42px;
+  display: flex;
+  align-items: center;
+  margin-left: 12px;
+  overflow: hidden;
+}
+
+.card-content-container {
+  padding: 4px;
+  align-items: center;
+  justify-content: start;
+}
+
+mat-card-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+  line-height: 1rem;
+}
+
+mat-card-title-group {
+  margin-top: 4px;
+}
+
+mat-card-subtitle {
+  font-size: 0.9rem;
+  color: #606060;
+  line-height: 0.5rem;
+}
+
+mat-card {
+  box-shadow: none;
+
+  @include mat.card-overrides((
+    elevated-container-color: transparent,
+  ));
+
+}
+
+mat-card:hover {
+  background: #e1e1e2;
+  cursor: pointer;
+}
+
+.test {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

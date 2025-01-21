@@ -18,9 +18,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   @include mat.menu-overrides((
     container-shape: 4px,
     container-color: var(--mat-sys-surface),
-
   ));
-
 }
 
 .mat-mdc-menu-panel {
