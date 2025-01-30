@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordInfo>
+    <Record>
+        <Enable>true</Enable>
+        <StreamName>*</StreamName>
+    </Record>
+</RecordInfo>

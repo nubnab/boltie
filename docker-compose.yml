@@ -1,0 +1,60 @@
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: boltieDB
+      MYSQL_USER: nabs
+      MYSQL_PASSWORD: pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/boltieDB?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: nabs
+      SPRING_DATASOURCE_PASSWORD: pass
+      base_url: 192.168.1.2
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/data
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+
+  ovenserver:
+    image: airensoft/ovenmediaengine:0.17.3
+    container_name: ovenserver
+    ports:
+      - "1935:1935"
+      - "9999:9999/udp"
+      - "9000:9000"
+      - "3333:3333"
+      - "3478:3478"
+      - "8081:8081"
+      - "10000-10009:10000-10009/udp"
+      - "20080:20080"
+    volumes:
+      - ./data/conf:/opt/ovenmediaengine/bin/origin_conf
+      - ./data/logs:/var/log/ovenmediaengine
+      - ./data/recordings:/mnt/shared_volumes
+
+volumes:
+  data:

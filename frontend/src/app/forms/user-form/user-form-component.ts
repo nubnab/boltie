@@ -6,10 +6,8 @@ import {MatError, MatFormField, MatSuffix} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {MatLabel} from '@angular/material/form-field';
 import {MatIcon} from '@angular/material/icon';
-import {RequestsService} from '../../services/requests.service';
 import {AuthService} from '../../services/auth.service';
 import PasswordValidator from '../../validators/password-validator.validator';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-user-form',

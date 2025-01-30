@@ -1,4 +1,4 @@
-import {Component, signal} from '@angular/core';
+import {Component} from '@angular/core';
 import {NavRootComponent} from './layout/navigation/nav-root/nav-root.component';
 
 

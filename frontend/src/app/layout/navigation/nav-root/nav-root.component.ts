@@ -1,4 +1,4 @@
-import {Component, computed, Inject, inject, signal} from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -11,7 +11,6 @@ import {MatDialog} from '@angular/material/dialog';
 import {UserFormComponent} from '../../../forms/user-form/user-form-component';
 import {AuthService} from '../../../services/auth.service';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
-import {routes} from '../../../app.routes';
 
 @Component({
   selector: 'app-nav-root',

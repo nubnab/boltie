@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {MatButton} from '@angular/material/button';
-import {MAT_DIALOG_DATA, MatDialog} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {StreamKeyWarningComponent} from '../../forms/stream-key-warning/stream-key-warning.component';
 
 @Component({

@@ -1,5 +1,4 @@
-import {Component, computed, inject, Input, OnInit, Signal, signal, WritableSignal} from '@angular/core';
-import {NgOptimizedImage} from '@angular/common';
+import {Component, computed, inject, signal} from '@angular/core';
 import {MatListItem, MatListItemIcon, MatListItemTitle, MatNavList} from '@angular/material/list';
 import {MatIcon} from '@angular/material/icon';
 import {SidenavStateService} from '../../../services/sidenav/sidenav-state.service';
