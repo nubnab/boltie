@@ -5,31 +5,27 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
 @Table
-public class User {
+public class Recording {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String username;
+    private String folderName;
 
     @Column(nullable = false)
-    private String password;
+    private String title;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "stream_id")
-    private Stream stream;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Recording> recordings;
+
 
 }

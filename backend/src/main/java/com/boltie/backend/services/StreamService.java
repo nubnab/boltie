@@ -1,8 +1,6 @@
 package com.boltie.backend.services;
 
-import com.boltie.backend.config.UserAuthProvider;
 import com.boltie.backend.dto.StreamDto;
-import com.boltie.backend.dto.UserDto;
 import com.boltie.backend.entities.Stream;
 import com.boltie.backend.entities.User;
 import com.boltie.backend.exceptions.AppException;
@@ -13,8 +11,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;

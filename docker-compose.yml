@@ -10,7 +10,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./data/mysql:/var/lib/mysql
+      - mysql_db:/var/lib/mysql
 
   backend:
     build:
@@ -27,7 +27,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./data:/app/data
+      - data:/app/data
 
   frontend:
     build:
@@ -52,9 +52,9 @@ services:
       - "10000-10009:10000-10009/udp"
       - "20080:20080"
     volumes:
+      - data:/mnt/shared_volumes
       - ./data/conf:/opt/ovenmediaengine/bin/origin_conf
       - ./data/logs:/var/log/ovenmediaengine
-      - ./data/recordings:/mnt/shared_volumes
-
 volumes:
+  mysql_db:
   data:

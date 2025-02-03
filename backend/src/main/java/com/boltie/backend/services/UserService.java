@@ -3,6 +3,8 @@ package com.boltie.backend.services;
 import com.boltie.backend.dto.LoginDto;
 import com.boltie.backend.dto.RegisterDto;
 import com.boltie.backend.dto.UserDto;
+import com.boltie.backend.dto.UserRecordingsDto;
+import com.boltie.backend.entities.Recording;
 import com.boltie.backend.entities.User;
 import com.boltie.backend.exceptions.AppException;
 import com.boltie.backend.mappers.UserMapper;
@@ -12,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.CharBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -55,6 +59,10 @@ public class UserService {
 
         user.setStream(streamService.generateDefaultStream(user));
 
+        List<Recording> recordings = new ArrayList<>();
+
+        user.setRecordings(recordings);
+
         User savedUser = userRepository.save(user);
 
         return userMapper.toUserDto(savedUser);
@@ -68,8 +76,29 @@ public class UserService {
         throw new AppException("Unknown user", HttpStatus.NOT_FOUND);
     }
 
+    public UserRecordingsDto fetchUserRecordings(String username) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if (optionalUser.isPresent()) {
+            return userMapper.toUserRecordingsDto(optionalUser.get());
+        }
+        throw new AppException("Unknown user", HttpStatus.NOT_FOUND);
+    }
 
+    public void addUserRecordingsToDb(String username, List<String> recordingTitles) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            String streamTitle = user.getStream().getTitle();
 
+            for (String recordingTitle : recordingTitles) {
+                Recording recording = new Recording();
+                recording.setTitle(streamTitle);
+                recording.setFolderName(recordingTitle);
+                recording.setUser(user);
 
-
+                user.getRecordings().add(recording);
+                userRepository.save(user);
+            }
+        }
+    }
 }

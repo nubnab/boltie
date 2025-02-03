@@ -1,10 +1,14 @@
 package com.boltie.backend.services;
 
+import com.boltie.backend.dto.UserRecordingsDto;
+import com.boltie.backend.entities.Recording;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -12,7 +16,15 @@ import java.util.concurrent.Executors;
 public class RecordingDirectoryWatchService {
 
     private final ExecutorService executor = Executors.newCachedThreadPool();
-    private final String BASE_DIRECTORY = "/app/data/recordings";
+    private final String BASE_DIRECTORY = "/app/data";
+    private final UserService userService;
+    private final RecordingService recordingService;
+
+    public RecordingDirectoryWatchService(UserService userService,
+                                          RecordingService recordingService) {
+        this.userService = userService;
+        this.recordingService = recordingService;
+    }
 
     @PostConstruct
     public void init() throws IOException {
@@ -25,6 +37,7 @@ public class RecordingDirectoryWatchService {
             for (Path entry : directoryStream) {
                 if (Files.isDirectory(entry)) {
                     System.out.println("Starting watcher for existing directory: " + entry);
+                    verifyRecordings(entry);
                     watcherStart(entry);
                 }
             }
@@ -43,14 +56,17 @@ public class RecordingDirectoryWatchService {
                     for (WatchEvent<?> event : key.pollEvents()) {
                         if(event.kind() == StandardWatchEventKinds.ENTRY_CREATE) {
                             Path newPath = rootDir.resolve((Path) event.context());
-                            //System.out.println(newPath.getFileName());
 
-                            if (Files.isDirectory(newPath) && newPath.getParent().toString().equals(BASE_DIRECTORY)) {
+                            if (Files.isDirectory(newPath) &&
+                                    newPath.getParent().toString().equals(BASE_DIRECTORY)) {
                                 System.out.println("Starting watcher for new directory: " + newPath);
+                                verifyRecordings(newPath);
                                 watcherStart(newPath);
-                            } else if (Files.isDirectory(newPath) && !newPath.getParent().toString().equals(BASE_DIRECTORY)) {
-                                System.out.println("Stream: " + newPath.getFileName());
+                            } else if (Files.isDirectory(newPath) &&
+                                    !newPath.getParent().toString().equals(BASE_DIRECTORY)) {
+                                verifyRecordings(newPath.getParent());
                             }
+
                         }
                     }
                     key.reset();
@@ -60,5 +76,30 @@ public class RecordingDirectoryWatchService {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    public void verifyRecordings(Path recordingDir) throws IOException {
+        String[] arr = recordingDir.toString().split("/");
+        String username = arr[arr.length - 1];
+
+        UserRecordingsDto user = userService.fetchUserRecordings(username);
+
+        List<Recording> userRecordings = user.getRecordings();
+
+        List<String> recordingTitles = recordingService.convertRecordingsToTitles(userRecordings);
+        List<String> newRecordingsFound = new ArrayList<>();
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(recordingDir)) {
+            for (Path entry : directoryStream) {
+                if(!recordingTitles.contains(entry.getFileName().toString())) {
+                    newRecordingsFound.add(entry.getFileName().toString());
+                    System.out.println("Found recording: " + entry.getFileName());
+                }
+            }
+        }
+
+        if(!newRecordingsFound.isEmpty()) {
+            userService.addUserRecordingsToDb(username, newRecordingsFound);
+        }
+
     }
 }
