@@ -55,6 +55,16 @@ services:
       - data:/mnt/shared_volumes
       - ./data/conf:/opt/ovenmediaengine/bin/origin_conf
       - ./data/logs:/var/log/ovenmediaengine
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx_cdn
+    ports:
+      - "9998:9998"
+    volumes:
+    - data:/var/www/files
+    - ./nginx_cdn.conf:/etc/nginx/nginx.conf
+
 volumes:
   mysql_db:
   data:
