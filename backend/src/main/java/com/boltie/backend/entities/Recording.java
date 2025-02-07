@@ -17,10 +17,10 @@ public class Recording {
     private Long id;
 
     @Column(nullable = false)
-    private String folderName;
+    private String title;
 
     @Column(nullable = false)
-    private String title;
+    private String folderName;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
