@@ -14,8 +14,8 @@ import java.util.Optional;
 
 @Service
 public class RecordingService {
-    private RecordingMapper recordingMapper;
-    private RecordingRepository recordingRepository;
+    private final RecordingMapper recordingMapper;
+    private final RecordingRepository recordingRepository;
 
     public RecordingService(RecordingMapper recordingMapper,
                             RecordingRepository recordingRepository) {
@@ -45,4 +45,31 @@ public class RecordingService {
         }
         throw new AppException("No recordings found for user id: " + userId, HttpStatus.NOT_FOUND);
     }
+
+    public RecordingDto fetchRecording(Long userId, Long recordingId) {
+
+        if(recordingId <= 0) {
+            throw new AppException("Invalid recording id: " + recordingId, HttpStatus.BAD_REQUEST);
+        }
+
+        Recording recording = recordingRepository.findNthRecordingByUserId(userId, recordingId);
+
+        if(recording != null) {
+            return recordingMapper.toRecordingDto(recording);
+        }
+
+        /*
+        Optional<List<Recording>> recordingTreeSet = recordingRepository.findAllByUserId(userId);
+        List<RecordingDto> recordingDtoList = new ArrayList<>();
+
+
+        if(!recordingDtoList.isEmpty()) {
+            if(recordingDtoList.size() - 1 <= recordingId) {
+                return recordingDtoList.get(recordingId.intValue());
+            }
+        }
+         */
+        throw new AppException("Recording not found: " + recordingId, HttpStatus.NOT_FOUND);
+    }
+
 }

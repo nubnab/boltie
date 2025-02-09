@@ -29,4 +29,12 @@ public class RecordingController {
         return ResponseEntity.ok(recordingService.fetchRecordings(user.getId()));
     }
 
+    @GetMapping("/recordings/{username}/{recordingId}")
+    public ResponseEntity<RecordingDto> getRecording(@PathVariable String username,
+                                                     @PathVariable Long recordingId) {
+        UserDto user = userService.findByUsername(username);
+        Long userId = user.getId();
+        return ResponseEntity.ok(recordingService.fetchRecording(userId, recordingId));
+    }
+
 }
