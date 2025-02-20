@@ -5,11 +5,12 @@ import {
 } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {RequestsService} from '../../services/requests.service';
-import OvenPlayer from 'ovenplayer';
 import {FormsModule} from '@angular/forms';
 import {MatButton} from '@angular/material/button';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {AuthService} from '../../services/auth.service';
+import OvenPlayer from 'ovenplayer';
+
 
 export type StreamData = {
   username?: string;
@@ -29,6 +30,8 @@ export type StreamData = {
   styleUrl: './stream.component.scss'
 })
 
+
+
 export class StreamComponent implements OnInit {
 
   username: string = '';
@@ -42,7 +45,7 @@ export class StreamComponent implements OnInit {
   private route = inject(ActivatedRoute);
 
 
-  ngOnInit(): void {
+  async ngOnInit() {
 
     this.route.params.subscribe(params => {
       this.username = params['username'];
