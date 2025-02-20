@@ -9,7 +9,7 @@ export type RecordingData = {
 }
 
 @Component({
-  selector: 'app-watch-user-recordings',
+  selector: 'app-watch-recording',
   imports: [],
   templateUrl: './watch-recording.component.html',
   styleUrl: './watch-recording.component.scss'
@@ -32,7 +32,7 @@ export class WatchRecordingComponent implements OnInit {
     this.requestsService.getRecordingByUsernameAndId(this.username, this.recordingId).subscribe(res =>{
       const player = OvenPlayer.create('player_id', {
         sources: [{
-          label: 'llhls-user-recordings',
+          label: 'llhls-recording',
           type: 'llhls',
           file: `http://192.168.1.2:9998/${this.username}/${res.folderName}/llhls.m3u8`,
         }]

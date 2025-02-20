@@ -23,7 +23,7 @@ export class RequestsService {
   }
 
   getRecordingsByUsername(username: string) {
-    return this.http.get<RecordingData[]>(`${this.baseUrl}/recordings/${username}`);
+    return this.http.get(`${this.baseUrl}/recordings/${username}`);
   }
 
   getRecordingByUsernameAndId(username: string, recordingId: number) {

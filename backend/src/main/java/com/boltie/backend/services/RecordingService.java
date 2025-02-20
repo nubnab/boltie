@@ -58,6 +58,17 @@ public class RecordingService {
             return recordingMapper.toRecordingDto(recording);
         }
 
+        /*
+        Optional<List<Recording>> recordingTreeSet = recordingRepository.findAllByUserId(userId);
+        List<RecordingDto> recordingDtoList = new ArrayList<>();
+
+
+        if(!recordingDtoList.isEmpty()) {
+            if(recordingDtoList.size() - 1 <= recordingId) {
+                return recordingDtoList.get(recordingId.intValue());
+            }
+        }
+         */
         throw new AppException("Recording not found: " + recordingId, HttpStatus.NOT_FOUND);
     }
 

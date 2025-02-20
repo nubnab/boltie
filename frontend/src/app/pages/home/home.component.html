@@ -1,4 +1,4 @@
-<div class="responsive-grid">
+<div id="responsive-grid" class="responsive-grid">
   @for (stream of streams; track stream.username) {
     <mat-card (click)="navigateToStream(stream.username)">
       <div class="thumbnail-img-container">
@@ -6,7 +6,7 @@
       </div>
       <mat-card-title-group class="card-content-container">
         <img class="profile-img" mat-card-md-image src="/default-profile-picture.png" alt="profile-img"/>
-        <div class="stream-details">
+        <div class="test">
           <mat-card-title>{{stream.title}}</mat-card-title>
           <mat-card-subtitle>{{stream.username}}</mat-card-subtitle>
         </div>
