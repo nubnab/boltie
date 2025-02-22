@@ -88,7 +88,7 @@
 			</Names>
 		</Host>
 		<API>
-			<AccessToken>root:pass</AccessToken>
+			<AccessToken>${OVEN_API_USERNAME}:${OVEN_API_PASSWORD}</AccessToken>
 		</API>
 	</Managers>
 
@@ -117,7 +117,7 @@
 			<SignedPolicy>
 				<PolicyQueryKeyName>policy</PolicyQueryKeyName>
 				<SignatureQueryKeyName>signature</SignatureQueryKeyName>
-				<SecretKey>aKq#1kj</SecretKey>
+				<SecretKey>${OVEN_STREAM_GEN_KEY}</SecretKey>
 				<Enables>
 					<Providers>rtmp</Providers>
 					<Publishers>webrtc,llhls</Publishers>

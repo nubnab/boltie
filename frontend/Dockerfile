@@ -16,3 +16,4 @@ COPY startup.sh /usr/share/nginx/html/startup.sh
 RUN chmod +x /usr/share/nginx/html/startup.sh
 
 ENTRYPOINT ["/usr/share/nginx/html/startup.sh"]
+

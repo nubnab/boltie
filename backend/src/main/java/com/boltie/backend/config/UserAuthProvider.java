@@ -27,7 +27,7 @@ public class UserAuthProvider {
     }
 
 
-    @Value("${security.jwt.token.secret-key:secret-key}")
+    @Value("${security.jwt.token.key}")
     private String secretKey;
 
     @PostConstruct
