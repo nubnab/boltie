@@ -9,10 +9,10 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class RestTemplateConfig {
 
-    @Value("${rest.template.username}")
+    @Value("${oven.api.username}")
     private String username;
 
-    @Value("${rest.template.password}")
+    @Value("${oven.api.password}")
     private String password;
 
     @Bean

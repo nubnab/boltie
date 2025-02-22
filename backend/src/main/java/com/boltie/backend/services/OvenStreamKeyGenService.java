@@ -1,9 +1,11 @@
 package com.boltie.backend.services;
 
 import com.google.gson.Gson;
+import jakarta.annotation.PostConstruct;
 import org.apache.commons.codec.digest.HmacAlgorithms;
 import org.apache.commons.codec.digest.HmacUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -15,13 +17,21 @@ import java.util.Map;
 @Service
 public class OvenStreamKeyGenService {
 
-    private final String SECRET_KEY = "aKq#1kj";
+    @Value("${oven.stream.gen.key}")
+    private String SECRET_KEY;
+    private HmacUtils hmacUtils;
+
     private final String POLICY_NAME = "policy";
+
     private final String SIGNATURE_NAME = "signature";
 
-    private final HmacUtils hmacUtils = new HmacUtils(HmacAlgorithms.HMAC_SHA_1, SECRET_KEY);
     private final Gson gson = new Gson();
     private final Base64.Encoder bEncode = java.util.Base64.getEncoder();
+
+    @PostConstruct
+    public void init() {
+        hmacUtils = new HmacUtils(HmacAlgorithms.HMAC_SHA_1, SECRET_KEY);
+    }
 
     public String generate(String rtmpUrl, Long url_expire, Long url_activate, Long stream_expire, String allow_ip) {
         Map<String, Object> policyMap = new HashMap<String, Object>();
