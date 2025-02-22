@@ -18,7 +18,7 @@
     <div class="profile-container">
       <button class="profile-button"
               [matMenuTriggerFor]="menu">
-        <img src="/default-profile-picture.png"/>
+        <img src="/assets/default-profile-picture.png"/>
         <mat-menu #menu="matMenu" class="profile-menu">
           <button mat-menu-item [routerLink]="authService.currentUserSignal()">My Channel</button>
           <button mat-menu-item [routerLink]="authService.currentUserSignal() + '/recordings'">My Recordings</button>

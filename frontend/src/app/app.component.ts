@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {NavRootComponent} from './layout/navigation/nav-root/nav-root.component';
 
-
 @Component({
   selector: 'app-root',
   imports: [NavRootComponent],
@@ -10,7 +9,4 @@ import {NavRootComponent} from './layout/navigation/nav-root/nav-root.component'
 })
 export class AppComponent {
   title = 'frontend';
-
-
-
 }

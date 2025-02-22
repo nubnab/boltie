@@ -3,12 +3,14 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
 
+const env = window.__env;
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private baseUrl = "http://localhost:8080";
+  private apiUrl = env.apiUrl;
   private router = inject(Router);
   private http = inject(HttpClient)
   private loginState = signal<boolean>(this.isLoggedIn());
@@ -25,14 +27,14 @@ export class AuthService {
   constructor() { }
 
   register(username: string, password: string): Observable<any> {
-    const url = `${this.baseUrl}/register`;
+    const url = `${this.apiUrl}/register`;
     const body = { username, password };
 
     return this.http.post(url, body);
   }
 
   login(username: string, password: string): Observable<any> {
-    const url = `${this.baseUrl}/login`;
+    const url = `${this.apiUrl}/login`;
     const body = { username, password };
 
     return this.http.post(url, body);
@@ -69,7 +71,7 @@ export class AuthService {
   }
 
   refreshToken() {
-    const url = `${this.baseUrl}/refresh`;
+    const url = `${this.apiUrl}/refresh`;
     const body = { refresh_token: this.getRefreshToken() };
 
     return this.http.post(url, body);

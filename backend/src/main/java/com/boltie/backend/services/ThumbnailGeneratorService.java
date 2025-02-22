@@ -14,7 +14,7 @@ public class ThumbnailGeneratorService {
 
         String newPath = m3u8Path + "/llhls.m3u8";
 
-        System.out.println("new path" + newPath);
+        System.out.println("new path: " + newPath);
 
         String[] testCommand = {
                 "ffmpeg",

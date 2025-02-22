@@ -34,9 +34,12 @@ public class StreamService {
     private final StreamMapper streamMapper;
     private final RestTemplate restTemplate;
 
-    @Value("${oven.baseurl:192.168.1.2}")
+    @Value("${oven.base.url}")
     private String BASE_URL;
     private String API_URL;
+
+    @Value("${oven.stream.url}")
+    private String STREAM_URL;
 
     @PostConstruct
     public void init() {
@@ -44,8 +47,8 @@ public class StreamService {
     }
 
     public Stream generateDefaultStream(User user) {
-        String BASE_RTMP_URL = "rtmp://" + BASE_URL + ":1935/boltie/" + user.getUsername();
-        String BASE_WS_URL = "ws://" + BASE_URL + ":3333/boltie/" + user.getUsername();
+        String BASE_RTMP_URL = "rtmp://" + STREAM_URL + ":1935/boltie/" + user.getUsername();
+        String BASE_WS_URL = "ws://" + STREAM_URL + ":3333/boltie/" + user.getUsername();
 
         String rtmpUrl = ovenStreamKeyGenService.generate(BASE_RTMP_URL,
                 Timestamp.from(ZonedDateTime.now().plusYears(2).toInstant()).getTime(),
