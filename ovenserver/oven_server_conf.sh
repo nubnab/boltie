@@ -21,12 +21,11 @@ else
   echo "Using OVEN_STREAM_GEN_KEY from environment variable: $OVEN_STREAM_GEN_KEY"
 fi
 
-
-#envsubst < /opt/ovenmediaengine/bin/origin_conf/Server.template.xml > /opt/ovenmediaengine/bin/origin_conf/Server.xml
 sed -i "s/\${OVEN_API_USERNAME}/${OVEN_API_USERNAME}/g" /opt/ovenmediaengine/bin/origin_conf/Server.template.xml
 sed -i "s/\${OVEN_API_PASSWORD}/${OVEN_API_PASSWORD}/g" /opt/ovenmediaengine/bin/origin_conf/Server.template.xml
 sed -i "s/\${OVEN_STREAM_GEN_KEY}/${OVEN_STREAM_GEN_KEY}/g" /opt/ovenmediaengine/bin/origin_conf/Server.template.xml
 
+mv /opt/ovenmediaengine/bin/origin_conf/Server.xml /opt/ovenmediaengine/bin/origin_conf/Server.backup.xml
 mv /opt/ovenmediaengine/bin/origin_conf/Server.template.xml /opt/ovenmediaengine/bin/origin_conf/Server.xml
 
 exec "$@"
