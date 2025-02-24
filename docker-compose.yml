@@ -2,11 +2,8 @@ services:
   mysql:
     image: mysql:8
     container_name: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: boltieDB
-      MYSQL_USER: boltie
-      MYSQL_PASSWORD: pass
+    env_file:
+      - var.env
     ports:
       - "3306:3306"
     volumes:
@@ -17,17 +14,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: backend
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql/boltieDB?createDatabaseIfNotExist=true
-      SPRING_DATASOURCE_USERNAME: boltie
-      SPRING_DATASOURCE_PASSWORD: pass
-      SECURITY_JWT_TOKEN_KEY: secret
-      OVEN_API_USERNAME: root
-      OVEN_API_PASSWORD: pass
-      OVEN_STREAM_GEN_KEY: aKq#1kjk
-      OVEN_BASE_URL: ovenserver
-      OVEN_STREAM_URL: localhost
-      CORS_ALLOWED_ORIGINS: http://localhost:4200
+    env_file:
+      - var.env
     depends_on:
       - mysql
     ports:
@@ -40,8 +28,8 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: frontend
-    environment:
-      API_URL: http://localhost:8080
+    env_file:
+      - var.env
     ports:
       - "4200:80"
     depends_on:
@@ -49,13 +37,11 @@ services:
 
   ovenserver:
     build:
-      context: ./data
+      context: ./ovenserver
       dockerfile: Dockerfile
     container_name: ovenserver
-    environment:
-      OVEN_API_USERNAME: root
-      OVEN_API_PASSWORD: pass
-      OVEN_STREAM_GEN_KEY: aKq#1kjk
+    env_file:
+      - var.env
     ports:
       - "1935:1935"
       - "9999:9999/udp"
