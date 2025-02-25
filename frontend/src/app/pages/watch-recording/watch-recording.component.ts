@@ -2,6 +2,9 @@ import {Component, inject, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {RequestsService} from '../../services/requests.service';
 import OvenPlayer from 'ovenplayer';
+import Hls from 'hls.js'
+
+window.Hls = Hls;
 
 export type RecordingData = {
   title: string,
