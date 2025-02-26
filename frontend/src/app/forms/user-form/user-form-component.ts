@@ -77,7 +77,7 @@ export class UserFormComponent {
 
     onLoginSubmit() {
       this.authService.login(
-        this.loginForm.get('username')?.value,
+        (this.loginForm.get('username')?.value).toLowerCase(),
         this.loginForm.get('password')?.value).subscribe({
         next: (res) => {
           this.authService.setUsername(res.username);
@@ -103,7 +103,7 @@ export class UserFormComponent {
     onRegisterSubmit() {
       if(this.registerForm.valid) {
         this.authService.register(
-          this.registerForm.get('username')?.value,
+          (this.registerForm.get('username')?.value).toLowerCase(),
           this.registerForm.get('password')?.value).subscribe({
           next: (res) => {
             this.authService.setUsername(res.username);

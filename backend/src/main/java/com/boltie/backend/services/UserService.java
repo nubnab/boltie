@@ -38,7 +38,7 @@ public class UserService {
     }
 
     public UserDto login(LoginDto loginDto) {
-        User user = userRepository.findByUsername(loginDto.username())
+        User user = userRepository.findByUsername(loginDto.username().toLowerCase())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
         if(passwordEncoder.matches(CharBuffer.wrap(loginDto.password()), user.getPassword())) {
@@ -54,6 +54,10 @@ public class UserService {
         }
 
         User user = userMapper.registerToUser(registerDto);
+
+        String usernameToLower = user.getUsername().toLowerCase();
+
+        user.setUsername(usernameToLower);
 
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(registerDto.password())));
 

@@ -28,20 +28,6 @@ public class AuthController {
         this.userAuthProvider = userAuthProvider;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<UserDto> login(@Valid @RequestBody LoginDto loginDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        UserDto user = userService.login(loginDto);
-
-        user.setToken(userAuthProvider.createToken(user));
-        user.setRefreshToken(userAuthProvider.createRefreshToken(user));
-
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
-
     @PostMapping("/refresh")
     public ResponseEntity<Map<String, String>> refreshToken(@RequestBody Map<String, String> request) {
         String refreshToken = request.get("refresh_token");
@@ -63,6 +49,20 @@ public class AuthController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserDto> login(@Valid @RequestBody LoginDto loginDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        UserDto user = userService.login(loginDto);
+
+        user.setToken(userAuthProvider.createToken(user));
+        user.setRefreshToken(userAuthProvider.createRefreshToken(user));
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping("/register")
