@@ -69,7 +69,6 @@ export class StreamComponent implements OnInit {
           sources: [{
             label: 'webrtc',
             type: 'webrtc',
-            //file: "http://192.168.1.2:9998/llhls.m3u8"
             file: this.streamLink,
           }]
         });

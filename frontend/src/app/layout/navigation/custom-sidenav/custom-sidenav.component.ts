@@ -32,10 +32,14 @@ export type MenuItem = {
 export class CustomSidenavComponent {
 
   currentUser = computed(() => this.authService.loginStateSignal() ?
-    localStorage.getItem("username") : null);
+    localStorage.getItem("username") : "Not logged in");
 
-  sidenavState = inject(SidenavStateService);
+  private sidenavState = inject(SidenavStateService);
   private authService = inject(AuthService);
+
+  get getSidenavState() {
+    return this.sidenavState;
+  }
 
   profilePicSize = computed(() => this.sidenavState.getState() ? '32' : '100');
 

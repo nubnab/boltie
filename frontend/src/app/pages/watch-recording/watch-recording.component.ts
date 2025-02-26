@@ -37,7 +37,7 @@ export class WatchRecordingComponent implements OnInit {
         sources: [{
           label: 'llhls-user-recordings',
           type: 'llhls',
-          file: `http://192.168.1.2:9998/${this.username}/${res.folderName}/llhls.m3u8`,
+          file: `${window.__env.cdnUrl}/${this.username}/${res.folderName}/llhls.m3u8`,
         }]
       });
     })

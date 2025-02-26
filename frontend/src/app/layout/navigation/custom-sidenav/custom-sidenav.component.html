@@ -3,7 +3,7 @@
        [width]="profilePicSize()" [height]="profilePicSize()"
        class="profile-pic"
        />
-  <div class="header-text" [class.hide-header-text]="sidenavState.getState()">
+  <div class="header-text" [class.hide-header-text]="getSidenavState.getState()">
     <h2> {{ currentUser() | titlecase }} </h2>
   </div>
 </div>
@@ -19,7 +19,7 @@
        [activated]="rla.isActive"
        >
       <mat-icon [fontSet]="rla.isActive ? 'material-icons' : 'material-icons-outlined'" matListItemIcon class="sidenav-icon">{{ item.icon }}</mat-icon>
-      <span matListItemTitle [class.hide-link-text]="sidenavState.getState()">{{ item.label }}</span>
+      <span matListItemTitle [class.hide-link-text]="getSidenavState.getState()">{{ item.label }}</span>
     </a>
   }
 </mat-nav-list>
