@@ -35,8 +35,12 @@ export class NavRootComponent {
   readonly dialog = inject(MatDialog);
 
   private sidenavState = inject(SidenavStateService);
-  //TODO: make private
-  authService = inject(AuthService);
+
+  private authService = inject(AuthService);
+
+  get getAuthService() {
+    return this.authService;
+  }
 
   loginState = this.authService.loginStateSignal;
 

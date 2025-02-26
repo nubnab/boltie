@@ -20,10 +20,10 @@
               [matMenuTriggerFor]="menu">
         <img src="/assets/default-profile-picture.png"/>
         <mat-menu #menu="matMenu" class="profile-menu">
-          <button mat-menu-item [routerLink]="authService.currentUserSignal()">My Channel</button>
-          <button mat-menu-item [routerLink]="authService.currentUserSignal() + '/recordings'">My Recordings</button>
+          <button mat-menu-item [routerLink]="getAuthService.currentUserSignal()">My Channel</button>
+          <button mat-menu-item [routerLink]="getAuthService.currentUserSignal() + '/recordings'">My Recordings</button>
           <button mat-menu-item [routerLink]="'settings'">Settings</button>
-          <button mat-menu-item (click)="authService.logout()">Logout</button>
+          <button mat-menu-item (click)="getAuthService.logout()">Logout</button>
         </mat-menu>
       </button>
     </div>
