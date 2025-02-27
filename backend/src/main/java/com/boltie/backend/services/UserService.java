@@ -105,4 +105,28 @@ public class UserService {
             }
         }
     }
+
+    public void changeStreamAndRecordingTitle(String newTitle, String username) {
+        User user = getUserByUsername(username);
+        user.getStream().setTitle(newTitle);
+        user.getRecordings().getLast().setTitle(newTitle);
+
+        userRepository.save(user);
+    }
+
+    public void changeStreamTitle(String newTitle, String username) {
+        User user = getUserByUsername(username);
+        user.getStream().setTitle(newTitle);
+
+        userRepository.save(user);
+    }
+
+    private User getUserByUsername(String username) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if (optionalUser.isPresent()) {
+            return optionalUser.get();
+        }
+        throw new AppException("Unknown user", HttpStatus.NOT_FOUND);
+    }
+
 }

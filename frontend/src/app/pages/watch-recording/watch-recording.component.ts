@@ -26,7 +26,6 @@ export class WatchRecordingComponent implements OnInit {
   private requestsService = inject(RequestsService);
 
   ngOnInit() {
-
     this.route.params.subscribe(params => {
       this.username = params['username'];
       this.recordingId = params['recordingId'];

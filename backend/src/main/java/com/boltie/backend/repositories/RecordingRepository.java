@@ -15,7 +15,9 @@ import java.util.Optional;
 public interface RecordingRepository extends JpaRepository<Recording, Long> {
 
     Optional<List<Recording>> findAllByUserId(Long userId);
+    Optional<Recording> findFirstByUser_UsernameOrderByIdDesc(String username);
 
+    //TODO: Simplify with JPA query
     @Query("SELECT e FROM Recording e WHERE e.user.id = :userId ORDER BY e.id ASC")
     List<Recording> findByUserId(@Param("userId") Long userId, Pageable pageable);
 
@@ -26,6 +28,8 @@ public interface RecordingRepository extends JpaRepository<Recording, Long> {
 
         return recordingList.isEmpty() ? null : recordingList.getFirst();
     }
+
+
 
 
 }

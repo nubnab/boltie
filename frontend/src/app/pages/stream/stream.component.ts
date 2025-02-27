@@ -11,6 +11,9 @@ import {MatFormField, MatInput} from '@angular/material/input';
 import {AuthService} from '../../services/auth.service';
 import OvenPlayer from 'ovenplayer';
 
+export type StreamTitle = {
+  title: string;
+}
 
 export type StreamData = {
   username?: string;
@@ -29,8 +32,6 @@ export type StreamData = {
   templateUrl: './stream.component.html',
   styleUrl: './stream.component.scss'
 })
-
-
 
 export class StreamComponent implements OnInit {
 
@@ -76,7 +77,7 @@ export class StreamComponent implements OnInit {
     });
   }
 
-  testSignal = computed(() =>
+  userIsStreamOwnerSignal = computed(() =>
     this.username === this.authService.currentUserSignal());
 
 
@@ -87,6 +88,15 @@ export class StreamComponent implements OnInit {
 
   saveTitle() {
 
+    const newTitle: StreamTitle = {
+      title: this.streamTitle,
+    }
+
+    this.requestsService.editStreamTitle(newTitle).subscribe(res => {
+      console.log(res); // return new title and set it
+    })
+
+    this.isEditMode = false;
   }
 
   cancelEdit() {
@@ -94,5 +104,6 @@ export class StreamComponent implements OnInit {
     this.isEditMode = false;
   }
 
+;
 
 }
