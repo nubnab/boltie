@@ -29,7 +29,6 @@ public class RecordingService {
         for (Recording recording : recordingList) {
             titles.add(recording.getFolderName());
         }
-
         return titles;
     }
 
@@ -60,5 +59,15 @@ public class RecordingService {
 
         throw new AppException("Recording not found: " + recordingId, HttpStatus.NOT_FOUND);
     }
+
+    public Recording fetchCurrentRecording(String username) {
+        Optional<Recording> recordingByUserUsernameOrderByIdDesc =
+                recordingRepository.findFirstByUser_UsernameOrderByIdDesc(username);
+        if(recordingByUserUsernameOrderByIdDesc.isPresent()) {
+            return recordingByUserUsernameOrderByIdDesc.get();
+        }
+        throw new AppException("Recording not found: " + username, HttpStatus.NOT_FOUND);
+    }
+
 
 }

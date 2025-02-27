@@ -63,25 +63,15 @@ public class UserAuthProvider {
         if (authorization != null && authorization.startsWith("Bearer ")) {
             String token = authorization.substring(7);
 
-            Algorithm algorithm = Algorithm.HMAC256(secretKey);
-
-            JWTVerifier verifier = JWT.require(algorithm).build();
-
-            DecodedJWT jwt = verifier.verify(token);
+            DecodedJWT jwt = verifyToken(token);
 
             return jwt.getIssuer();
-
         }
-
         return null;
     }
 
     public Authentication validateToken(String token) {
-        Algorithm algorithm = Algorithm.HMAC256(secretKey);
-
-        JWTVerifier verifier = JWT.require(algorithm).build();
-
-        DecodedJWT jwt = verifier.verify(token);
+        DecodedJWT jwt = verifyToken(token);
 
         UserDto user = userService.findByUsername(jwt.getIssuer());
 
@@ -89,13 +79,17 @@ public class UserAuthProvider {
     }
 
     public UserDto validateRefreshToken(String refreshToken) {
+        DecodedJWT jwt = verifyToken(refreshToken);
+
+        return userService.findByUsername(jwt.getIssuer());
+    }
+
+    private DecodedJWT verifyToken(String token) {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
         JWTVerifier verifier = JWT.require(algorithm).build();
 
-        DecodedJWT jwt = verifier.verify(refreshToken);
-
-        return userService.findByUsername(jwt.getIssuer());
+        return verifier.verify(token);
     }
 
 }

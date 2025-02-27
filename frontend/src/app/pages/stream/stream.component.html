@@ -1,7 +1,7 @@
 <div class="player-container">
   <div id='player_id'></div>
   <div class="title-container">
-  @if (testSignal()) {
+  @if (userIsStreamOwnerSignal()) {
       @if (!isEditMode) {
         <h2 class="title"> {{ streamTitle }}</h2>
         <button

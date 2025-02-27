@@ -134,6 +134,9 @@ public class StreamService {
     private ResponseEntity<String> getLiveStreamsFromApi() {
         return restTemplate.getForEntity(API_URL, String.class);
     }
+    private ResponseEntity<String> getLiveStreamStatus(String username) {
+        return restTemplate.getForEntity(String.format(API_URL + "/%s", username), String.class);
+    }
 
     private List<String> getLiveStreamUsernames() throws JsonProcessingException {
 
@@ -149,4 +152,11 @@ public class StreamService {
 
     }
 
+    public boolean userIsStreaming(String username) {
+        try {
+            return getLiveStreamStatus(username).getStatusCode() == HttpStatus.OK;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

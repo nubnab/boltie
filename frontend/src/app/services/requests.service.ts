@@ -2,6 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {StreamDetails} from '../pages/home/home.component';
 import {RecordingData} from '../pages/watch-recording/watch-recording.component';
+import {StreamTitle} from '../pages/stream/stream.component';
 
 const env = window.__env;
 
@@ -22,6 +23,10 @@ export class RequestsService {
 
   getStreamByUsername(username: string) {
     return this.http.get(`${this.apiUrl}/streams/${username}`);
+  }
+
+  editStreamTitle(newTitle: StreamTitle) {
+    return this.http.patch(`${this.apiUrl}/streams/edit-title`, newTitle);
   }
 
   getRecordingsByUsername(username: string) {
