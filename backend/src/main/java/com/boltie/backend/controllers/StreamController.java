@@ -1,79 +1,53 @@
 package com.boltie.backend.controllers;
 
-import com.boltie.backend.config.UserAuthProvider;
 import com.boltie.backend.dto.StreamDto;
+import com.boltie.backend.dto.StreamKeyDto;
 import com.boltie.backend.dto.StreamTitleDto;
-import com.boltie.backend.dto.UserDto;
+import com.boltie.backend.facades.StreamFacadeService;
 import com.boltie.backend.services.StreamService;
-import com.boltie.backend.services.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class StreamController {
 
     private final StreamService streamService;
-    private final UserService userService;
-    private final UserAuthProvider userAuthProvider;
+    private final StreamFacadeService streamFacadeService;
 
 
     public StreamController(StreamService streamService,
-                            UserService userService,
-                            UserAuthProvider userAuthProvider) {
+                            StreamFacadeService streamFacadeService) {
         this.streamService = streamService;
-        this.userService = userService;
-        this.userAuthProvider = userAuthProvider;
+        this.streamFacadeService = streamFacadeService;
     }
 
-
-    @GetMapping("/streams/{username}")
-    public ResponseEntity<StreamDto> getStreamsByUsername(@PathVariable String username) {
-        UserDto userDto = userService.findByUsername(username);
-        StreamDto streamDetails = streamService.getStreamDetails(userDto.getId());
-        streamDetails.setUsername(username);
-        return ResponseEntity.ok(streamDetails);
-    }
-
-    @PatchMapping("/streams/edit-title")
-    public ResponseEntity<String> editTitle(@RequestBody StreamTitleDto streamTitleDto, HttpServletRequest request) {
-        String usernameFromRequest = userAuthProvider.getUsernameFromRequest(request);
-
-        if (usernameFromRequest != null) {
-            if(streamService.userIsStreaming(usernameFromRequest)) {
-
-                userService.changeStreamAndRecordingTitle(streamTitleDto.title(), usernameFromRequest);
-
-                return ResponseEntity.ok("Successfully edited stream and recording titles.");
-            } else {
-
-                userService.changeStreamTitle(streamTitleDto.title(), usernameFromRequest);
-
-                return ResponseEntity.ok("Successfully edited stream title.");
-            }
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-
-
-    @GetMapping("/streams/key")
-    public ResponseEntity<Map<String, String>> getStreamKey(HttpServletRequest request) {
-        String username = userAuthProvider.getUsernameFromRequest(request);
-        Long id = userService.findByUsername(username).getId();
-
-        return ResponseEntity.ok(streamService.getStreamKey(id));
-    }
-
+    //look into the exception and remove
     @GetMapping("/streams")
     public ResponseEntity<List<StreamDto>> getStreams() throws JsonProcessingException {
-        return ResponseEntity.ok(streamService.getAllLiveStreams());
+        return ResponseEntity.ok(streamFacadeService.getAllStreams());
     }
+
+    @GetMapping("/streams/key")
+    public ResponseEntity<StreamKeyDto> getStreamKey(HttpServletRequest request) {
+        return ResponseEntity.ok(streamFacadeService.getStreamKeyFromRequest(request));
+    }
+
+    @GetMapping("/streams/{username}")
+    public ResponseEntity<StreamDto> getStreamDetails(@PathVariable String username) {
+        return ResponseEntity.ok(streamService.getStreamDetails(username));
+    }
+
+
+    @PatchMapping("/streams/edit-title")
+    public ResponseEntity<StreamTitleDto> editTitle(@RequestBody StreamTitleDto streamTitleDto,
+                                                    HttpServletRequest request) {
+        return ResponseEntity.ok(streamFacadeService.editStreamTitle(streamTitleDto, request));
+
+    }
+
 
 }

@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {RequestsService} from '../../services/requests.service';
 import OvenPlayer from 'ovenplayer';
 import Hls from 'hls.js'
@@ -24,12 +24,17 @@ export class WatchRecordingComponent implements OnInit {
 
   private route = inject(ActivatedRoute);
   private requestsService = inject(RequestsService);
+  private router = inject(Router);
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.username = params['username'];
       this.recordingId = params['recordingId'];
     });
+
+    if (this.recordingId <= 0) {
+      this.router.navigate([`/${this.username}/recordings`]);
+    }
 
     this.requestsService.getRecordingByUsernameAndId(this.username, this.recordingId).subscribe(res =>{
       const player = OvenPlayer.create('player_id', {

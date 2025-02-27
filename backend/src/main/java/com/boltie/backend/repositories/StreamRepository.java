@@ -9,8 +9,7 @@ import java.util.Optional;
 @Repository
 public interface StreamRepository extends JpaRepository<Stream, Long> {
 
-    Optional<Stream> findFirstByUser_Username(String username);
-
+    Optional<Stream> findStreamByUser_Username(String username);
 
 
 }
