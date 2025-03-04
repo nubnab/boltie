@@ -1,6 +1,8 @@
 package com.boltie.backend.services;
 
 import com.boltie.backend.dto.StreamDto;
+import com.boltie.backend.dto.StreamKeyDto;
+import com.boltie.backend.dto.StreamTitleDto;
 import com.boltie.backend.entities.Stream;
 import com.boltie.backend.entities.User;
 import com.boltie.backend.exceptions.AppException;
@@ -22,7 +24,6 @@ import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -71,35 +72,42 @@ public class StreamService {
         return stream;
     }
 
-    public StreamDto getStreamDetails(Long id) {
-        Optional<Stream> optionalStream = streamRepository.findById(id);
+
+    public StreamDto getStreamDetails(String username) {
+        Optional<Stream> optionalStream = streamRepository.findStreamByUser_Username(username);
         if (optionalStream.isPresent()) {
-            return streamMapper.toStreamDto(optionalStream.get());
+            StreamDto streamDetails = streamMapper.toStreamDto(optionalStream.get());
+            streamDetails.setUsername(username);
+
+            return streamDetails;
         }
+        throw new AppException("Stream does not exist.", HttpStatus.NOT_FOUND);
+    }
+
+    public StreamKeyDto getStreamKey(String username) {
+        Optional<Stream> optionalStream = streamRepository.findStreamByUser_Username(username);
+
+        if (optionalStream.isPresent()) {
+            return streamMapper.toStreamKeyDto(optionalStream.get());
+        }
+
         throw new AppException("Unknown stream", HttpStatus.NOT_FOUND);
     }
 
 
-    public Map<String, String> getStreamKey(Long id) {
-        Optional<Stream> optionalStream = streamRepository.findById(id);
+    public StreamTitleDto editStreamTitle(String newTitle, String username) {
+        Optional<Stream> optionalStream = streamRepository.findStreamByUser_Username(username);
 
-        if (optionalStream.isPresent()) {
-            return Map.of("key", optionalStream.get().getStreamKey());
-        }
-
-        throw new AppException("Unknown stream", HttpStatus.NOT_FOUND);
-
-    }
-
-    public ResponseEntity<?> editStreamTitle(Long id, String title) {
-        Optional<Stream> optionalStream = streamRepository.findById(id);
         if (optionalStream.isPresent()) {
             Stream stream = optionalStream.get();
-            stream.setTitle(title);
-            streamRepository.save(stream);
-        }
 
-        return ResponseEntity.ok(getStreamDetails(id));
+            stream.setTitle(newTitle);
+            streamRepository.save(stream);
+
+            return new StreamTitleDto(newTitle);
+        }
+        throw new AppException(String.format("User %s does not exist, cannot edit stream title", username),
+                HttpStatus.BAD_REQUEST);
     }
 
     public List<StreamDto> getAllStreams() {
@@ -131,6 +139,14 @@ public class StreamService {
         return liveStreams;
     }
 
+    public boolean userIsStreaming(String username) {
+        try {
+            return getLiveStreamStatus(username).getStatusCode() == HttpStatus.OK;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     private ResponseEntity<String> getLiveStreamsFromApi() {
         return restTemplate.getForEntity(API_URL, String.class);
     }
@@ -152,11 +168,4 @@ public class StreamService {
 
     }
 
-    public boolean userIsStreaming(String username) {
-        try {
-            return getLiveStreamStatus(username).getStatusCode() == HttpStatus.OK;
-        } catch (Exception e) {
-            return false;
-        }
-    }
 }

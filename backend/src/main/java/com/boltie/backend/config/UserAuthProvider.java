@@ -5,27 +5,16 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.boltie.backend.dto.UserDto;
-import com.boltie.backend.services.UserService;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.Base64;
-import java.util.Collections;
 import java.util.Date;
 
 @Component
 public class UserAuthProvider {
-
-    private final UserService userService;
-
-    public UserAuthProvider(UserService userService) {
-        this.userService = userService;
-    }
-
 
     @Value("${security.jwt.token.key}")
     private String secretKey;
@@ -70,21 +59,7 @@ public class UserAuthProvider {
         return null;
     }
 
-    public Authentication validateToken(String token) {
-        DecodedJWT jwt = verifyToken(token);
-
-        UserDto user = userService.findByUsername(jwt.getIssuer());
-
-        return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
-    }
-
-    public UserDto validateRefreshToken(String refreshToken) {
-        DecodedJWT jwt = verifyToken(refreshToken);
-
-        return userService.findByUsername(jwt.getIssuer());
-    }
-
-    private DecodedJWT verifyToken(String token) {
+    public DecodedJWT verifyToken(String token) {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
         JWTVerifier verifier = JWT.require(algorithm).build();

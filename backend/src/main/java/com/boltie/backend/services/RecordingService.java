@@ -32,8 +32,23 @@ public class RecordingService {
         return titles;
     }
 
-    public List<RecordingDto> fetchRecordings(Long userId) {
-        Optional<List<Recording>> recordingList = recordingRepository.findAllByUserId(userId);
+    public RecordingDto getRecording(String username, Long recordingId) {
+        if(recordingId <= 0) {
+            throw new AppException("Invalid recording id: " + recordingId, HttpStatus.BAD_REQUEST);
+        }
+
+        Optional<Recording> recording =
+                recordingRepository.findRecordingByUser_UsernameAndId(username, recordingId);
+
+        if(recording.isPresent()) {
+            return recordingMapper.toRecordingDto(recording.get());
+        }
+
+        throw new AppException(String.format("Recording %d not found for user %s", recordingId, username), HttpStatus.NOT_FOUND);
+    }
+
+    public List<RecordingDto> getRecordings(String username) {
+        Optional<List<Recording>> recordingList = recordingRepository.findAllByUser_Username(username);
         List<RecordingDto> recordingDtoList = new ArrayList<>();
 
         if(recordingList.isPresent()) {
@@ -42,32 +57,24 @@ public class RecordingService {
             }
             return recordingDtoList;
         }
-        throw new AppException("No recordings found for user id: " + userId, HttpStatus.NOT_FOUND);
+        throw new AppException("No recordings found for username: " + username, HttpStatus.NOT_FOUND);
     }
 
-    public RecordingDto fetchRecording(Long userId, Long recordingId) {
+    public void editCurrentRecordingTitle(String newTitle, String username) {
+        Recording currentRecording = getCurrentRecording(username);
 
-        if(recordingId <= 0) {
-            throw new AppException("Invalid recording id: " + recordingId, HttpStatus.BAD_REQUEST);
-        }
+        currentRecording.setTitle(newTitle);
 
-        Recording recording = recordingRepository.findNthRecordingByUserId(userId, recordingId);
-
-        if(recording != null) {
-            return recordingMapper.toRecordingDto(recording);
-        }
-
-        throw new AppException("Recording not found: " + recordingId, HttpStatus.NOT_FOUND);
+        recordingRepository.save(currentRecording);
     }
 
-    public Recording fetchCurrentRecording(String username) {
-        Optional<Recording> recordingByUserUsernameOrderByIdDesc =
+    private Recording getCurrentRecording(String username) {
+        Optional<Recording> currentRecording =
                 recordingRepository.findFirstByUser_UsernameOrderByIdDesc(username);
-        if(recordingByUserUsernameOrderByIdDesc.isPresent()) {
-            return recordingByUserUsernameOrderByIdDesc.get();
+        if(currentRecording.isPresent()) {
+            return currentRecording.get();
         }
-        throw new AppException("Recording not found: " + username, HttpStatus.NOT_FOUND);
+        throw new AppException(String.format("Recording for %s not found", username), HttpStatus.NOT_FOUND);
     }
-
 
 }
