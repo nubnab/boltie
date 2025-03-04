@@ -45,6 +45,7 @@ public class StreamController {
     @PatchMapping("/streams/edit-title")
     public ResponseEntity<StreamTitleDto> editTitle(@RequestBody StreamTitleDto streamTitleDto,
                                                     HttpServletRequest request) {
+        //TODO: eliminate response body, request on frontend to fetch current streamTitle
         return ResponseEntity.ok(streamFacadeService.editStreamTitle(streamTitleDto, request));
 
     }

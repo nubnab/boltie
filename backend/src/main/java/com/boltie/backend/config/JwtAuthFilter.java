@@ -1,5 +1,6 @@
 package com.boltie.backend.config;
 
+import com.boltie.backend.facades.UserFacadeService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +16,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final UserAuthProvider userAuthProvider;
+    private final UserFacadeService userFacadeService;
 
     @Override
     protected void doFilterInternal(
@@ -30,7 +31,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             if (tokens.length == 2 && tokens[0].equals("Bearer")) {
                 try {
-                    Authentication authentication = userAuthProvider.validateToken(tokens[1]);
+                    Authentication authentication = userFacadeService.authenticateUser(tokens[1]);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 } catch (RuntimeException e) {
                     SecurityContextHolder.clearContext();

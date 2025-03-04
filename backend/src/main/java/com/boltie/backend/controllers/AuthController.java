@@ -1,10 +1,9 @@
 package com.boltie.backend.controllers;
 
-import com.boltie.backend.config.UserAuthProvider;
 import com.boltie.backend.dto.LoginDto;
 import com.boltie.backend.dto.RegisterDto;
 import com.boltie.backend.dto.UserDto;
-import com.boltie.backend.services.UserService;
+import com.boltie.backend.facades.UserFacadeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +19,10 @@ import java.util.Map;
 @RestController
 public class AuthController {
 
-    private final UserService userService;
-    private final UserAuthProvider userAuthProvider;
+    private final UserFacadeService userFacadeService;
 
-    public AuthController(UserService userService, UserAuthProvider userAuthProvider) {
-        this.userService = userService;
-        this.userAuthProvider = userAuthProvider;
+    public AuthController(UserFacadeService userFacadeService) {
+        this.userFacadeService = userFacadeService;
     }
 
     @PostMapping("/refresh")
@@ -37,9 +34,9 @@ public class AuthController {
         }
 
         try {
-            UserDto userDto = userAuthProvider.validateRefreshToken(refreshToken);
+            UserDto userDto = userFacadeService.validateRefreshToken(refreshToken);
 
-            String newAuthToken = userAuthProvider.createToken(userDto);
+            String newAuthToken = userFacadeService.createToken(userDto);
 
             Map<String, String> response = new HashMap<>();
 
@@ -57,10 +54,10 @@ public class AuthController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        UserDto user = userService.login(loginDto);
+        UserDto user = userFacadeService.login(loginDto);
 
-        user.setToken(userAuthProvider.createToken(user));
-        user.setRefreshToken(userAuthProvider.createRefreshToken(user));
+        user.setToken(userFacadeService.createToken(user));
+        user.setRefreshToken(userFacadeService.createRefreshToken(user));
 
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -73,10 +70,10 @@ public class AuthController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        UserDto user = userService.registerUser(registerDto);
+        UserDto user = userFacadeService.registerUser(registerDto);
 
-        user.setToken(userAuthProvider.createToken(user));
-        user.setRefreshToken(userAuthProvider.createRefreshToken(user));
+        user.setToken(userFacadeService.createToken(user));
+        user.setRefreshToken(userFacadeService.createRefreshToken(user));
 
         return ResponseEntity.created(URI.create("/users/" + user.getId())).body(user);
     }

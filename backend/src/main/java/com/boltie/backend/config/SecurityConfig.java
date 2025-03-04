@@ -1,5 +1,6 @@
 package com.boltie.backend.config;
 
+import com.boltie.backend.facades.UserFacadeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +24,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    UnauthorizedAccessHandler unauthorizedAccessHandler,
-                                                   UserAuthProvider userAuthProvider) throws Exception {
+                                                   UserFacadeService userFacadeService) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
@@ -38,7 +39,7 @@ public class SecurityConfig {
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new JwtAuthFilter(userAuthProvider), BasicAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthFilter(userFacadeService), BasicAuthenticationFilter.class)
                 .build();
     }
 }
