@@ -13,7 +13,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,16 +27,26 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class StreamService {
 
     private final OvenStreamKeyGenService ovenStreamKeyGenService;
     private final StreamRepository streamRepository;
     private final StreamMapper streamMapper;
-    private final RestTemplate restTemplate;
+    private final RestTemplate streamApiRestTemplate;
+
+    public StreamService(OvenStreamKeyGenService ovenStreamKeyGenService,
+                         StreamRepository streamRepository,
+                         StreamMapper streamMapper,
+                         @Qualifier("streamApiRestTemplate") RestTemplate streamApiRestTemplate) {
+        this.ovenStreamKeyGenService = ovenStreamKeyGenService;
+        this.streamRepository = streamRepository;
+        this.streamMapper = streamMapper;
+        this.streamApiRestTemplate = streamApiRestTemplate;
+    }
 
     @Value("${oven.base.url}")
     private String BASE_URL;
+
     private String API_URL;
 
     @Value("${oven.stream.url}")
@@ -148,10 +158,10 @@ public class StreamService {
     }
 
     private ResponseEntity<String> getLiveStreamsFromApi() {
-        return restTemplate.getForEntity(API_URL, String.class);
+        return streamApiRestTemplate.getForEntity(API_URL, String.class);
     }
     private ResponseEntity<String> getLiveStreamStatus(String username) {
-        return restTemplate.getForEntity(String.format(API_URL + "/%s", username), String.class);
+        return streamApiRestTemplate.getForEntity(String.format(API_URL + "/%s", username), String.class);
     }
 
     private List<String> getLiveStreamUsernames() throws JsonProcessingException {

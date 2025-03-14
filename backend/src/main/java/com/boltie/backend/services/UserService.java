@@ -25,16 +25,19 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final StreamService streamService;
+    private final MessageQueueService messageQueueService;
 
     public UserService(UserRepository userRepository,
                        UserMapper userMapper,
                        PasswordEncoder passwordEncoder,
-                       StreamService streamService) {
+                       StreamService streamService,
+                       MessageQueueService messageQueueService) {
 
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
         this.streamService = streamService;
+        this.messageQueueService = messageQueueService;
     }
 
     public UserDto login(LoginDto loginDto) {
@@ -53,23 +56,20 @@ public class UserService {
             throw new AppException("User already exists", HttpStatus.BAD_REQUEST);
         }
 
-        User user = userMapper.registerToUser(registerDto);
-
-        String usernameToLower = user.getUsername().toLowerCase();
-
-        user.setUsername(usernameToLower);
-
-        user.setPassword(passwordEncoder.encode(CharBuffer.wrap(registerDto.password())));
+        User user = User
+                .builder()
+                .username(registerDto.username().toLowerCase())
+                .password(passwordEncoder.encode(CharBuffer.wrap(registerDto.password())))
+                .recordings(new ArrayList<>())
+                .build();
 
         user.setStream(streamService.generateDefaultStream(user));
 
-        List<Recording> recordings = new ArrayList<>();
-
-        user.setRecordings(recordings);
-
         User savedUser = userRepository.save(user);
 
-        return userMapper.toUserDto(savedUser);
+        messageQueueService.publishChatCreationRequest(savedUser.getId());
+
+        return userMapper.toUserDto(user);
     }
 
     public UserDto findByUsername(String username) {

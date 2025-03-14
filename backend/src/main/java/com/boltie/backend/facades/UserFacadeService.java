@@ -5,6 +5,7 @@ import com.boltie.backend.config.UserAuthProvider;
 import com.boltie.backend.dto.LoginDto;
 import com.boltie.backend.dto.RegisterDto;
 import com.boltie.backend.dto.UserDto;
+import com.boltie.backend.services.StreamService;
 import com.boltie.backend.services.UserService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,8 +23,6 @@ public class UserFacadeService {
         this.userAuthProvider = userAuthProvider;
         this.userService = userService;
     }
-
-
 
     public Authentication authenticateUser(String token) {
         DecodedJWT jwt = userAuthProvider.verifyToken(token);

@@ -1,4 +1,4 @@
-FROM node:22 AS build
+FROM node:22-alpine AS build
 
 WORKDIR /app
 COPY package*.json ./
@@ -16,4 +16,3 @@ COPY startup.sh /usr/share/nginx/html/startup.sh
 RUN chmod +x /usr/share/nginx/html/startup.sh
 
 ENTRYPOINT ["/usr/share/nginx/html/startup.sh"]
-

@@ -10,8 +10,6 @@ RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:22
 
-RUN apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
-
 COPY --from=build /app/target/*.jar /app/app.jar
 
 RUN mkdir -p /app/data
@@ -22,4 +20,4 @@ RUN chmod +x /app/wait-for-it.sh
 
 EXPOSE 8080
 
-ENTRYPOINT ["/app/wait-for-it.sh", "mysql:3306", "--strict", "--timeout=60", "--", "java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["/app/wait-for-it.sh", "mysql_chat:3306", "--strict", "--timeout=60", "--", "java", "-jar", "/app/app.jar"]
