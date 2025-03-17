@@ -6,6 +6,7 @@ import com.boltie.backend.dto.UserDto;
 import com.boltie.backend.dto.UserRecordingsDto;
 import com.boltie.backend.entities.Recording;
 import com.boltie.backend.entities.User;
+import com.boltie.backend.enums.Role;
 import com.boltie.backend.exceptions.AppException;
 import com.boltie.backend.mappers.UserMapper;
 import com.boltie.backend.repositories.UserRepository;
@@ -60,6 +61,7 @@ public class UserService {
                 .builder()
                 .username(registerDto.username().toLowerCase())
                 .password(passwordEncoder.encode(CharBuffer.wrap(registerDto.password())))
+                .role(Role.ROLE_USER)
                 .recordings(new ArrayList<>())
                 .build();
 

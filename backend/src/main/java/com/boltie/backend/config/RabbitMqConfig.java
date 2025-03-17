@@ -18,19 +18,38 @@ public class RabbitMqConfig {
 
     @Bean
     public Queue chatCreationQueue() {
-        return new Queue("chatCreationQueue", true);
+        return new Queue("chat.creation.queue", true);
     }
 
     @Bean
     public TopicExchange chatTopicExchange() {
-        return new TopicExchange("chatExchange");
+        return new TopicExchange("chat.creation.exchange");
     }
 
     @Bean
     public Binding bindingChatCreationQueue(Queue chatCreationQueue,
                                             TopicExchange chatTopicExchange) {
         return BindingBuilder.bind(chatCreationQueue).to(chatTopicExchange)
-                .with("chatCreation");
+                .with("chat.creation");
+    }
+
+    @Bean
+    public TopicExchange chatExchange() {
+        return new TopicExchange("chat.exchange");
+    }
+
+    @Bean
+    public Queue chatQueue() {
+        return new Queue("chat.queue");
+    }
+
+    @Bean
+    public Binding bindingChatQueue(Queue chatQueue,
+                                    TopicExchange chatExchange) {
+        return BindingBuilder
+                .bind(chatQueue)
+                .to(chatExchange)
+                .with("chat.#");
     }
 
 }

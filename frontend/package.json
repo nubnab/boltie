@@ -20,11 +20,14 @@
     "@angular/platform-browser": "^19.0.0",
     "@angular/platform-browser-dynamic": "^19.0.0",
     "@angular/router": "^19.0.0",
+    "@stomp/rx-stomp": "^2.0.1",
     "@types/ovenplayer": "^0.10.12",
     "hls.js": "^1.5.20",
     "ovenplayer": "^0.10.38",
     "rxjs": "~7.8.0",
+    "sockjs-client": "^1.6.1",
     "tslib": "^2.3.0",
+    "ws": "^8.18.1",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {

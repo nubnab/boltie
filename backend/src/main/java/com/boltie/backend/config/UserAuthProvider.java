@@ -32,6 +32,7 @@ public class UserAuthProvider {
                 .withIssuer(userDto.getUsername())
                 .withIssuedAt(now)
                 .withExpiresAt(expiryDate)
+                .withClaim("role", userDto.getRole().name())
                 .sign(Algorithm.HMAC256(secretKey));
     }
 
@@ -43,6 +44,7 @@ public class UserAuthProvider {
                 .withIssuer(userDto.getUsername())
                 .withIssuedAt(now)
                 .withExpiresAt(expiryDate)
+                .withClaim("role", userDto.getRole().name())
                 .sign(Algorithm.HMAC256(secretKey));
     }
 

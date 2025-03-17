@@ -25,7 +25,7 @@ public class StreamController {
         this.streamFacadeService = streamFacadeService;
     }
 
-    //look into the exception and remove
+    //look into the exception
     @GetMapping("/streams")
     public ResponseEntity<List<StreamDto>> getStreams() throws JsonProcessingException {
         return ResponseEntity.ok(streamFacadeService.getAllStreams());

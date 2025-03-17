@@ -16,7 +16,7 @@ public class ChatRoomService {
         this.chatRoomRepository = chatRoomRepository;
     }
 
-    @RabbitListener(queues = "chatCreationQueue")
+    @RabbitListener(queues = "chat.creation.queue")
     public void handleChatCreationRequest(Long chatOwnerId) {
         createChatRoom(chatOwnerId);
         System.out.println("Created chat room for user: " + chatOwnerId);

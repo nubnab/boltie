@@ -16,9 +16,15 @@ export type StreamTitle = {
 }
 
 export type StreamData = {
+  id?: number;
   username?: string;
   title?: string;
   streamUrl?: string;
+}
+
+export type MessageDto = {
+  sender: string;
+  content: string;
 }
 
 @Component({
@@ -35,6 +41,7 @@ export type StreamData = {
 
 export class StreamComponent implements OnInit {
 
+  id: number = 0;
   username: string = '';
   streamTitle: string = '';
   streamLink: string = '';
@@ -54,6 +61,9 @@ export class StreamComponent implements OnInit {
 
     this.requestsService.getStreamByUsername(this.username).subscribe({
       next: (data: StreamData) => {
+        if(data.id != null) {
+          this.id = data.id;
+        }
         if (data.username != null) {
           this.username = data.username;
         }

@@ -13,8 +13,8 @@ public class MessageQueueService {
     }
 
     public void publishChatCreationRequest(Long userId) {
-        rabbitTemplate.convertAndSend("chatExchange",
-                "chatCreation", userId);
+        rabbitTemplate.convertAndSend("chat.creation.exchange",
+                "chat.creation", userId);
     }
 
 }

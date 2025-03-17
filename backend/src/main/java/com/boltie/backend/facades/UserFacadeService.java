@@ -5,7 +5,6 @@ import com.boltie.backend.config.UserAuthProvider;
 import com.boltie.backend.dto.LoginDto;
 import com.boltie.backend.dto.RegisterDto;
 import com.boltie.backend.dto.UserDto;
-import com.boltie.backend.services.StreamService;
 import com.boltie.backend.services.UserService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,7 +28,8 @@ public class UserFacadeService {
 
         UserDto user = userService.findByUsername(jwt.getIssuer());
 
-        return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+        return new UsernamePasswordAuthenticationToken(user, null,
+                Collections.singletonList(user.getRole()));
     }
 
     public UserDto validateRefreshToken(String refreshToken) {
@@ -53,8 +53,5 @@ public class UserFacadeService {
     public UserDto registerUser(RegisterDto registerDto) {
         return userService.registerUser(registerDto);
     }
-
-
-
 
 }

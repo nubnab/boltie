@@ -18,12 +18,6 @@ public class TestController {
         this.chatApiRestTemplate = chatApiRestTemplate;
     }
 
-    //RestTemplate restApiTemplate(RestTemplateBuilder restTemplateBuilder) {
-    //    return restTemplateBuilder
-    //            .defaultHeader("X-API-TOKEN", "hm")
-    //            .build();
-    //}
-
     @GetMapping("/videos")
     public ResponseEntity<List<String>> test() {
         return ResponseEntity.ok(List.of("test1", "test2", "test3"));

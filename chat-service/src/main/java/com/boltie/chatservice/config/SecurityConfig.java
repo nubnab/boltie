@@ -14,7 +14,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
 @Configuration
@@ -34,25 +34,25 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .securityMatcher("/post-message/**")
+                .securityMatcher("/ws")
                 .authorizeHttpRequests(requests -> requests
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .exceptionHandling(e -> e
                         .accessDeniedHandler(unauthorizedAccessHandler)
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new JwtAuthFilter(userAuthProvider), BasicAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthFilter(userAuthProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
     @Bean
     @Order(2)
-    public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain apiSecurityFilterChain (HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .securityMatcher("/create-chat/**","/health")
+                .securityMatcher("/create-chat/**", "/health")
                 .authorizeHttpRequests(requests -> requests
                         .anyRequest().authenticated())
                 .exceptionHandling(e -> e
@@ -60,19 +60,22 @@ public class SecurityConfig {
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new ApiKeyFilter(userAuthProvider), BasicAuthenticationFilter.class)
+                .addFilterBefore(new ApiKeyFilter(userAuthProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
-    @Bean
-    @Order(3)
-    public SecurityFilterChain publicFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .cors(Customizer.withDefaults())
-                .securityMatcher("/chat/**")
-                .authorizeHttpRequests(requests -> requests
-                        .anyRequest().permitAll())
-                .build();
-    }
+   @Bean
+   @Order(3)
+   public SecurityFilterChain publicFilterChain (HttpSecurity http) throws Exception {
+       return http
+               .csrf(AbstractHttpConfigurer::disable)
+               .cors(Customizer.withDefaults())
+               .securityMatcher("/chat/**")
+               .authorizeHttpRequests(requests -> requests
+                       .anyRequest().permitAll())
+               .sessionManagement(session ->
+                       session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+               .build();
+   }
+
 }

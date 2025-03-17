@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
+import {RequestsService} from '../../services/requests.service';
 
 @Component({
   selector: 'app-categories',
@@ -7,5 +8,16 @@ import { Component } from '@angular/core';
   styleUrl: './categories.component.scss'
 })
 export class CategoriesComponent {
+
+  private requestsService = inject(RequestsService);
+
+  getTest() {
+    this.requestsService.getAuthTest().subscribe(res => {
+      console.log(res);
+    })
+  }
+
+
+
 
 }

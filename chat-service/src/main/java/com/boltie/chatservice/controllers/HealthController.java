@@ -12,4 +12,10 @@ public class HealthController {
         return ResponseEntity.ok("Chat service is up and running");
     }
 
+    @GetMapping("/test")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("works");
+    }
+
 }

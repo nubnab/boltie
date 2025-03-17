@@ -9,6 +9,7 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.util.Base64;
@@ -33,8 +34,10 @@ public class UserAuthProvider {
         DecodedJWT decodedJWT = verifyToken(token);
 
         String username = decodedJWT.getIssuer();
+        String role = decodedJWT.getClaim("role").asString();
 
-        return new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
+        return new UsernamePasswordAuthenticationToken(username, null,
+                Collections.singletonList(new SimpleGrantedAuthority(role)));
     }
 
     public DecodedJWT verifyToken(String token) {
