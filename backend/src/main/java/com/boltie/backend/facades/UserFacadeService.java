@@ -6,6 +6,7 @@ import com.boltie.backend.dto.LoginDto;
 import com.boltie.backend.dto.RegisterDto;
 import com.boltie.backend.dto.UserDto;
 import com.boltie.backend.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -13,15 +14,11 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 
 @Service
+@RequiredArgsConstructor
 public class UserFacadeService {
     private final UserAuthProvider userAuthProvider;
     private final UserService userService;
 
-    public UserFacadeService(UserAuthProvider userAuthProvider,
-                             UserService userService) {
-        this.userAuthProvider = userAuthProvider;
-        this.userService = userService;
-    }
 
     public Authentication authenticateUser(String token) {
         DecodedJWT jwt = userAuthProvider.verifyToken(token);

@@ -1,0 +1,32 @@
+services:
+  postgres-backend-core:
+    image: postgres:17-alpine
+    container_name: postgres-backend-core
+    env_file:
+      - ./env/core.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_backend_core_db:/var/lib/postgresql/data
+
+  backend-core:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: backend-core
+    depends_on:
+      - rabbitmq
+    env_file:
+      - ./env/core.env
+      - ./env/shared/jwt.env
+      - ./env/shared/cors.env
+      - ./env/shared/rabbitmq.env
+      - ./env/shared/ovenserver.env
+    ports:
+      - "8080:8080"
+    volumes:
+      - backend-core-data:/app/data
+
+volumes:
+  postgres_backend_core_db:
+  backend-core-data:

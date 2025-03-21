@@ -22,4 +22,4 @@ RUN chmod +x /app/wait-for-it.sh
 
 EXPOSE 8080
 
-ENTRYPOINT ["/app/wait-for-it.sh", "mysql:3306", "--strict", "--timeout=60", "--", "java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["/app/wait-for-it.sh", "postgres-backend-core:5432", "--strict", "--timeout=60", "--", "java", "-jar", "/app/app.jar"]

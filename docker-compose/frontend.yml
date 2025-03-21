@@ -1,0 +1,12 @@
+services:
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    env_file:
+      - ./env/frontend.env
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend-core

@@ -1,0 +1,30 @@
+services:
+  postgres-backend-chat:
+    image: postgres:17-alpine
+    container_name: postgres-backend-chat
+    env_file:
+      - ./env/backend-chat-db.env
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_backend_chat_db:/var/lib/postgresql/data
+
+  backend-chat-db:
+    build:
+      context: ../backend-chat-db-service
+      dockerfile: Dockerfile
+    container_name: backend-chat-db
+    depends_on:
+      - backend-core
+    env_file:
+      - ./env/backend-chat-db.env
+      - ./env/shared/cors.env
+      - ./env/shared/rabbitmq.env
+    ports:
+      - "8083:8080"
+    volumes:
+      - data_backend_chat_db:/app/data
+
+volumes:
+  postgres_backend_chat_db:
+  data_backend_chat_db:

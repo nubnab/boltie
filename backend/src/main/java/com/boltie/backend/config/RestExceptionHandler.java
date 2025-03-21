@@ -16,5 +16,4 @@ public class RestExceptionHandler {
         return ResponseEntity.status(ex.getHttpStatus())
                 .body(new ErrorDto(ex.getMessage()));
     }
-
 }

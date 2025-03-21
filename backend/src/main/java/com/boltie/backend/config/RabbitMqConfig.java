@@ -12,7 +12,7 @@ public class RabbitMqConfig {
     @Bean
     public AmqpAdmin amqpAdmin(ConnectionFactory connectionFactory) {
         AmqpAdmin amqpAdmin = new RabbitAdmin(connectionFactory);
-        amqpAdmin.declareQueue(chatCreationQueue());
+        amqpAdmin.declareQueue(chatCreationQueue()); //could possibly be omitted
         return amqpAdmin;
     }
 
@@ -29,27 +29,28 @@ public class RabbitMqConfig {
     @Bean
     public Binding bindingChatCreationQueue(Queue chatCreationQueue,
                                             TopicExchange chatTopicExchange) {
-        return BindingBuilder.bind(chatCreationQueue).to(chatTopicExchange)
+        return BindingBuilder
+                .bind(chatCreationQueue)
+                .to(chatTopicExchange)
                 .with("chat.creation");
     }
 
     @Bean
     public TopicExchange chatExchange() {
-        return new TopicExchange("chat.exchange");
+        return new TopicExchange("chat.message.exchange");
     }
 
     @Bean
-    public Queue chatQueue() {
-        return new Queue("chat.queue");
+    public Queue chatMessageQueue() {
+        return new Queue("chat.message.queue", true);
     }
 
     @Bean
-    public Binding bindingChatQueue(Queue chatQueue,
+    public Binding bindingChatQueue(Queue chatMessageQueue,
                                     TopicExchange chatExchange) {
         return BindingBuilder
-                .bind(chatQueue)
+                .bind(chatMessageQueue)
                 .to(chatExchange)
-                .with("chat.#");
+                .with("chat.message");
     }
-
 }

@@ -5,6 +5,7 @@ import com.boltie.backend.dto.RegisterDto;
 import com.boltie.backend.dto.UserDto;
 import com.boltie.backend.facades.UserFacadeService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -17,13 +18,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 public class AuthController {
 
     private final UserFacadeService userFacadeService;
-
-    public AuthController(UserFacadeService userFacadeService) {
-        this.userFacadeService = userFacadeService;
-    }
 
     @PostMapping("/refresh")
     public ResponseEntity<Map<String, String>> refreshToken(@RequestBody Map<String, String> request) {
@@ -35,9 +33,7 @@ public class AuthController {
 
         try {
             UserDto userDto = userFacadeService.validateRefreshToken(refreshToken);
-
             String newAuthToken = userFacadeService.createToken(userDto);
-
             Map<String, String> response = new HashMap<>();
 
             response.put("authToken", newAuthToken);
@@ -63,9 +59,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> register(@Valid  @RequestBody RegisterDto registerDto,
-                                            BindingResult bindingResult) {
-
+    public ResponseEntity<UserDto> register(@Valid  @RequestBody RegisterDto registerDto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

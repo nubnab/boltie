@@ -1,4 +1,8 @@
 include:
-  - path: "main.yml"
-  - paht: "chat.yml"
-  - path: "temp.yml"
+  - path: "./docker-compose/nginx_cdn.yml"
+  - path: "./docker-compose/rabbitmq.yml"
+  - path: "./docker-compose/ovenserver.yml"
+  - path: "./docker-compose/core.yml"
+  - path: "./docker-compose/backend-websocket.yml"
+  - path: "./docker-compose/backend-chat-db.yml"
+  - path: "./docker-compose/frontend.yml"

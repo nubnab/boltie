@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @Data
 @Entity
-@Table
+@Table(name = "app_user")
 public class User {
 
     @Id

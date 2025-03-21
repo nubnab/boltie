@@ -4,14 +4,18 @@ import SockJS from 'sockjs-client/dist/sockjs';
 import {MessageDto} from '../pages/stream/stream.component';
 import {RequestsService} from './requests.service';
 
+const env = window.__env;
+
 @Injectable({
   providedIn: 'root'
 })
 export class RxstompService {
 
   private rxStomp: RxStomp = new RxStomp();
-  private requestsService = inject(RequestsService);
+
   token = '';
+
+  private wsUrl = env.wsChatUrl;
 
   constructor() {
     this.initSock();
@@ -27,7 +31,7 @@ export class RxstompService {
 
   initSock() {
     this.rxStomp.configure({
-      webSocketFactory: () => new SockJS('http://localhost:8082/ws'),
+      webSocketFactory: () => new SockJS(`${this.wsUrl}/ws`),
       connectHeaders: {
         Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
       },

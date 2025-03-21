@@ -3,6 +3,7 @@ package com.boltie.backend.services;
 import com.boltie.backend.dto.UserRecordingsDto;
 import com.boltie.backend.entities.Recording;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Service
+@RequiredArgsConstructor
 public class RecordingDirectoryWatchService {
 
     private final ExecutorService executor = Executors.newCachedThreadPool();
@@ -20,15 +22,6 @@ public class RecordingDirectoryWatchService {
     private final UserService userService;
     private final RecordingService recordingService;
     private final ThumbnailGeneratorService thumbnailGeneratorService;
-
-
-    public RecordingDirectoryWatchService(UserService userService,
-                                          RecordingService recordingService,
-                                          ThumbnailGeneratorService thumbnailGeneratorService) {
-        this.userService = userService;
-        this.recordingService = recordingService;
-        this.thumbnailGeneratorService = thumbnailGeneratorService;
-    }
 
     @PostConstruct
     public void init() throws IOException {
@@ -103,14 +96,11 @@ public class RecordingDirectoryWatchService {
                         e.printStackTrace();
                     }
                     thumbnailGeneratorService.generateThumbnail(entry.toString(), "/thumb.jpg");
-
                 }
             }
         }
-
         if(!newRecordingsFound.isEmpty()) {
             userService.addUserRecordingsToDb(username, newRecordingsFound);
         }
-
     }
 }

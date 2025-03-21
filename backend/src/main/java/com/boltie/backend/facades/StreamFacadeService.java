@@ -9,25 +9,19 @@ import com.boltie.backend.services.RecordingService;
 import com.boltie.backend.services.StreamService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class StreamFacadeService {
 
     private final UserAuthProvider userAuthProvider;
     private final StreamService streamService;
     private final RecordingService recordingService;
-
-    public StreamFacadeService(UserAuthProvider userAuthProvider,
-                                StreamService streamService,
-                                RecordingService recordingService) {
-        this.userAuthProvider = userAuthProvider;
-        this.streamService = streamService;
-        this.recordingService = recordingService;
-    }
 
     public StreamKeyDto getStreamKeyFromRequest(HttpServletRequest request) {
         String username = userAuthProvider.getUsernameFromRequest(request);
@@ -51,6 +45,10 @@ public class StreamFacadeService {
         }
 
         throw new AppException("User  not found.", HttpStatus.NOT_FOUND);
+    }
+
+    public StreamDto getStreamDetails(String username) {
+        return streamService.getStreamDetails(username);
     }
 
 }

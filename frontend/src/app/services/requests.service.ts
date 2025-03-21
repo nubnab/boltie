@@ -3,7 +3,6 @@ import {HttpClient} from '@angular/common/http';
 import {StreamDetails} from '../pages/home/home.component';
 import {RecordingData} from '../pages/watch-recording/watch-recording.component';
 import {StreamTitle} from '../pages/stream/stream.component';
-import {CsrfData} from '../pages/videos/videos.component';
 
 const env = window.__env;
 

@@ -5,12 +5,6 @@ import {MessageDto} from '../stream/stream.component';
 import {RxstompService} from '../../services/rxstomp.service';
 import {FormsModule} from '@angular/forms';
 
-export type CsrfData = {
-  headerName: string;
-  parameterName: string;
-  token: string;
-}
-
 @Component({
   selector: 'app-videos',
   imports: [
@@ -51,7 +45,7 @@ export class VideosComponent {
   }
 
   sendMessage() {
-    this.rxStompService.sendMessage('/app/chat/1/sendMessage', this.message);
+    this.rxStompService.sendMessage('/app/chat/send/1', this.message);
     this.message = {sender: 'Nabs', content: ''};
   }
 

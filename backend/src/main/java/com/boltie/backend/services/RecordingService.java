@@ -5,6 +5,7 @@ import com.boltie.backend.entities.Recording;
 import com.boltie.backend.exceptions.AppException;
 import com.boltie.backend.mappers.RecordingMapper;
 import com.boltie.backend.repositories.RecordingRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -13,15 +14,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class RecordingService {
     private final RecordingMapper recordingMapper;
     private final RecordingRepository recordingRepository;
 
-    public RecordingService(RecordingMapper recordingMapper,
-                            RecordingRepository recordingRepository) {
-        this.recordingMapper = recordingMapper;
-        this.recordingRepository = recordingRepository;
-    }
 
     public List<String> convertRecordingsToTitles(List<Recording> recordingList) {
         List<String> titles = new ArrayList<>();

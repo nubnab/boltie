@@ -13,7 +13,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class StreamService {
 
     private final OvenStreamKeyGenService ovenStreamKeyGenService;
@@ -34,32 +35,25 @@ public class StreamService {
     private final StreamMapper streamMapper;
     private final RestTemplate streamApiRestTemplate;
 
-    public StreamService(OvenStreamKeyGenService ovenStreamKeyGenService,
-                         StreamRepository streamRepository,
-                         StreamMapper streamMapper,
-                         @Qualifier("streamApiRestTemplate") RestTemplate streamApiRestTemplate) {
-        this.ovenStreamKeyGenService = ovenStreamKeyGenService;
-        this.streamRepository = streamRepository;
-        this.streamMapper = streamMapper;
-        this.streamApiRestTemplate = streamApiRestTemplate;
-    }
+    private String API_URL;
 
     @Value("${oven.base.url}")
     private String BASE_URL;
 
-    private String API_URL;
+    @Value("${oven.rtmp.url}")
+    private String RTMP_URL;
 
-    @Value("${oven.stream.url}")
-    private String STREAM_URL;
+    @Value("${oven.ws.url}")
+    private String WS_URL;
 
     @PostConstruct
     public void init() {
-        API_URL = "http://" + BASE_URL + ":8081/v1/vhosts/vhost/apps/boltie/streams";
+        API_URL = BASE_URL + "/v1/vhosts/vhost/apps/boltie/streams";
     }
 
     public Stream generateDefaultStream(User user) {
-        String BASE_RTMP_URL = "rtmp://" + STREAM_URL + ":1935/boltie/" + user.getUsername();
-        String BASE_WS_URL = "ws://" + STREAM_URL + ":3333/boltie/" + user.getUsername();
+        String BASE_RTMP_URL = RTMP_URL + "/boltie/" + user.getUsername();
+        String BASE_WS_URL = WS_URL + "/boltie/" + user.getUsername();
 
         String rtmpUrl = ovenStreamKeyGenService.generate(BASE_RTMP_URL,
                 Timestamp.from(ZonedDateTime.now().plusYears(2).toInstant()).getTime(),
@@ -73,13 +67,13 @@ public class StreamService {
                 null,
                 null);
 
-        Stream stream = new Stream();
-        stream.setTitle(user.getUsername() + " Stream");
-        stream.setStreamKey(rtmpUrl);
-        stream.setStreamUrl(wsUrl);
-        stream.setUser(user);
-
-        return stream;
+        return Stream
+                .builder()
+                .title(user.getUsername() + " Stream")
+                .streamKey(rtmpUrl)
+                .streamUrl(wsUrl)
+                .user(user)
+                .build();
     }
 
 

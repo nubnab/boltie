@@ -25,27 +25,19 @@ public class UserAuthProvider {
     }
 
     public String createToken(UserDto userDto) {
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + 1000 * 60 * 15); //15 minutes
+        //TODO: Replace Date with java.time impl
+        final Date issuedAt = new Date();
+        final Date expiresAt = new Date(issuedAt.getTime() + 1000L * 60 * 15); //15 minutes
 
-        return JWT.create()
-                .withIssuer(userDto.getUsername())
-                .withIssuedAt(now)
-                .withExpiresAt(expiryDate)
-                .withClaim("role", userDto.getRole().name())
-                .sign(Algorithm.HMAC256(secretKey));
+        return createJWT(userDto, issuedAt, expiresAt);
     }
 
     public String createRefreshToken(UserDto userDto) {
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + 1000L * 60 * 60 * 24 * 30); //30 days
+        //TODO: Replace Date with java.time impl
+        final Date issuedAt = new Date();
+        final Date expiresAt = new Date(issuedAt.getTime() + 1000L * 60 * 60 * 24 * 30); //30 days
 
-        return JWT.create()
-                .withIssuer(userDto.getUsername())
-                .withIssuedAt(now)
-                .withExpiresAt(expiryDate)
-                .withClaim("role", userDto.getRole().name())
-                .sign(Algorithm.HMAC256(secretKey));
+        return createJWT(userDto, issuedAt, expiresAt);
     }
 
     public String getUsernameFromRequest(HttpServletRequest request) {
@@ -69,4 +61,13 @@ public class UserAuthProvider {
         return verifier.verify(token);
     }
 
+    private String createJWT(UserDto userDto, Date issuedAt, Date expiresAt) {
+        return JWT.create()
+                .withIssuer(userDto.getUsername())
+                .withIssuedAt(issuedAt)
+                .withExpiresAt(expiresAt)
+                .withClaim("userId", userDto.getId())
+                .withClaim("role", userDto.getRole().name())
+                .sign(Algorithm.HMAC256(secretKey));
+    }
 }

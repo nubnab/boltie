@@ -10,6 +10,7 @@ import com.boltie.backend.enums.Role;
 import com.boltie.backend.exceptions.AppException;
 import com.boltie.backend.mappers.UserMapper;
 import com.boltie.backend.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserMapper userMapper;
@@ -28,18 +30,6 @@ public class UserService {
     private final StreamService streamService;
     private final MessageQueueService messageQueueService;
 
-    public UserService(UserRepository userRepository,
-                       UserMapper userMapper,
-                       PasswordEncoder passwordEncoder,
-                       StreamService streamService,
-                       MessageQueueService messageQueueService) {
-
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-        this.passwordEncoder = passwordEncoder;
-        this.streamService = streamService;
-        this.messageQueueService = messageQueueService;
-    }
 
     public UserDto login(LoginDto loginDto) {
         User user = userRepository.findByUsername(loginDto.username().toLowerCase())

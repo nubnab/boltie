@@ -1,0 +1,12 @@
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      - "61613:61613"
+    env_file:
+      - ./env/shared/rabbitmq.env
+    volumes:
+      - ./conf/enabled_plugins:/etc/rabbitmq/enabled_plugins

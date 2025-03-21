@@ -1,0 +1,19 @@
+services:
+  ovenserver:
+    build:
+      context: ../ovenserver
+      dockerfile: Dockerfile
+    container_name: ovenserver
+    env_file:
+      - ./env/shared/ovenserver.env
+    ports:
+      - "1935:1935"
+      - "9999:9999/udp"
+      - "9000:9000"
+      - "3333:3333"
+      - "3478:3478"
+      - "8081:8081"
+      - "10000-10009:10000-10009/udp"
+      - "20080:20080"
+    volumes:
+      - backend-core-data:/mnt/shared_volumes
