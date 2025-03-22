@@ -37,6 +37,9 @@ docker compose up -d
 docker compose down
 ```
 
+### Important
+When streaming, make sure to change your OBS settings according to the settings recommended by OvenMediaEngine [here](https://docs.ovenmediaengine.com/quick-start), otherwise you may experience issues related to hitches / stutters.
+
 ---
 
 ## Uninstallation
@@ -47,3 +50,10 @@ docker compose down --rmi all --volumes --remove-orphans
 ---
 
 ## Tech Stack
+- Backend - Java 21+, Spring Boot, Spring Security
+- Frontend - Angular 19
+- DB - PostgreSQL
+- Streaming backend - OvenMediaEngine
+- Messaging Broker - RabbitMQ
+- Ops - Docker
+
