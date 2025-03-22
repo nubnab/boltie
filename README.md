@@ -53,7 +53,7 @@ docker compose down --rmi all --volumes --remove-orphans
 - Backend - Java 21+, Spring Boot, Spring Security
 - Frontend - Angular 19
 - DB - PostgreSQL
-- Streaming backend - OvenMediaEngine
+- Stream server - OvenMediaEngine
 - Messaging Broker - RabbitMQ
 - Ops - Docker
 
