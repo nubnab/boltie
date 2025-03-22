@@ -57,3 +57,19 @@ docker compose down --rmi all --volumes --remove-orphans
 - Messaging Broker - RabbitMQ
 - Ops - Docker
 
+---
+
+## Architecture
+WIP
+
+---
+
+## Bugs
+Several minor bugs, testing is currently underway, see [bugs](https://github.com/nubnab/boltie/issues?q=is%3Aissue%20state%3Aopen%20label%3Abug). 
+
+---
+
+## Future plans
+Many features are still missing as the app is still in early development, check [enhancements](https://github.com/nubnab/boltie/issues?q=is%3Aissue%20state%3Aopen%20label%3Aenhancement) to see what is planned.
+
+
