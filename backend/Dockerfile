@@ -8,9 +8,9 @@ COPY src ./src
 
 RUN mvn clean package -DskipTests
 
-FROM eclipse-temurin:22
+FROM eclipse-temurin:22-alpine
 
-RUN apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
+RUN apk update && apk add --no-cache ffmpeg bash && rm -rf /var/cache/apk/*
 
 COPY --from=build /app/target/*.jar /app/app.jar
 

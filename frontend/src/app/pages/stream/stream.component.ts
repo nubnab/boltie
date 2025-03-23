@@ -1,29 +1,34 @@
-import {
-  Component, computed,
-  inject,
-  OnInit,
-} from '@angular/core';
+import {AfterViewChecked, Component, computed, ElementRef, inject, OnDestroy, OnInit, ViewChild,} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {RequestsService} from '../../services/requests.service';
 import {FormsModule} from '@angular/forms';
-import {MatButton} from '@angular/material/button';
+import {MatButton, MatMiniFabButton} from '@angular/material/button';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {AuthService} from '../../services/auth.service';
 import OvenPlayer from 'ovenplayer';
+import {RxstompService} from '../../services/rxstomp.service';
+import {MatIcon} from '@angular/material/icon';
+import {MenuItem} from '../../layout/navigation/custom-sidenav/custom-sidenav.component';
+import {Subscription} from 'rxjs';
 
 export type StreamTitle = {
   title: string;
 }
 
 export type StreamData = {
-  id?: number;
-  username?: string;
-  title?: string;
-  streamUrl?: string;
+  id: number;
+  username: string;
+  title: string;
+  streamUrl: string;
 }
 
 export type MessageDto = {
-  sender: string;
+  senderName: string;
+  content: string;
+  sentAt: string;
+}
+
+export type SimpleMessageDto = {
   content: string;
 }
 
@@ -33,58 +38,87 @@ export type MessageDto = {
     FormsModule,
     MatButton,
     MatInput,
-    MatFormField
+    MatFormField,
+    MatIcon,
+    MatMiniFabButton,
   ],
   templateUrl: './stream.component.html',
   styleUrl: './stream.component.scss'
 })
 
-export class StreamComponent implements OnInit {
-
+export class StreamComponent implements OnInit, AfterViewChecked, OnDestroy {
   id: number = 0;
   username: string = '';
+  isEditMode: boolean = false;
+
   streamTitle: string = '';
   streamLink: string = '';
   tempTitle: string = '';
-  isEditMode: boolean = false;
+
+  sendIcon: MenuItem = {
+    icon: "chevron_right",
+    label: "eh",
+    route: ''
+  }
+
+  testMessage: SimpleMessageDto = { content: '' }
+  messages: MessageDto[] = [];
 
   private requestsService = inject(RequestsService);
   private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
+  private rxStompService = inject(RxstompService);
+
+  private routeParamsSubscription!: Subscription;
+  private stompMessageSubscription!: Subscription;
+  private player: any;
 
 
-  async ngOnInit() {
+  ngOnInit() {
 
-    this.route.params.subscribe(params => {
+    this.routeParamsSubscription = this.route.params.subscribe(params => {
       this.username = params['username'];
     });
 
     this.requestsService.getStreamByUsername(this.username).subscribe({
       next: (data: StreamData) => {
-        if(data.id != null) {
-          this.id = data.id;
-        }
-        if (data.username != null) {
-          this.username = data.username;
-        }
-        if (data.title != null) {
-          this.streamTitle = data.title;
-        }
-        if (data.streamUrl != null) {
-          this.streamLink = data.streamUrl;
-        }
-      },
-      error: err => {console.log(err);},
-      complete: () => {
-        const player = OvenPlayer.create('player_id', {
-          sources: [{
-            label: 'webrtc',
-            type: 'webrtc',
-            file: this.streamLink,
-          }]
+        this.id = data.id;
+        this.streamTitle = data.title;
+        this.streamLink = data.streamUrl;
+
+        this.initPlayer();
+
+        this.requestsService.getRecentMessages(data.id).subscribe(messages => {
+          messages.forEach(recentMessage => {
+            this.messages.unshift(this.utcToLocal(recentMessage));
+          })
         });
-      }
+
+        this.stompMessageSubscription =
+          this.rxStompService.watchMessages(data.id).subscribe((message) => {
+          const receivedMessage: MessageDto = JSON.parse(message.body);
+          this.messages.push(this.utcToLocal(receivedMessage));
+        });
+      },
+      error: err => {console.log(err);}
     });
+  }
+
+  ngAfterViewChecked() {
+    this.autoScroll();
+  }
+
+  ngOnDestroy() {
+    if (this.routeParamsSubscription) {
+      this.routeParamsSubscription.unsubscribe();
+    }
+    if (this.stompMessageSubscription) {
+      this.stompMessageSubscription.unsubscribe();
+    }
+    if (this.player) {
+      this.player.remove();
+    }
+    this.rxStompService.disconnect();
   }
 
   userIsStreamOwnerSignal = computed(() =>
@@ -97,11 +131,9 @@ export class StreamComponent implements OnInit {
   }
 
   saveTitle() {
-
     const newTitle: StreamTitle = {
       title: this.streamTitle,
     }
-
     this.requestsService.editStreamTitle(newTitle).subscribe(res => {
       console.log(res); // return new title and set it
     })
@@ -114,6 +146,43 @@ export class StreamComponent implements OnInit {
     this.isEditMode = false;
   }
 
-;
+  sendMessage() {
+    if(this.testMessage.content.trim()){
+      this.rxStompService.sendMessage('/app/chat/send/' + this.id, this.testMessage);
+      this.testMessage = { content: '' };
+    }
+  }
+
+  private utcToLocal(message: MessageDto): MessageDto {
+    const utcTime = new Date(message.sentAt);
+    message.sentAt = utcTime.toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
+
+    return message;
+  }
+
+  private autoScroll() {
+    const chatContainer = document.getElementById('chatContainer');
+
+    if(chatContainer) {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+  }
+
+  private initPlayer() {
+    this.player = OvenPlayer.create('player_id', {
+      sources: [{
+        label: 'webrtc',
+        type: 'webrtc',
+        file: this.streamLink,
+      }]
+    });
+  }
+
+  //TODO: Stomp disconnect on destroy
+  //TODO: forbid empty messages
 
 }

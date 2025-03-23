@@ -4,6 +4,7 @@ import {CategoriesComponent} from './pages/categories/categories.component';
 import {AboutComponent} from './pages/about/about.component';
 import {PageNotFoundComponent} from './pages/page-not-found/page-not-found.component';
 import {SettingsComponent} from './pages/settings/settings.component';
+import {StreamComponent} from './pages/stream/stream.component';
 
 export const routes: Routes = [
   {path: 'live', pathMatch: 'full',
@@ -32,6 +33,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/stream/stream.component')
         .then(m => m.StreamComponent)},
+  //{path: 'stream', component: StreamComponent},
   {path: ':username/recordings',
     loadComponent: () =>
       import('./pages/user-recordings/user-recordings.component')

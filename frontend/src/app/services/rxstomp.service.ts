@@ -1,8 +1,7 @@
-import {inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {RxStomp} from '@stomp/rx-stomp';
 import SockJS from 'sockjs-client/dist/sockjs';
-import {MessageDto} from '../pages/stream/stream.component';
-import {RequestsService} from './requests.service';
+import {SimpleMessageDto} from '../pages/stream/stream.component';
 
 const env = window.__env;
 
@@ -21,11 +20,11 @@ export class RxstompService {
     this.initSock();
   }
 
-  watchMessages() {
-    return this.rxStomp.watch("/topic/chat/1");
+  watchMessages(chatId: number) {
+    return this.rxStomp.watch("/topic/chat/" + chatId);
   }
 
-  sendMessage(destination: string, message: MessageDto) {
+  sendMessage(destination: string, message: SimpleMessageDto) {
     this.rxStomp.publish({ destination, body: JSON.stringify(message)});
   }
 
@@ -35,9 +34,14 @@ export class RxstompService {
       connectHeaders: {
         Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
       },
-      reconnectDelay: 15000,
+      reconnectDelay: 200,
       debug: (msg: string) => console.log(`STOMP: ${msg}`),
     });
     this.rxStomp.activate();
   }
+
+  disconnect() {
+    this.rxStomp.deactivate().then(r => console.log(r));
+  }
+
 }

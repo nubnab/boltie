@@ -8,7 +8,9 @@ COPY src ./src
 
 RUN mvn clean package -DskipTests
 
-FROM eclipse-temurin:22
+FROM eclipse-temurin:22-alpine
+
+RUN apk update && apk add --no-cache bash && rm -rf /var/cache/apk/*
 
 COPY --from=build /app/target/*.jar /app/app.jar
 

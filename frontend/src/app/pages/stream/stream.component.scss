@@ -2,6 +2,7 @@
 
 .player-container {
   height: calc(100vh - 8rem);
+  width: 100%;
 }
 
 .title {
@@ -44,9 +45,96 @@ mat-form-field {
     container-text-weight: 700,
     container-vertical-padding: 0.3rem,
   ))
-
 }
 
 .mat-mdc-form-field-infix {
   padding: 0;
+}
+
+.layout-container {
+  display: flex;
+}
+
+.chat-panel {
+  height: calc(100vh - 56px);
+  min-width: 340px;
+  max-width: 340px;
+  border-left: #858585 1px solid;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.chat-title {
+  display: flex;
+  justify-content: center;
+  padding: 12px;
+  border-bottom: #e1e1e2 solid 1px;
+}
+
+.chat-overflow-container {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.message-container {
+  list-style: none;
+  margin: 0 6px;
+  padding: 0;
+}
+
+.message-row {
+  font-size: 0.85rem;
+  line-height: 24px;
+  display: flex;
+  overflow-x: hidden; //will need better handling of message overflow
+}
+
+.message-timestamp {
+   margin: 0 6px;
+   opacity: 90%;
+}
+
+.message-sender {
+  font-weight: bold;
+  color: #005cbb;
+}
+
+.message-content {
+  margin-left: 2px;
+}
+
+.chat-input-container {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+}
+
+.chat-form {
+  width: 100%;
+  padding: 0 !important;
+  font-weight: normal;
+  @include mat.form-field-overrides((
+    container-text-line-height: 30px,
+    container-text-size: 0.85rem,
+  ));
+}
+
+.send-button {
+  box-shadow: none;
+  height: 100%;
+  padding: 0;
+  @include mat.button-overrides((
+    filled-container-color: white,
+    filled-label-text-size: 2px,
+    filled-horizontal-padding: 0px
+  ));
+}
+
+.send-button:hover {
+  box-shadow: none;
+}
+
+.send-button:focus {
+  box-shadow: none;
 }

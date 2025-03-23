@@ -14,11 +14,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessageController {
 
-    //private final MessageService messageService;
-//
-    //@GetMapping("/chat/{id}")
-    //public ResponseEntity<List<MessageDto>> getRecentMessages(@PathVariable Long id) {
-    //    return ResponseEntity.ok(messageService.getRecentMessages(id));
-    //}
+    private final MessageService messageService;
+
+    @GetMapping("/chat/{id}")
+    public ResponseEntity<List<MessageDto>> getRecentMessages(@PathVariable Long id) {
+        return ResponseEntity.ok(messageService.getRecentMessages(id));
+    }
 
 }
