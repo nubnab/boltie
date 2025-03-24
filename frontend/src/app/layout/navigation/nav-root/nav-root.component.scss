@@ -34,10 +34,6 @@
   border: none;
 }
 
-.mat-sidenav, .mat-sidenav-content {
-  transition: all 250ms ease-in-out;
-}
-
 .mat-toolbar-single-row {
   padding-left: 10px;
   padding-right: 10px;
@@ -93,4 +89,35 @@
   object-fit: cover;
   height: 36px;
   width: 36px;
+}
+
+.menu-sidenav-container {
+  display: flex;
+  align-items: center;
+}
+
+.header-container {
+  display: flex;
+  gap: 6px;
+  margin-left: 8px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.header {
+  color: #005cbb;
+  font-weight: bolder;
+}
+
+.menu-button {
+  box-shadow: none;
+  padding: 0;
+  background-color: transparent;
+  @include mat.fab-overrides((
+    small-state-layer-color: #717171,
+    small-ripple-color: #dcdcdc,
+    small-focus-container-elevation-shadow: transparent,
+    small-hover-container-elevation-shadow: transparent,
+    small-pressed-container-elevation-shadow: transparent
+  ))
 }

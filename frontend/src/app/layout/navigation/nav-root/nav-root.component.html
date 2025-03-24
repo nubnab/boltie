@@ -1,9 +1,13 @@
 <mat-toolbar>
-  <div>
-    <button mat-icon-button (click)="this.toggleCollapse()">
+  <div class="menu-sidenav-container">
+    <button mat-mini-fab type="button" class="menu-button" (click)="this.toggleCollapse()">
       <mat-icon>menu</mat-icon>
     </button>
-    <img src="/favicon.svg"/>
+    <a class="header-container" href="/" [routerLink]="'/'">
+      <img src="/assets/icons/favicon.svg" />
+      <h1 class="header">Boltie</h1>
+    </a>
+
   </div>
   @if (!loginState()) {
     <div>

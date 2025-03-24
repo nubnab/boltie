@@ -57,6 +57,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   generateThumbnail(username: string) {
+    //TODO: change api ip
     return `http://192.168.1.2:20080/boltie/${username}_preview/thumb.jpg`;
   }
 

@@ -8,5 +8,5 @@ import {NavRootComponent} from './layout/navigation/nav-root/nav-root.component'
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'frontend';
+  title = 'boltie';
 }
