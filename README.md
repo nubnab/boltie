@@ -37,7 +37,11 @@ docker compose up -d
 docker compose down
 ```
 
-### Important
+---
+
+## Usage
+To stream, you must make an account, then head to settings and copy your stream key. In OBS Studio, set the Stream Service to "Custom..." and paste your Stream key into the **Server** field.
+
 When streaming, make sure to change your OBS settings according to the settings recommended by OvenMediaEngine [here](https://docs.ovenmediaengine.com/quick-start), otherwise you may experience issues related to hitches / stutters.
 
 ---
