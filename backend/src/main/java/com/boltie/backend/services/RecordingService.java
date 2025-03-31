@@ -29,19 +29,20 @@ public class RecordingService {
         return titles;
     }
 
-    public RecordingDto getRecording(String username, Long recordingId) {
-        if(recordingId <= 0) {
-            throw new AppException("Invalid recording id: " + recordingId, HttpStatus.BAD_REQUEST);
+    public Recording getRecordingEntity(String username, Long recordingTrackingId) {
+        if(recordingTrackingId <= 0) {
+            throw new AppException("Invalid recording id: " + recordingTrackingId, HttpStatus.BAD_REQUEST);
         }
 
-        Optional<Recording> recording =
-                recordingRepository.findRecordingByUser_UsernameAndId(username, recordingId);
+        Optional<Recording> recording = recordingRepository
+                .findRecordingByUser_UsernameAndUserRecordingTrackingId(username, recordingTrackingId);
 
         if(recording.isPresent()) {
-            return recordingMapper.toRecordingDto(recording.get());
+            return recording.get();
         }
 
-        throw new AppException(String.format("Recording %d not found for user %s", recordingId, username), HttpStatus.NOT_FOUND);
+        throw new AppException(String
+                .format("Recording %d not found for user %s", recordingTrackingId, username), HttpStatus.NOT_FOUND);
     }
 
     public List<RecordingDto> getRecordings(String username) {
@@ -58,14 +59,14 @@ public class RecordingService {
     }
 
     public void editCurrentRecordingTitle(String newTitle, String username) {
-        Recording currentRecording = getCurrentRecording(username);
+        Recording currentRecording = getCurrentRecordingEntity(username);
 
         currentRecording.setTitle(newTitle);
 
         recordingRepository.save(currentRecording);
     }
 
-    private Recording getCurrentRecording(String username) {
+    private Recording getCurrentRecordingEntity(String username) {
         Optional<Recording> currentRecording =
                 recordingRepository.findFirstByUser_UsernameOrderByIdDesc(username);
         if(currentRecording.isPresent()) {

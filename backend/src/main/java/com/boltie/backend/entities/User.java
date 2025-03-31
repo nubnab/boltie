@@ -38,4 +38,7 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Recording> recordings;
 
+    @OneToMany(mappedBy = "viewedBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecordingWatchHistory> watchHistory;
+
 }

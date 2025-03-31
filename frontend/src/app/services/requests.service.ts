@@ -47,7 +47,11 @@ export class RequestsService {
   }
 
   getRecentMessages(chatRoomId: number) {
-    return this.http.get<MessageDto[]>(`http://localhost:8083/chat/${chatRoomId}`);
+    return this.http.get<MessageDto[]>(`${this.messageDbUrl}/chat/${chatRoomId}`);
+  }
+
+  getWatchHistory() {
+    return this.http.get<RecordingData[]>(`${this.apiUrl}/history`);
   }
 
 }

@@ -31,7 +31,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         requests -> requests
                                 .requestMatchers("/login", "/register", "/refresh",
-                                        "/streams", "streams/**", "recordings/**", "/chat")
+                                        "/streams", "streams/**", "recordings/**",
+                                        "/chat", "/history")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated())

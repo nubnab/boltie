@@ -53,6 +53,7 @@ public class UserService {
                 .password(passwordEncoder.encode(CharBuffer.wrap(registerDto.password())))
                 .role(Role.ROLE_USER)
                 .recordings(new ArrayList<>())
+                .watchHistory(new ArrayList<>())
                 .build();
 
         user.setStream(streamService.generateDefaultStream(user));
@@ -113,7 +114,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    private User getUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
         if (optionalUser.isPresent()) {
             return optionalUser.get();

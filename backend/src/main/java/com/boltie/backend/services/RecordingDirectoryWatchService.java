@@ -91,7 +91,7 @@ public class RecordingDirectoryWatchService {
                     newRecordingsFound.add(entry.getFileName().toString());
                     System.out.println("Found recording: " + entry.getFileName());
                     try {
-                        Thread.sleep(500L);
+                        Thread.sleep(500L); //TODO: Find a better solution to delay process
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

@@ -7,6 +7,8 @@ import Hls from 'hls.js'
 window.Hls = Hls;
 
 export type RecordingData = {
+  userRecordingTrackingId: number,
+  owner: string,
   title: string,
   folderName: string,
 }

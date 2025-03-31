@@ -1,7 +1,9 @@
 package com.boltie.backend.controllers;
 
 import com.boltie.backend.dto.RecordingDto;
+import com.boltie.backend.facades.RecordingFacadeService;
 import com.boltie.backend.services.RecordingService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import java.util.List;
 public class RecordingController {
 
     private final RecordingService recordingService;
+    private final RecordingFacadeService recordingFacadeService;
 
     @GetMapping("/recordings/{username}")
     public ResponseEntity<List<RecordingDto>> getRecordings(@PathVariable String username) {
@@ -23,9 +26,9 @@ public class RecordingController {
 
     @GetMapping("/recordings/{username}/{recordingId}")
     public ResponseEntity<RecordingDto> getRecording(@PathVariable String username,
-                                                     @PathVariable Long recordingId) {
+                                                     @PathVariable Long recordingId,
+                                                     HttpServletRequest request) {
 
-        return ResponseEntity.ok(recordingService.getRecording(username, recordingId));
+        return ResponseEntity.ok(recordingFacadeService.getRecordingAndLogHistory(username, recordingId, request));
     }
-
 }

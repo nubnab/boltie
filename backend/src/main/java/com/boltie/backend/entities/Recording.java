@@ -16,6 +16,8 @@ public class Recording {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Integer userRecordingTrackingId;
+
     @Column(nullable = false)
     private String title;
 
@@ -26,4 +28,10 @@ public class Recording {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @PrePersist
+    public void setUserRecordingTrackingId() {
+        if (this.user != null && this.userRecordingTrackingId == null) {
+            this.userRecordingTrackingId = this.user.getRecordings().size() + 1;
+        }
+    }
 }

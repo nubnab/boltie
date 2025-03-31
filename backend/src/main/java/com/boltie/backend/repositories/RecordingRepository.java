@@ -14,7 +14,7 @@ public interface RecordingRepository extends JpaRepository<Recording, Long> {
 
     Optional<Recording> findFirstByUser_UsernameOrderByIdDesc(String username);
 
-    Optional<Recording> findRecordingByUser_UsernameAndId(String username, Long id);
+    Optional<Recording> findRecordingByUser_UsernameAndUserRecordingTrackingId(String username, Long id);
 
 
 }
