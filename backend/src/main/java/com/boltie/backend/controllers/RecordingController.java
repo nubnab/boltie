@@ -26,7 +26,7 @@ public class RecordingController {
 
     @GetMapping("/recordings/{username}/{recordingId}")
     public ResponseEntity<RecordingDto> getRecording(@PathVariable String username,
-                                                     @PathVariable Long recordingId,
+                                                     @PathVariable Integer recordingId,
                                                      HttpServletRequest request) {
 
         return ResponseEntity.ok(recordingFacadeService.getRecordingAndLogHistory(username, recordingId, request));

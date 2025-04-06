@@ -1,0 +1,43 @@
+.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(176px, 1fr));
+  gap: 10px;
+  padding: 10px;
+}
+
+.thumbnail-img {
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.thumbnail-img-container {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+
+mat-card-title {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-weight: bold;
+  font-size: 0.95rem;
+  line-height: 1rem;
+  text-align: center;
+  overflow: hidden;
+}
+
+mat-card {
+  box-shadow: none;
+  transition: all 0.05s ease;
+}
+
+mat-card:hover {
+  //background: #e1e1e2;
+  background: rgba(0, 92, 187, 0.8);
+  color: white;
+  cursor: pointer;
+  transform: translateY(-6px);
+  //border-left: 5px groove rgba(0, 92, 187, 0.8);
+  //border-bottom: 5px ridge rgba(0, 92, 187, 0.8);
+}

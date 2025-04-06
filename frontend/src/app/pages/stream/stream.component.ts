@@ -23,6 +23,8 @@ export type StreamData = {
 }
 
 export type MessageDto = {
+  chatRoomId: number;
+  senderId: number;
   senderName: string;
   content: string;
   sentAt: string;
@@ -57,7 +59,7 @@ export class StreamComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   sendIcon: MenuItem = {
     icon: "chevron_right",
-    label: "eh",
+    label: "send_icon",
     route: ''
   }
 
@@ -94,8 +96,7 @@ export class StreamComponent implements OnInit, AfterViewChecked, OnDestroy {
           })
         });
 
-        this.stompMessageSubscription =
-          this.rxStompService.watchMessages(data.id).subscribe((message) => {
+        this.stompMessageSubscription = this.rxStompService.watchMessages(data.id).subscribe((message) => {
           const receivedMessage: MessageDto = JSON.parse(message.body);
           this.messages.push(this.utcToLocal(receivedMessage));
         });

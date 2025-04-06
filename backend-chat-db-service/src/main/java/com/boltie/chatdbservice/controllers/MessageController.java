@@ -20,5 +20,4 @@ public class MessageController {
     public ResponseEntity<List<MessageDto>> getRecentMessages(@PathVariable Long id) {
         return ResponseEntity.ok(messageService.getRecentMessages(id));
     }
-
 }

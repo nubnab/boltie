@@ -27,4 +27,8 @@ public class Stream {
     @OneToOne(mappedBy = "stream", fetch = FetchType.EAGER)
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
 }

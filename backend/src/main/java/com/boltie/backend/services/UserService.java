@@ -54,6 +54,7 @@ public class UserService {
                 .role(Role.ROLE_USER)
                 .recordings(new ArrayList<>())
                 .watchHistory(new ArrayList<>())
+                .watchLaterList(new ArrayList<>())
                 .build();
 
         user.setStream(streamService.generateDefaultStream(user));

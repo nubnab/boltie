@@ -10,6 +10,16 @@
           <mat-card-title>{{recording.title}}</mat-card-title>
           <mat-card-subtitle>{{this.username}}</mat-card-subtitle>
         </div>
+        <button mat-icon-button aria-label="More Options" type="button" class="options-button"
+                [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="addToWatchLater(username, $index + 1)">
+            <mat-icon>schedule</mat-icon>
+            <span>Watch Later</span>
+          </button>
+        </mat-menu>
       </mat-card-title-group>
     </mat-card>
   }

@@ -29,7 +29,7 @@ public class RecordingService {
         return titles;
     }
 
-    public Recording getRecordingEntity(String username, Long recordingTrackingId) {
+    public Recording getRecordingEntity(String username, Integer recordingTrackingId) {
         if(recordingTrackingId <= 0) {
             throw new AppException("Invalid recording id: " + recordingTrackingId, HttpStatus.BAD_REQUEST);
         }

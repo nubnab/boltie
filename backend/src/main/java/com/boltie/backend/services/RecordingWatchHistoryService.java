@@ -14,10 +14,15 @@ public class RecordingWatchHistoryService {
     private final RecordingWatchHistoryRepository recordingWatchHistoryRepository;
 
     public void recordView(User viewer, Recording recording) {
-        recordingWatchHistoryRepository.save(RecordingWatchHistory.builder()
-                .viewedBy(viewer)
-                .recording(recording)
-                .build());
+        if(!isDuplicate(viewer, recording)) {
+            recordingWatchHistoryRepository.save(RecordingWatchHistory.builder()
+                    .viewedBy(viewer)
+                    .recording(recording)
+                    .build());
+        }
     }
 
+    private boolean isDuplicate(User viewer, Recording recording) {
+        return recordingWatchHistoryRepository.existsByViewedByAndRecording(viewer, recording);
+    }
 }

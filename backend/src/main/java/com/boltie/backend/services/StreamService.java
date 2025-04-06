@@ -34,6 +34,7 @@ public class StreamService {
     private final StreamRepository streamRepository;
     private final StreamMapper streamMapper;
     private final RestTemplate streamApiRestTemplate;
+    private final CategoryService categoryService;
 
     private String API_URL;
 
@@ -73,6 +74,7 @@ public class StreamService {
                 .streamKey(rtmpUrl)
                 .streamUrl(wsUrl)
                 .user(user)
+                .category(categoryService.getDefaultCategory())
                 .build();
     }
 

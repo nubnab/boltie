@@ -12,7 +12,7 @@ public interface StreamMapper {
     @Mapping(target = "streamUrl")
     StreamDto toStreamDto(Stream stream);
 
-    @Mapping(source = "streamKey", target = "key")
+    @Mapping(target = "key", source = "streamKey")
     StreamKeyDto toStreamKeyDto(Stream stream);
 
 }

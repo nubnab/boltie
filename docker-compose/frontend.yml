@@ -7,6 +7,6 @@ services:
     env_file:
       - ./env/frontend.env
     ports:
-      - "4200:80"
+      - "4201:80"
     depends_on:
       - backend-core

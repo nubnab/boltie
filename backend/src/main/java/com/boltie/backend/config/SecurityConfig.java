@@ -28,11 +28,12 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
+                //TODO: double check security matchers
                 .authorizeHttpRequests(
                         requests -> requests
                                 .requestMatchers("/login", "/register", "/refresh",
                                         "/streams", "streams/**", "recordings/**",
-                                        "/chat", "/history")
+                                        "/chat", "/history", "/watch-later", "/categories")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated())

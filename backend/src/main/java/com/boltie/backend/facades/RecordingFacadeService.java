@@ -8,6 +8,7 @@ import com.boltie.backend.mappers.RecordingMapper;
 import com.boltie.backend.services.RecordingService;
 import com.boltie.backend.services.RecordingWatchHistoryService;
 import com.boltie.backend.services.UserService;
+import com.boltie.backend.services.WatchLaterService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,10 +25,11 @@ public class RecordingFacadeService {
     private final UserAuthProvider userAuthProvider;
     private final UserService userService;
     private final RecordingMapper recordingMapper;
+    private final WatchLaterService watchLaterService;
 
 
     public RecordingDto getRecordingAndLogHistory(String username,
-                                     Long userRecordingTrackingId,
+                                     Integer userRecordingTrackingId,
                                      HttpServletRequest request) {
 
         String requesterUsername = userAuthProvider.getUsernameFromRequest(request);
@@ -35,9 +37,9 @@ public class RecordingFacadeService {
 
         if(requesterUsername != null) {
             User viewer = userService.getUserByUsername(requesterUsername);
+
             recordingWatchHistoryService.recordView(viewer, recording);
         }
-
         return recordingMapper.toRecordingDto(recording);
     }
 
@@ -52,6 +54,34 @@ public class RecordingFacadeService {
                     .add(recordingMapper.toRecordingDto(e.getRecording())));
 
             return watchHistory;
+        }
+        return null;
+    }
+
+    public void saveWatchLaterRecording(String username,
+                                        Integer userRecordingTrackingId,
+                                        HttpServletRequest request) {
+        String requesterUsername = userAuthProvider.getUsernameFromRequest(request);
+
+        if(requesterUsername != null) {
+            User viewer = userService.getUserByUsername(requesterUsername);
+            Recording recordingEntity = recordingService.getRecordingEntity(username, userRecordingTrackingId);
+
+            watchLaterService.addToWatchLater(viewer, recordingEntity);
+        }
+
+    }
+
+    public List<RecordingDto> getWatchLaterHistory(HttpServletRequest request) {
+        String requesterUsername = userAuthProvider.getUsernameFromRequest(request);
+
+        if(requesterUsername != null) {
+            User viewer = userService.getUserByUsername(requesterUsername);
+            List<RecordingDto> watchLaterHistory = new ArrayList<>();
+
+            viewer.getWatchLaterList().forEach(e -> watchLaterHistory
+                .add(recordingMapper.toRecordingDto(e.getRecording())));
+            return watchLaterHistory;
         }
         return null;
     }

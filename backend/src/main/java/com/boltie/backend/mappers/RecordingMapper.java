@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface RecordingMapper {
 
-    @Mapping(source = "user.username", target = "owner")
+    @Mapping(target = "owner", source = "user.username")
     RecordingDto toRecordingDto(Recording record);
 
 }

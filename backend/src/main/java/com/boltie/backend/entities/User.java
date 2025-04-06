@@ -41,4 +41,7 @@ public class User {
     @OneToMany(mappedBy = "viewedBy", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecordingWatchHistory> watchHistory;
 
+    @OneToMany(mappedBy = "savedBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WatchLater> watchLaterList;
+
 }

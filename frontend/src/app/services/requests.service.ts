@@ -54,4 +54,12 @@ export class RequestsService {
     return this.http.get<RecordingData[]>(`${this.apiUrl}/history`);
   }
 
+  addToWatchLater(username: string, userRecordingTrackingId: number) {
+    return this.http.post(`${this.apiUrl}/watch-later/${username}/${userRecordingTrackingId}`, {})
+  }
+
+  getWatchLater() {
+    return this.http.get<RecordingData[]>(`${this.apiUrl}/watch-later`);
+  }
+
 }
