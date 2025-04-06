@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {StreamDetails} from '../pages/home/home.component';
 import {RecordingData} from '../pages/watch-recording/watch-recording.component';
 import {MessageDto, StreamData, StreamTitle} from '../pages/stream/stream.component';
+import {Category} from '../pages/categories/categories.component';
 
 const env = window.__env;
 
@@ -17,6 +18,7 @@ export class RequestsService {
 
   private apiUrl = env.apiUrl;
   private messageDbUrl = env.messageDbUrl;
+  private cdnUrl = env.cdnUrl;
 
   getStreamByUsername(username: string) {
     return this.http.get<StreamData>(`${this.apiUrl}/streams/${username}`);
@@ -60,6 +62,14 @@ export class RequestsService {
 
   getWatchLater() {
     return this.http.get<RecordingData[]>(`${this.apiUrl}/watch-later`);
+  }
+
+  getCategories() {
+    return this.http.get<Category[]>(`${this.apiUrl}/categories`);
+  }
+
+  getCategoryContent(categoryUrl: string) {
+    return this.http.get<RecordingData[]>(`${this.apiUrl}/categories/${categoryUrl}`);
   }
 
 }

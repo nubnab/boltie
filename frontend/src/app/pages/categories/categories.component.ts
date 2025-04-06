@@ -1,11 +1,15 @@
-import {Component, inject} from '@angular/core';
-import {MatCard, MatCardSubtitle, MatCardTitle, MatCardTitleGroup} from '@angular/material/card';
-import {MatIconButton} from '@angular/material/button';
-import {MatIcon} from '@angular/material/icon';
-import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
-import {RecordingData} from '../watch-recording/watch-recording.component';
+import {Component, inject, OnInit} from '@angular/core';
+import {MatCard, MatCardTitle} from '@angular/material/card';
 import {RequestsService} from '../../services/requests.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
+
+export type Category = {
+  id: number;
+  name: string;
+  url: string;
+}
+
+const env = window.__env;
 
 @Component({
   selector: 'app-categories',
@@ -16,12 +20,26 @@ import {ActivatedRoute, Router} from '@angular/router';
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss'
 })
-export class CategoriesComponent {
-  username: string = '';
-  recordings: RecordingData[] = [];
+
+
+export class CategoriesComponent implements OnInit {
+
+  protected readonly env = env;
 
   private requestsService = inject(RequestsService);
   private router = inject(Router);
+
+  categories: Category[] = [];
+
+  ngOnInit() {
+    this.requestsService.getCategories().subscribe(categories => {
+      this.categories = categories;
+    })
+  }
+
+  navigateToCategory(categoryUrl: string) {
+    this.router.navigate([`/categories/${categoryUrl}`]);
+  }
 
 
 }

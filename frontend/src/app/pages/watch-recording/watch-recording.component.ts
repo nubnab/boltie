@@ -23,6 +23,7 @@ export class WatchRecordingComponent implements OnInit {
 
   username: string = '';
   recordingId: number = 0;
+  title: string = '';
 
   private route = inject(ActivatedRoute);
   private requestsService = inject(RequestsService);
@@ -38,7 +39,8 @@ export class WatchRecordingComponent implements OnInit {
       this.router.navigate([`/${this.username}/recordings`]);
     }
 
-    this.requestsService.getRecordingByUsernameAndId(this.username, this.recordingId).subscribe(res =>{
+    this.requestsService.getRecordingByUsernameAndId(this.username, this.recordingId).subscribe(res => {
+      this.title = res.title;
       const player = OvenPlayer.create('player_id', {
         sources: [{
           label: 'llhls-user-recordings',

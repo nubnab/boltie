@@ -4,6 +4,7 @@ import com.boltie.backend.dto.LoginDto;
 import com.boltie.backend.dto.RegisterDto;
 import com.boltie.backend.dto.UserDto;
 import com.boltie.backend.dto.UserRecordingsDto;
+import com.boltie.backend.entities.Category;
 import com.boltie.backend.entities.Recording;
 import com.boltie.backend.entities.User;
 import com.boltie.backend.enums.Role;
@@ -87,12 +88,15 @@ public class UserService {
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             String streamTitle = user.getStream().getTitle();
+            Category category = user.getStream().getCategory();
 
             for (String recordingTitle : recordingTitles) {
-                Recording recording = new Recording();
-                recording.setTitle(streamTitle);
-                recording.setFolderName(recordingTitle);
-                recording.setUser(user);
+                Recording recording = Recording.builder()
+                        .title(streamTitle)
+                        .folderName(recordingTitle)
+                        .user(user)
+                        .category(category)
+                        .build();
 
                 user.getRecordings().add(recording);
                 userRepository.save(user);

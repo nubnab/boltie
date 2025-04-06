@@ -58,6 +58,19 @@ public class RecordingService {
         throw new AppException("No recordings found for username: " + username, HttpStatus.NOT_FOUND);
     }
 
+    public List<RecordingDto> getRecordingsByCategory(String categoryUrl) {
+        Optional<List<Recording>> recordingList = recordingRepository.findAllByCategory_Url(categoryUrl);
+        List<RecordingDto> recordingDtoList = new ArrayList<>();
+
+        if(recordingList.isPresent()) {
+            for (Recording recording : recordingList.get()) {
+                recordingDtoList.add(recordingMapper.toRecordingDto(recording));
+            }
+            return recordingDtoList;
+        }
+        throw new AppException("No recordings found for url: " + categoryUrl, HttpStatus.NOT_FOUND);
+    }
+
     public void editCurrentRecordingTitle(String newTitle, String username) {
         Recording currentRecording = getCurrentRecordingEntity(username);
 

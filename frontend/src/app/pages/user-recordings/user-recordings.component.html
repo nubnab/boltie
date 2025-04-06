@@ -2,7 +2,7 @@
   @for (recording of recordings; track recording.folderName) {
     <mat-card (click)="navigateToVideo(username, $index + 1)">
       <div class="thumbnail-img-container">
-        <img class="thumbnail-img" src="{{baseUrl}}/{{username}}/{{recording.folderName}}/thumb.jpg" alt="img" />
+        <img class="thumbnail-img" src="{{window.__env.cdnUrl}}/{{username}}/{{recording.folderName}}/thumb.jpg" alt="img" />
       </div>
       <mat-card-title-group class="card-content-container">
         <img class="profile-img" mat-card-md-image src="/assets/default-profile-picture.png" alt="profile-img"/>

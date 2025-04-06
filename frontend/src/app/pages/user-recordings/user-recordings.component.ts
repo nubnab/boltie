@@ -25,10 +25,10 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
   styleUrl: './user-recordings.component.scss'
 })
 export class UserRecordingsComponent implements OnInit {
+  protected readonly window = window;
 
   username: string = '';
   recordings: RecordingData[] = [];
-  baseUrl: string = "http://192.168.1.2:9998";
 
   private requestsService = inject(RequestsService);
   private router = inject(Router);
@@ -51,5 +51,6 @@ export class UserRecordingsComponent implements OnInit {
   addToWatchLater(username: string, userRecordingTrackingId: number) {
     this.requestsService.addToWatchLater(username, userRecordingTrackingId).subscribe();
   }
+
 
 }

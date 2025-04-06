@@ -4,6 +4,7 @@ import {CategoriesComponent} from './pages/categories/categories.component';
 import {AboutComponent} from './pages/about/about.component';
 import {PageNotFoundComponent} from './pages/page-not-found/page-not-found.component';
 import {SettingsComponent} from './pages/settings/settings.component';
+import {CategoryContentComponent} from './pages/category-content/category-content.component';
 
 export const routes: Routes = [
   {path: 'live', pathMatch: 'full',
@@ -15,6 +16,7 @@ export const routes: Routes = [
       import('./pages/videos/videos.component')
         .then(m => m.VideosComponent)},
   {path: 'categories', pathMatch: 'full', component: CategoriesComponent},
+  {path: 'categories/:categoryUrl', pathMatch: 'full', component: CategoryContentComponent},
   {path: 'history', pathMatch: 'full',
     loadComponent: () =>
       import('./pages/history/history.component')

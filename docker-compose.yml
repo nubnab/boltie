@@ -1,5 +1,6 @@
 include:
   - path: "./docker-compose/nginx_cdn.yml"
+  - path: "./docker-compose/nginx_image_cdn.yml"
   - path: "./docker-compose/rabbitmq.yml"
   - path: "./docker-compose/ovenserver.yml"
   - path: "./docker-compose/core.yml"

@@ -3,6 +3,7 @@ interface Window {
     apiUrl: string;
     wsChatUrl: string;
     messageDbUrl: string;
+    cdnImageUrl: string;
     cdnUrl: string;
   },
   Hls: any;
