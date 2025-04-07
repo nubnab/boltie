@@ -1,6 +1,7 @@
 package com.boltie.backend.services;
 
 import com.boltie.backend.dto.RecordingDto;
+import com.boltie.backend.entities.Category;
 import com.boltie.backend.entities.Recording;
 import com.boltie.backend.exceptions.AppException;
 import com.boltie.backend.mappers.RecordingMapper;
@@ -75,6 +76,14 @@ public class RecordingService {
         Recording currentRecording = getCurrentRecordingEntity(username);
 
         currentRecording.setTitle(newTitle);
+
+        recordingRepository.save(currentRecording);
+    }
+
+    public void editCurrentRecordingCategory(Category category, String username) {
+        Recording currentRecording = getCurrentRecordingEntity(username);
+
+        currentRecording.setCategory(category);
 
         recordingRepository.save(currentRecording);
     }

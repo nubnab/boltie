@@ -3,6 +3,7 @@ package com.boltie.backend.services;
 import com.boltie.backend.dto.StreamDto;
 import com.boltie.backend.dto.StreamKeyDto;
 import com.boltie.backend.dto.StreamTitleDto;
+import com.boltie.backend.entities.Category;
 import com.boltie.backend.entities.Stream;
 import com.boltie.backend.entities.User;
 import com.boltie.backend.exceptions.AppException;
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +25,13 @@ import org.springframework.web.client.RestTemplate;
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class StreamService {
 
     private final OvenStreamKeyGenService ovenStreamKeyGenService;
@@ -116,6 +120,18 @@ public class StreamService {
                 HttpStatus.BAD_REQUEST);
     }
 
+    public void editStreamCategory(Category newCategory, String username) {
+        Optional<Stream> optionalStream = streamRepository.findStreamByUser_Username(username);
+
+        if (optionalStream.isPresent()) {
+            Stream stream = optionalStream.get();
+
+            stream.setCategory(newCategory);
+
+            streamRepository.save(stream);
+        }
+    }
+
     public List<StreamDto> getAllStreams() {
         List<Stream> streams = streamRepository.findAll();
         List<StreamDto> streamDtoList = new ArrayList<>();
@@ -128,7 +144,7 @@ public class StreamService {
         return streamDtoList;
     }
 
-    public List<StreamDto> getAllLiveStreams() throws JsonProcessingException {
+    public List<StreamDto> getAllLiveStreams() {
         List<Stream> streams = streamRepository.findAll();
         List<String> usernames = getLiveStreamUsernames();
         List<StreamDto> liveStreams = new ArrayList<>();
@@ -160,18 +176,41 @@ public class StreamService {
         return streamApiRestTemplate.getForEntity(String.format(API_URL + "/%s", username), String.class);
     }
 
-    private List<String> getLiveStreamUsernames() throws JsonProcessingException {
+    private List<String> getLiveStreamUsernames() {
 
-        ResponseEntity<String> liveStreams = getLiveStreamsFromApi();
+        try {
+            ResponseEntity<String> liveStreams = getLiveStreamsFromApi();
+            String body = liveStreams.getBody();
 
-        String body = liveStreams.getBody();
+            if(body == null) {
+                return Collections.emptyList();
+            }
+            ObjectMapper objectMapper = new ObjectMapper();
 
-        ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode responseArray = objectMapper.readTree(body).path("response");
 
-        JsonNode responseArray = objectMapper.readTree(body).path("response");
+            return objectMapper.convertValue(responseArray, new TypeReference<>(){});
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
 
-        return objectMapper.convertValue(responseArray, new TypeReference<>(){});
+    }
 
+    public List<StreamDto> getAllLiveStreamsFromCategory(String categoryUrl) {
+        List<String> liveUsers = getLiveStreamUsernames();
+        List<StreamDto> liveStreamsFromCategory = new ArrayList<>();
+
+        if(!liveUsers.isEmpty()) {
+            liveUsers.forEach(username -> {
+               streamRepository.findStreamByUser_UsernameAndCategory_Url(username, categoryUrl).ifPresent(stream -> {
+                   StreamDto streamDto = streamMapper.toStreamDto(stream);
+                   streamDto.setUsername(username);
+                   liveStreamsFromCategory.add(streamDto);
+               });
+            });
+            return liveStreamsFromCategory;
+        }
+        return Collections.emptyList();
     }
 
 }

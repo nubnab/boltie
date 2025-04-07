@@ -14,6 +14,8 @@ public class StreamDto {
     private Long id;
     private String username;
     private String title;
+    private String categoryName;
+    private String categoryUrl;
     private String streamUrl;
 
 }

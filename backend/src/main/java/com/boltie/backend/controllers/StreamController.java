@@ -1,5 +1,6 @@
 package com.boltie.backend.controllers;
 
+import com.boltie.backend.dto.CategoryDto;
 import com.boltie.backend.dto.StreamDto;
 import com.boltie.backend.dto.StreamKeyDto;
 import com.boltie.backend.dto.StreamTitleDto;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,9 +20,8 @@ public class StreamController {
 
     private final StreamFacadeService streamFacadeService;
 
-    //TODO: look into the exception
     @GetMapping("/streams")
-    public ResponseEntity<List<StreamDto>> getStreams() throws JsonProcessingException {
+    public ResponseEntity<List<StreamDto>> getStreams() {
         return ResponseEntity.ok(streamFacadeService.getAllStreams());
     }
 
@@ -43,5 +44,15 @@ public class StreamController {
 
     }
 
+    @PatchMapping("/streams/edit-category")
+    public ResponseEntity<?> editCategory(@RequestBody Long categoryId,
+                                                    HttpServletRequest request) {
+        streamFacadeService.editStreamCategory(categoryId, request);
+        return ResponseEntity.ok().build();
+    }
 
+    @GetMapping("/streams/category/{categoryUrl}")
+    public ResponseEntity<List<StreamDto>> getStreamForCategory(@PathVariable String categoryUrl) {
+        return ResponseEntity.ok(streamFacadeService.getAllStreamsFromCategory(categoryUrl));
+    }
 }

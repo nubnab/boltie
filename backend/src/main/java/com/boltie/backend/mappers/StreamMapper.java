@@ -10,6 +10,8 @@ import org.mapstruct.Mapping;
 public interface StreamMapper {
 
     @Mapping(target = "streamUrl")
+    @Mapping(target = "categoryName", source = "category.name")
+    @Mapping(target = "categoryUrl", source = "category.url")
     StreamDto toStreamDto(Stream stream);
 
     @Mapping(target = "key", source = "streamKey")

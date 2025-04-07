@@ -1,7 +1,7 @@
-import {AfterViewChecked, Component, computed, ElementRef, inject, OnDestroy, OnInit, ViewChild,} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {AfterViewChecked, Component, computed, inject, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {RequestsService} from '../../services/requests.service';
-import {FormsModule} from '@angular/forms';
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatButton, MatMiniFabButton} from '@angular/material/button';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {AuthService} from '../../services/auth.service';
@@ -9,7 +9,15 @@ import OvenPlayer from 'ovenplayer';
 import {RxstompService} from '../../services/rxstomp.service';
 import {MatIcon} from '@angular/material/icon';
 import {MenuItem} from '../../layout/navigation/custom-sidenav/custom-sidenav.component';
-import {Subscription} from 'rxjs';
+import {map, Observable, startWith, Subscription} from 'rxjs';
+import {
+  MatAutocomplete,
+  MatAutocompleteSelectedEvent,
+  MatAutocompleteTrigger,
+  MatOption
+} from '@angular/material/autocomplete';
+import {Category} from '../categories/categories.component';
+import {AsyncPipe} from '@angular/common';
 
 export type StreamTitle = {
   title: string;
@@ -19,6 +27,8 @@ export type StreamData = {
   id: number;
   username: string;
   title: string;
+  categoryName: string;
+  categoryUrl: string;
   streamUrl: string;
 }
 
@@ -43,6 +53,11 @@ export type SimpleMessageDto = {
     MatFormField,
     MatIcon,
     MatMiniFabButton,
+    ReactiveFormsModule,
+    MatAutocompleteTrigger,
+    MatAutocomplete,
+    MatOption,
+    AsyncPipe,
   ],
   templateUrl: './stream.component.html',
   styleUrl: './stream.component.scss'
@@ -52,9 +67,14 @@ export class StreamComponent implements OnInit, AfterViewChecked, OnDestroy {
   id: number = 0;
   username: string = '';
   isEditMode: boolean = false;
+  isCategoryEditMode: boolean = false;
+  categoryControl = new FormControl('');
+  filteredOptions: Observable<Category[]> = new Observable<Category[]>();
 
   streamTitle: string = '';
   streamLink: string = '';
+  categoryName: string = '';
+  categoryUrl: string = '';
   tempTitle: string = '';
 
   sendIcon: MenuItem = {
@@ -65,11 +85,13 @@ export class StreamComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   testMessage: SimpleMessageDto = { content: '' }
   messages: MessageDto[] = [];
+  categories: Category[] = [];
 
   private requestsService = inject(RequestsService);
   private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
   private rxStompService = inject(RxstompService);
+  private router = inject(Router);
 
   private routeParamsSubscription!: Subscription;
   private stompMessageSubscription!: Subscription;
@@ -77,6 +99,15 @@ export class StreamComponent implements OnInit, AfterViewChecked, OnDestroy {
 
 
   ngOnInit() {
+
+    this.requestsService.getCategories().subscribe(categories => {
+      this.categories = categories;
+    })
+
+    this.filteredOptions = this.categoryControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
+    );
 
     this.routeParamsSubscription = this.route.params.subscribe(params => {
       this.username = params['username'];
@@ -87,6 +118,8 @@ export class StreamComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.id = data.id;
         this.streamTitle = data.title;
         this.streamLink = data.streamUrl;
+        this.categoryName = data.categoryName
+        this.categoryUrl = data.categoryUrl
 
         this.initPlayer();
 
@@ -122,9 +155,16 @@ export class StreamComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.rxStompService.disconnect();
   }
 
+  private _filter(value: string): Category[] {
+    const filterValue = value.toLowerCase();
+
+    return this.categories.filter(category =>
+      category.name.toLowerCase().includes(filterValue)
+    );
+  }
+
   userIsStreamOwnerSignal = computed(() =>
     this.username === this.authService.currentUserSignal());
-
 
   editTitle() {
     this.tempTitle = this.streamTitle;
@@ -145,6 +185,14 @@ export class StreamComponent implements OnInit, AfterViewChecked, OnDestroy {
   cancelEdit() {
     this.streamTitle = this.tempTitle;
     this.isEditMode = false;
+  }
+
+  editCategory() {
+    this.isCategoryEditMode = true;
+  }
+
+  cancelCategoryEdit() {
+    this.isCategoryEditMode = false;
   }
 
   sendMessage() {
@@ -181,6 +229,26 @@ export class StreamComponent implements OnInit, AfterViewChecked, OnDestroy {
         file: this.streamLink,
       }]
     });
+  }
+
+  navigateToCategory(categoryUrl: string) {
+    this.router.navigate(['/categories/', categoryUrl]);
+  }
+
+  onCategorySelected(event: MatAutocompleteSelectedEvent): void {
+    const selectedCategory: Category = event.option.value;
+
+    this.categoryName = selectedCategory.name;
+    this.categoryUrl = selectedCategory.url;
+    this.isCategoryEditMode = false;
+
+    this.requestsService.editStreamCategory(selectedCategory.id).subscribe(res => {
+      console.log(res);
+    })
+  }
+
+  displayCategory(category: Category): string {
+    return category?.name || '';
   }
 
   //TODO: Stomp disconnect on destroy

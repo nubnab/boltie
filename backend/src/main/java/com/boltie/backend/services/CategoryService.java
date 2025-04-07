@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +29,10 @@ public class CategoryService {
 
     public Category getDefaultCategory() {
         return categoryRepository.findFirstById(1L);
+    }
+
+    public Optional<Category> getCategoryById(long id) {
+        return categoryRepository.findById(id);
     }
 
 }

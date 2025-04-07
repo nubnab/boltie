@@ -11,5 +11,7 @@ public interface StreamRepository extends JpaRepository<Stream, Long> {
 
     Optional<Stream> findStreamByUser_Username(String username);
 
+    Optional<Stream> findStreamByUser_UsernameAndCategory_Url(String username, String categoryUrl);
+
 
 }

@@ -23,6 +23,37 @@
     } @else {
       <h2 class="title"> {{ streamTitle }}</h2>
     }
+      <div class="category-select-container">
+        @if(userIsStreamOwnerSignal()){
+          @if(!isCategoryEditMode) {
+            <div class="current-category-container">
+              <a class="category" (click)="navigateToCategory(categoryUrl)">{{ categoryName }}</a>
+              <button
+                type="button"
+                aria-label="Edit"
+                mat-flat-button
+                (click)="editCategory()"
+                class="edit-btn">Edit</button>
+            </div>
+          } @else {
+            <div class="category-edit-container">
+              <mat-form-field [subscriptSizing]="'dynamic'" appearance="outline">
+                <input
+                  type="text"
+                  matInput
+                  [formControl]="categoryControl"
+                  [matAutocomplete]="auto">
+                <mat-autocomplete #auto='matAutocomplete' (optionSelected)="onCategorySelected($event)" [displayWith]="displayCategory">
+                  @for (category of filteredOptions | async; track category.id) {
+                    <mat-option [value]="category">{{category.name}}</mat-option>
+                  }
+                </mat-autocomplete>
+              </mat-form-field>
+              <button type="button" mat-flat-button class="cancel-btn" (click)="cancelCategoryEdit()">Cancel</button>
+            </div>
+          }
+        }
+      </div>
     </div>
   </div>
 
@@ -54,5 +85,4 @@
       </button>
     </div>
   </div>
-
 </div>

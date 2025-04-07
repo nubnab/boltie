@@ -7,7 +7,25 @@
 
 .title {
   margin: 0 0 0 1rem;
-  padding: 0.3rem 0 0 0;
+}
+
+.category-select-container {
+  margin-left: auto;
+}
+
+.current-category-container {
+  display: flex;
+  align-items: center;
+}
+
+.category {
+  font-weight: bold;
+  color: #005cbb;
+}
+
+.category:hover {
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .title-container {

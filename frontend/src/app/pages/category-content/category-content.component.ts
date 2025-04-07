@@ -3,6 +3,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {RequestsService} from '../../services/requests.service';
 import {RecordingData} from '../watch-recording/watch-recording.component';
 import {MatCard, MatCardSubtitle, MatCardTitle, MatCardTitleGroup} from '@angular/material/card';
+import {StreamDetails} from '../home/home.component';
+import {MatTab, MatTabGroup} from '@angular/material/tabs';
 
 @Component({
   selector: 'app-category-content',
@@ -10,7 +12,9 @@ import {MatCard, MatCardSubtitle, MatCardTitle, MatCardTitleGroup} from '@angula
     MatCard,
     MatCardSubtitle,
     MatCardTitle,
-    MatCardTitleGroup
+    MatCardTitleGroup,
+    MatTabGroup,
+    MatTab
   ],
   templateUrl: './category-content.component.html',
   styleUrl: './category-content.component.scss'
@@ -18,6 +22,7 @@ import {MatCard, MatCardSubtitle, MatCardTitle, MatCardTitleGroup} from '@angula
 export class CategoryContentComponent implements OnInit {
 
   categoryUrl: string = '';
+  streams: StreamDetails[] = [];
   recordings: RecordingData[] = [];
 
   private route = inject(ActivatedRoute);
@@ -29,6 +34,10 @@ export class CategoryContentComponent implements OnInit {
       this.categoryUrl = params['categoryUrl'];
     });
 
+    this.requestsService.getLiveStreamsFromCategory(this.categoryUrl).subscribe(res => {
+      this.streams = res;
+    })
+
     this.requestsService.getCategoryContent(this.categoryUrl).subscribe(res => {
       this.recordings = res;
     })
@@ -38,5 +47,16 @@ export class CategoryContentComponent implements OnInit {
     this.router.navigate([`/${username}/recordings/${userRecordingId}`]);
   }
 
+  navigateToStream(username: string) {
+    this.router.navigate([`/${username}`]);
+  }
+
+  generateThumbnail(username: string) {
+    //TODO: change api ip
+    return `http://192.168.1.2:20080/boltie/${username}_preview/thumb.jpg`;
+  }
+
   protected readonly window = window;
+
+
 }

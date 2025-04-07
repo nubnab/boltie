@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         requests -> requests
                                 .requestMatchers("/login", "/register", "/refresh",
-                                        "/streams", "streams/**", "recordings/**",
+                                        "/streams", "/streams/**", "/streams/category/**", "recordings/**",
                                         "/chat", "/history", "/watch-later",
                                         "/categories", "/categories/**")
                                 .permitAll()

@@ -28,6 +28,10 @@ export class RequestsService {
     return this.http.patch(`${this.apiUrl}/streams/edit-title`, newTitle);
   }
 
+  editStreamCategory(newCategory: number) {
+    return this.http.patch(`${this.apiUrl}/streams/edit-category`, newCategory);
+  }
+
   getRecordingsByUsername(username: string) {
     return this.http.get<RecordingData[]>(`${this.apiUrl}/recordings/${username}`);
   }
@@ -42,10 +46,6 @@ export class RequestsService {
 
   getStreamKey() {
     return this.http.get(`${this.apiUrl}/streams/key`);
-  }
-
-  getAuthTest() {
-    return this.http.get(`http://localhost:8082/test`);
   }
 
   getRecentMessages(chatRoomId: number) {
@@ -66,6 +66,10 @@ export class RequestsService {
 
   getCategories() {
     return this.http.get<Category[]>(`${this.apiUrl}/categories`);
+  }
+
+  getLiveStreamsFromCategory(categoryUrl: string) {
+    return this.http.get<StreamDetails[]>(`${this.apiUrl}/streams/category/${categoryUrl}`);
   }
 
   getCategoryContent(categoryUrl: string) {
