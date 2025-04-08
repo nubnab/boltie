@@ -1,17 +1,14 @@
 package com.boltie.backend.controllers;
 
-import com.boltie.backend.dto.CategoryDto;
 import com.boltie.backend.dto.StreamDto;
 import com.boltie.backend.dto.StreamKeyDto;
 import com.boltie.backend.dto.StreamTitleDto;
 import com.boltie.backend.facades.StreamFacadeService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

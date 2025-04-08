@@ -1,6 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {RequestsService} from '../../services/requests.service';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-videos',
@@ -13,11 +14,12 @@ import {RequestsService} from '../../services/requests.service';
 export class VideosComponent {
 
   private requestsService = inject(RequestsService);
+  private authService = inject(AuthService);
 
 
   getHistory() {
-    this.requestsService.getWatchHistory().subscribe(history => {
-      console.log(history);
-    })
+    console.log(this.authService.getCurrentUserRoles());
+    console.log(this.authService.isAdmin());
   }
+
 }

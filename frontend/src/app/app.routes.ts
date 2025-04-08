@@ -5,8 +5,15 @@ import {AboutComponent} from './pages/about/about.component';
 import {PageNotFoundComponent} from './pages/page-not-found/page-not-found.component';
 import {SettingsComponent} from './pages/settings/settings.component';
 import {CategoryContentComponent} from './pages/category-content/category-content.component';
+import {AdminComponent} from './pages/admin/admin.component';
+import {authGuard} from './guards/auth.guard';
 
 export const routes: Routes = [
+  {
+    path: 'admin',
+    pathMatch: 'full',
+    canActivate: [authGuard],
+    component: AdminComponent},
   {path: 'live', pathMatch: 'full',
     loadComponent: () =>
       import('./pages/live/live.component')

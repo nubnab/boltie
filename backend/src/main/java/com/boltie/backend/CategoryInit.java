@@ -4,6 +4,7 @@ import com.boltie.backend.entities.Category;
 import com.boltie.backend.repositories.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
+@Order(2)
 public class CategoryInit implements CommandLineRunner {
 
     private final CategoryRepository categoryRepository;

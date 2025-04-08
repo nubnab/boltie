@@ -4,6 +4,7 @@ import {StreamDetails} from '../pages/home/home.component';
 import {RecordingData} from '../pages/watch-recording/watch-recording.component';
 import {MessageDto, StreamData, StreamTitle} from '../pages/stream/stream.component';
 import {Category} from '../pages/categories/categories.component';
+import {Role, UserRoles} from '../pages/admin/admin.component';
 
 const env = window.__env;
 
@@ -18,7 +19,6 @@ export class RequestsService {
 
   private apiUrl = env.apiUrl;
   private messageDbUrl = env.messageDbUrl;
-  private cdnUrl = env.cdnUrl;
 
   getStreamByUsername(username: string) {
     return this.http.get<StreamData>(`${this.apiUrl}/streams/${username}`);
@@ -74,6 +74,14 @@ export class RequestsService {
 
   getCategoryContent(categoryUrl: string) {
     return this.http.get<RecordingData[]>(`${this.apiUrl}/categories/${categoryUrl}`);
+  }
+
+  getUserRoles() {
+    return this.http.get<UserRoles[]>(`${this.apiUrl}/users`);
+  }
+
+  changeUserRole(id: number, role: Role) {
+    return this.http.patch(`${this.apiUrl}/users/${id}`, role);
   }
 
 }

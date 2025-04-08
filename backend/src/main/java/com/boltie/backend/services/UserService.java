@@ -1,9 +1,6 @@
 package com.boltie.backend.services;
 
-import com.boltie.backend.dto.LoginDto;
-import com.boltie.backend.dto.RegisterDto;
-import com.boltie.backend.dto.UserDto;
-import com.boltie.backend.dto.UserRecordingsDto;
+import com.boltie.backend.dto.*;
 import com.boltie.backend.entities.Category;
 import com.boltie.backend.entities.Recording;
 import com.boltie.backend.entities.User;
@@ -125,6 +122,30 @@ public class UserService {
             return optionalUser.get();
         }
         throw new AppException("Unknown user", HttpStatus.NOT_FOUND);
+    }
+
+    public List<UserRoleDto> fetchUserRoles() {
+        List<UserRoleDto> userRoles = new ArrayList<>();
+
+        userRepository.findAll().forEach(user -> {
+            userRoles.add(userMapper.toUserRoleDto(user));
+        });
+
+        return userRoles;
+    }
+
+    public User getUserById(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            return optionalUser.get();
+        }
+        throw new AppException("Unknown user", HttpStatus.NOT_FOUND);
+    }
+
+    public void changeUserRole(Long id, Role role) {
+        User user = getUserById(id);
+        user.setRole(role);
+        userRepository.save(user);
     }
 
 }

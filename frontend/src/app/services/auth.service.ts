@@ -2,6 +2,7 @@ import {inject, Injectable, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
+import {JwtHelperService} from '@auth0/angular-jwt';
 
 const env = window.__env;
 
@@ -15,6 +16,7 @@ export class AuthService {
   private http = inject(HttpClient)
   private loginState = signal<boolean>(this.isLoggedIn());
   private currentUser = signal<string | null>(localStorage.getItem("username"));
+  private jwtHelper = new JwtHelperService();
 
   get loginStateSignal() {
     return this.loginState;
@@ -42,7 +44,7 @@ export class AuthService {
 
   isLoggedIn() {
     const token = this.getAuthToken();
-    if (!token) { return false;}
+    if (!token) { return false; }
     return !this.isTokenExpired(token);
   }
 
@@ -111,5 +113,17 @@ export class AuthService {
     localStorage.removeItem("refresh_token");
   }
 
+  getCurrentUserRoles(): string[] {
+    const token = this.getAuthToken();
+    if (!token || this.isTokenExpired(token)) { return []; }
+
+    const decodedToken = this.jwtHelper.decodeToken(token);
+
+    return decodedToken?.role || [];
+  }
+
+  isAdmin(): boolean {
+    return this.getCurrentUserRoles().includes('ADMIN');
+  }
 
 }
