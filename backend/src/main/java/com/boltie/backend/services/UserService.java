@@ -17,6 +17,7 @@ import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -147,5 +148,13 @@ public class UserService {
         user.setRole(role);
         userRepository.save(user);
     }
+
+    public List<UsernameDto> getAllUsernames() {
+        return userRepository.findAll()
+                .stream().map(userMapper::toUsernameDto).collect(Collectors.toList());
+    }
+
+
+
 
 }

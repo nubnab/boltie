@@ -7,7 +7,7 @@
           <mat-label>Username</mat-label>
           <input matInput formControlName="username" />
           @if (loginForm.get('username')?.hasError('minlength')) {
-            <mat-error>Username must be at least 5 characters!</mat-error>
+            <mat-error>Username must be at least 4 characters!</mat-error>
           }
         </mat-form-field>
       </p>

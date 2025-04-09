@@ -34,7 +34,7 @@ public class SecurityConfig {
                                 .requestMatchers("/login", "/register", "/refresh",
                                         "/streams", "/streams/**", "/streams/category/**", "recordings/**",
                                         "/chat", "/history", "/watch-later",
-                                        "/categories", "/categories/**")
+                                        "/categories", "/categories/**", "/usernames")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated())

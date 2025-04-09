@@ -5,6 +5,7 @@ import {RecordingData} from '../pages/watch-recording/watch-recording.component'
 import {MessageDto, StreamData, StreamTitle} from '../pages/stream/stream.component';
 import {Category} from '../pages/categories/categories.component';
 import {Role, UserRoles} from '../pages/admin/admin.component';
+import {UsernameDto} from '../pages/settings/settings.component';
 
 const env = window.__env;
 
@@ -80,8 +81,19 @@ export class RequestsService {
     return this.http.get<UserRoles[]>(`${this.apiUrl}/users`);
   }
 
+  getUsernames() {
+    return this.http.get<UsernameDto[]>(`${this.apiUrl}/usernames`);
+  }
+
   changeUserRole(id: number, role: Role) {
     return this.http.patch(`${this.apiUrl}/users/${id}`, role);
+  }
+
+  changeUsername(id: number, newUsername: string, password: string) {
+    const url = `${this.apiUrl}/users/${id}/edit-username`;
+    const body = { newUsername, password };
+
+    return this.http.patch(url, body);
   }
 
 }

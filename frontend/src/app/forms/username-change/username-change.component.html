@@ -1,0 +1,28 @@
+<mat-dialog-content class="dialog-container">
+  <h2 mat-dialog-title>Change username</h2>
+  <form [formGroup]="usernameChangeForm" class="form-container">
+    <mat-form-field appearance="outline">
+      <mat-label>New username</mat-label>
+      <input matInput formControlName="username" (input)="usernameChangeForm.get('username')?.markAsTouched()"/>
+      @if (usernameChangeForm.get('username')?.hasError('usernameTaken')) {
+        <mat-error>Username is taken!</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password" [type]="passwordHidden() ? 'password' : 'text'" />
+      <button mat-icon-button
+              type="button"
+              matSuffix
+              [attr.aria-label]="'Hide Password'"
+              (click)="togglePasswordVisibility($event)"
+              [attr.aria-pressed]="passwordHidden()">
+        <mat-icon>{{passwordHidden() ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions class="button-container">
+  <button mat-flat-button>Cancel</button>
+  <button mat-flat-button (click)="submitNameChangeRequest()">Submit</button>
+</mat-dialog-actions>

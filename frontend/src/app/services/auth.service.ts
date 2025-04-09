@@ -18,6 +18,8 @@ export class AuthService {
   private currentUser = signal<string | null>(localStorage.getItem("username"));
   private jwtHelper = new JwtHelperService();
 
+
+
   get loginStateSignal() {
     return this.loginState;
   }
