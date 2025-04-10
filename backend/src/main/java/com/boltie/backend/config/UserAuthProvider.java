@@ -27,7 +27,7 @@ public class UserAuthProvider {
     public String createToken(UserDto userDto) {
         //TODO: Replace Date with java.time impl
         final Date issuedAt = new Date();
-        final Date expiresAt = new Date(issuedAt.getTime() + 1000L * 60 * 15); //15 minutes
+        final Date expiresAt = new Date(issuedAt.getTime() + 1000L * 60 * 60); //60 minutes
 
         return createJWT(userDto, issuedAt, expiresAt);
     }
