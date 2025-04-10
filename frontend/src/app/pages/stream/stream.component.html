@@ -77,7 +77,7 @@
     </div>
     <div class="chat-input-container">
       <mat-form-field appearance="outline" class="chat-form" [subscriptSizing]="'dynamic'">
-        <input matNativeControl class="chat-input" [(ngModel)]="testMessage.content"
+        <input matNativeControl class="chat-input" [(ngModel)]="simpleMessage.content"
                (keydown.enter)="this.sendMessage()">
       </mat-form-field>
       <button mat-mini-fab type="button" class="send-button" (click)="this.sendMessage()">

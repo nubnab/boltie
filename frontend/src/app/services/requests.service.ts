@@ -13,13 +13,11 @@ const env = window.__env;
   providedIn: 'root'
 })
 export class RequestsService {
-
   private http = inject(HttpClient)
-
-  constructor() { }
-
   private apiUrl = env.apiUrl;
   private messageDbUrl = env.messageDbUrl;
+
+  constructor() { }
 
   getStreamByUsername(username: string) {
     return this.http.get<StreamData>(`${this.apiUrl}/streams/${username}`);
@@ -31,6 +29,10 @@ export class RequestsService {
 
   editStreamCategory(newCategory: number) {
     return this.http.patch(`${this.apiUrl}/streams/edit-category`, newCategory);
+  }
+
+  getRecordings() {
+    return this.http.get<RecordingData[]>(`${this.apiUrl}/recordings`);
   }
 
   getRecordingsByUsername(username: string) {
@@ -89,8 +91,8 @@ export class RequestsService {
     return this.http.patch(`${this.apiUrl}/users/${id}`, role);
   }
 
-  changeUsername(id: number, newUsername: string, password: string) {
-    const url = `${this.apiUrl}/users/${id}/edit-username`;
+  changeUsername(newUsername: string, password: string) {
+    const url = `${this.apiUrl}/edit-username`;
     const body = { newUsername, password };
 
     return this.http.patch(url, body);

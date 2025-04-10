@@ -16,13 +16,12 @@ import {RecordingData} from '../watch-recording/watch-recording.component';
   styleUrl: './watch-later.component.scss'
 })
 export class WatchLaterComponent implements OnInit {
+  protected readonly window = window;
 
   private requestsService = inject(RequestsService);
   private router = inject(Router);
 
-  baseUrl: string = "http://192.168.1.2:9998";
   recordings: RecordingData[] = [];
-
 
   ngOnInit() {
     this.requestsService.getWatchLater().subscribe((recData) => {

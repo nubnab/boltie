@@ -1,45 +1,41 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {FormsModule} from '@angular/forms';
 import {RequestsService} from '../../services/requests.service';
 import {RecordingData} from '../watch-recording/watch-recording.component';
 import {MatCard, MatCardMdImage, MatCardSubtitle, MatCardTitle, MatCardTitleGroup} from '@angular/material/card';
 import {MatIcon} from '@angular/material/icon';
 import {MatIconButton} from '@angular/material/button';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
+import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-user-recordings',
+  selector: 'app-recordings',
   imports: [
+    FormsModule,
     MatCard,
     MatCardMdImage,
-    MatCardTitleGroup,
-    MatCardTitle,
     MatCardSubtitle,
+    MatCardTitle,
+    MatCardTitleGroup,
     MatIcon,
     MatIconButton,
-    MatMenuTrigger,
     MatMenu,
     MatMenuItem,
+    MatMenuTrigger
   ],
-  templateUrl: './user-recordings.component.html',
-  styleUrl: './user-recordings.component.scss'
+  templateUrl: './recordings.component.html',
+  styleUrl: './recordings.component.scss'
 })
-export class UserRecordingsComponent implements OnInit {
+export class RecordingsComponent implements OnInit {
   protected readonly window = window;
 
   private requestsService = inject(RequestsService);
   private router = inject(Router);
-  private route = inject(ActivatedRoute);
 
-  username: string = '';
   recordings: RecordingData[] = [];
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-     this.username = params['username'];
-    });
-
-    this.requestsService.getRecordingsByUsername(this.username).subscribe(recData => {
+    this.requestsService.getRecordings().subscribe(recData => {
       this.recordings = recData.reverse();
     });
   }

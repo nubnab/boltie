@@ -9,6 +9,8 @@ import org.mapstruct.Mapping;
 public interface RecordingMapper {
 
     @Mapping(target = "owner", source = "user.username")
+    @Mapping(target = "categoryName", source = "category.name")
+    @Mapping(target = "categoryUrl", source = "category.url")
     RecordingDto toRecordingDto(Recording record);
 
 }

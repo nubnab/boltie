@@ -10,3 +10,19 @@
   display: flex;
   align-items: center;
 }
+
+.current-category-container {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.category {
+  font-weight: bold;
+  color: #005cbb;
+}
+
+.category:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}

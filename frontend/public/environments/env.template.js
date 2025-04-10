@@ -6,4 +6,5 @@
   window.__env.messageDbUrl = '${MESSAGE_DB_URL}';
   window.__env.cdnImageUrl = '${CDN_IMAGE_URL}';
   window.__env.cdnUrl = '${CDN_URL}';
+  window.__env.thumbnailUrl = '${THUMBNAIL_URL}';
 })(this);

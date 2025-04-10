@@ -3,15 +3,16 @@ package com.boltie.backend.controllers;
 import com.boltie.backend.dto.LoginDto;
 import com.boltie.backend.dto.RegisterDto;
 import com.boltie.backend.dto.UserDto;
+import com.boltie.backend.dto.UsernameChangeDto;
 import com.boltie.backend.facades.UserFacadeService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -72,4 +73,10 @@ public class AuthController {
         return ResponseEntity.created(URI.create("/users/" + user.getId())).body(user);
     }
 
+    @PatchMapping("/edit-username")
+    public ResponseEntity<?> changeUsername(@RequestBody UsernameChangeDto usernameChangeDto,
+                                            HttpServletRequest request) {
+        userFacadeService.changeUsername(usernameChangeDto, request);
+        return ResponseEntity.ok().build();
+    }
 }

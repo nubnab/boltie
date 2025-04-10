@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import {HomeComponent} from './pages/home/home.component';
 import {CategoriesComponent} from './pages/categories/categories.component';
-import {AboutComponent} from './pages/about/about.component';
 import {PageNotFoundComponent} from './pages/page-not-found/page-not-found.component';
 import {SettingsComponent} from './pages/settings/settings.component';
 import {CategoryContentComponent} from './pages/category-content/category-content.component';
@@ -10,18 +9,14 @@ import {authGuard} from './guards/auth.guard';
 
 export const routes: Routes = [
   {
-    path: 'admin',
+    path: 'dashboard',
     pathMatch: 'full',
     canActivate: [authGuard],
     component: AdminComponent},
-  {path: 'live', pathMatch: 'full',
+  {path: 'recordings', pathMatch: 'full',
     loadComponent: () =>
-      import('./pages/live/live.component')
-        .then(m => m.LiveComponent)},
-  {path: 'videos', pathMatch: 'full',
-    loadComponent: () =>
-      import('./pages/videos/videos.component')
-        .then(m => m.VideosComponent)},
+      import('./pages/recordings/recordings.component')
+        .then(m => m.RecordingsComponent)},
   {path: 'categories', pathMatch: 'full', component: CategoriesComponent},
   {path: 'categories/:categoryUrl', pathMatch: 'full', component: CategoryContentComponent},
   {path: 'history', pathMatch: 'full',
@@ -32,7 +27,6 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/watch-later/watch-later.component')
         .then(m => m.WatchLaterComponent)},
-  {path: 'about', pathMatch: 'full', component: AboutComponent},
   {path: '', pathMatch: 'full', component: HomeComponent},
   {path: 'home', pathMatch: 'full', redirectTo: ''},
   {path: 'settings', pathMatch: 'full', component: SettingsComponent},

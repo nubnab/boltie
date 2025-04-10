@@ -19,9 +19,9 @@ export type UsernameDto = {
   styleUrl: './settings.component.scss'
 })
 export class SettingsComponent {
-
   private requestsService = inject(RequestsService);
   private authService = inject(AuthService);
+
   streamKeyInfo: string = "Show Key";
 
   dialog = inject(MatDialog);

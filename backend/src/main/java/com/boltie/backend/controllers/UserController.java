@@ -2,7 +2,6 @@ package com.boltie.backend.controllers;
 
 import com.boltie.backend.dto.RoleChangeDto;
 import com.boltie.backend.dto.UserRoleDto;
-import com.boltie.backend.dto.UsernameChangeDto;
 import com.boltie.backend.dto.UsernameDto;
 import com.boltie.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -34,12 +33,6 @@ public class UserController {
     public ResponseEntity<?> changeUserRole(@PathVariable("id") Long id,
                                             @RequestBody RoleChangeDto role) {
         userService.changeUserRole(id, role.role());
-        return ResponseEntity.ok().build();
-    }
-
-    @PatchMapping("/users/{id}/edit-username")
-    public ResponseEntity<?> changeUsername(@PathVariable("id") Long id,
-                                            @RequestBody UsernameChangeDto usernameChangeDto) {
         return ResponseEntity.ok().build();
     }
 

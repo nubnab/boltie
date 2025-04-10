@@ -1,5 +1,6 @@
 package com.boltie.backend.services;
 
+import com.boltie.backend.config.UserAuthProvider;
 import com.boltie.backend.dto.*;
 import com.boltie.backend.entities.Category;
 import com.boltie.backend.entities.Recording;
@@ -102,21 +103,6 @@ public class UserService {
         }
     }
 
-    public void changeStreamAndRecordingTitle(String newTitle, String username) {
-        User user = getUserByUsername(username);
-        user.getStream().setTitle(newTitle);
-        user.getRecordings().getLast().setTitle(newTitle);
-
-        userRepository.save(user);
-    }
-
-    public void changeStreamTitle(String newTitle, String username) {
-        User user = getUserByUsername(username);
-        user.getStream().setTitle(newTitle);
-
-        userRepository.save(user);
-    }
-
     public User getUserByUsername(String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
         if (optionalUser.isPresent()) {
@@ -154,7 +140,9 @@ public class UserService {
                 .stream().map(userMapper::toUsernameDto).collect(Collectors.toList());
     }
 
-
-
+    public void saveUser(User user) {
+        user.setStream(streamService.generateDefaultStream(user));
+        userRepository.save(user);
+    }
 
 }

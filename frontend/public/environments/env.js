@@ -6,4 +6,5 @@
   window.__env.messageDbUrl = "http://localhost:8083";
   window.__env.cdnImageUrl = "http://localhost:9997";
   window.__env.cdnUrl = "http://localhost:9998";
+  window.__env.thumbnailUrl = "http://localhost:20080";
 })(this);

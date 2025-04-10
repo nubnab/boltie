@@ -1,5 +1,4 @@
 import { Component, inject, OnDestroy, OnInit} from '@angular/core';
-import {AuthService} from '../../services/auth.service';
 import {RequestsService} from '../../services/requests.service';
 import {Subject, takeUntil} from 'rxjs';
 import {Router} from '@angular/router';
@@ -30,14 +29,13 @@ export type StreamDetails = {
 
 
 export class HomeComponent implements OnInit, OnDestroy {
-  streams: StreamDetails[] = [];
-  private destroy$= new Subject<void>();
+  protected readonly window = window;
 
-  private authService = inject(AuthService);
+  private destroy$= new Subject<void>();
   private requestsService = inject(RequestsService);
   private router = inject(Router);
 
-  loginState = this.authService.loginStateSignal;
+  streams: StreamDetails[] = [];
 
   ngOnInit() {
     this.getStreams();
@@ -52,13 +50,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     return this.requestsService.getLiveStreamInfo()
       .pipe(takeUntil(this.destroy$))
       .subscribe((streams) => {
-      this.streams = streams;
+      this.streams = streams.reverse();
     });
   }
 
   generateThumbnail(username: string) {
-    //TODO: change api ip
-    return `http://192.168.1.2:20080/boltie/${username}_preview/thumb.jpg`;
+    return `${window.__env.thumbnailUrl}/boltie/${username}_preview/thumb.jpg`;
   }
 
   navigateToStream(username: string) {

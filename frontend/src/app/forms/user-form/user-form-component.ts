@@ -39,6 +39,10 @@ export class UserFormComponent {
     loginForm: FormGroup;
     registerForm: FormGroup;
 
+    loginPasswordHidden = signal(true);
+    registerPasswordHidden = signal(true);
+    confirmPasswordHidden = signal(true);
+
     constructor(private formBuilder: FormBuilder) {
       this.loginForm = this.formBuilder.group({
         username: ['', [Validators.required]],
@@ -57,10 +61,6 @@ export class UserFormComponent {
     toggleForm() {
       this.isLogin = !this.isLogin;
     }
-
-    loginPasswordHidden = signal(true);
-    registerPasswordHidden = signal(true);
-    confirmPasswordHidden = signal(true);
 
     hideLoginPassword(event: MouseEvent) {
       this.loginPasswordHidden.set(!this.loginPasswordHidden());

@@ -19,6 +19,11 @@ public class RecordingController {
     private final RecordingService recordingService;
     private final RecordingFacadeService recordingFacadeService;
 
+    @GetMapping("/recordings")
+    public ResponseEntity<List<RecordingDto>> getAllRecordings() {
+        return ResponseEntity.ok(recordingService.getAllRecordings());
+    }
+
     @GetMapping("/recordings/{username}")
     public ResponseEntity<List<RecordingDto>> getRecordings(@PathVariable String username) {
         return ResponseEntity.ok(recordingService.getRecordings(username));

@@ -5,6 +5,7 @@ interface Window {
     messageDbUrl: string;
     cdnImageUrl: string;
     cdnUrl: string;
+    thumbnailUrl: string;
   },
   Hls: any;
 }

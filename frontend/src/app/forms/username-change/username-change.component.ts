@@ -1,6 +1,6 @@
 import {Component, Inject, inject, signal} from '@angular/core';
 import {
-  MAT_DIALOG_DATA,
+  MAT_DIALOG_DATA, MatDialog,
   MatDialogActions,
   MatDialogContent,
   MatDialogTitle
@@ -11,7 +11,6 @@ import {MatError, MatFormField, MatLabel, MatSuffix} from '@angular/material/for
 import {MatIcon} from '@angular/material/icon';
 import {MatInput} from '@angular/material/input';
 import {RequestsService} from '../../services/requests.service';
-import {JwtHelperService} from '@auth0/angular-jwt';
 import {AuthService} from '../../services/auth.service';
 import {UsernameDto} from '../../pages/settings/settings.component';
 import UsernameTakenValidator from '../../validators/username-taken.validator';
@@ -41,11 +40,11 @@ export class UsernameChangeComponent {
 
   private requestsService = inject(RequestsService);
   private authService = inject(AuthService);
-  private jwtHelper = new JwtHelperService();
 
   passwordHidden = signal(true);
 
   usernameChangeForm: FormGroup;
+  dialog = inject(MatDialog);
 
   constructor(private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: UsernameDto[]) {
     this.usernameChangeForm = this.formBuilder.group({
@@ -65,19 +64,11 @@ export class UsernameChangeComponent {
     const username: string = (this.usernameChangeForm.get('username')?.value).toLowerCase();
     const password: string = this.usernameChangeForm.get('password')?.value;
 
-
-    //const authToken = this.authService.getAuthToken();
-//
-    //if(authToken != null) {
-    //  const userId: number = this.jwtHelper.decodeToken(authToken).userId
-//
-    //  this.requestsService.changeUsername(userId, username, password).subscribe({
-    //      next: (result) => {
-    //        this.usernameChangeForm.reset();
-    //      }
-    //    })
-    //}
-
+    this.requestsService.changeUsername(username, password).subscribe({
+      next: (result) => {
+        this.authService.logout();
+        this.dialog.closeAll();
+      }
+    })
   }
-
 }

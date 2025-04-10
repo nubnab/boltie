@@ -28,6 +28,10 @@ function confirmPasswordValidator(): ValidatorFn {
     const password = control.parent?.get('password');
     const confirmPassword = control.parent?.get('confirmPassword');
 
+    password?.valueChanges.subscribe(() => {
+      confirmPassword?.updateValueAndValidity();
+    });
+
     return password?.value === confirmPassword?.value ? null : { mismatch: true };
 
   }

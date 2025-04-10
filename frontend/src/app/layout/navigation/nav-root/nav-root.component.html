@@ -24,6 +24,9 @@
               [matMenuTriggerFor]="menu">
         <img src="/assets/default-profile-picture.png"/>
         <mat-menu #menu="matMenu" class="profile-menu">
+          @if (getAuthService.isAdmin()){
+            <button mat-menu-item [routerLink]="'/dashboard'">Admin Dashboard</button>
+          }
           <button mat-menu-item [routerLink]="getAuthService.currentUserSignal()">My Channel</button>
           <button mat-menu-item [routerLink]="getAuthService.currentUserSignal() + '/recordings'">My Recordings</button>
           <button mat-menu-item [routerLink]="'settings'">Settings</button>

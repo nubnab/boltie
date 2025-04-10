@@ -1,8 +1,11 @@
 package com.boltie.backend;
 
+import com.boltie.backend.entities.Stream;
 import com.boltie.backend.entities.User;
 import com.boltie.backend.enums.Role;
 import com.boltie.backend.repositories.UserRepository;
+import com.boltie.backend.services.MessageQueueService;
+import com.boltie.backend.services.StreamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -19,6 +22,8 @@ public class UserInit implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final StreamService streamService;
+    private final MessageQueueService messageQueueService;
 
 
     @Override
@@ -35,6 +40,10 @@ public class UserInit implements CommandLineRunner {
                     .watchHistory(new ArrayList<>())
                     .watchLaterList(new ArrayList<>())
                     .build();
+
+            admin.setStream(streamService.generateDefaultStream(admin));
+
+            messageQueueService.publishChatCreationRequest(admin.getId());
 
             userRepository.save(admin);
         }

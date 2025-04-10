@@ -105,7 +105,7 @@ mat-form-field {
   font-size: 0.85rem;
   line-height: 24px;
   display: flex;
-  overflow-x: hidden; //will need better handling of message overflow
+  overflow-x: hidden;
 }
 
 .message-timestamp {
@@ -142,7 +142,6 @@ mat-form-field {
   box-shadow: none;
   height: 100%;
   padding: 0;
-  //TODO: redundant
   @include mat.button-overrides((
     filled-container-color: white,
     filled-label-text-size: 2px,

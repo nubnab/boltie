@@ -1,37 +1,3 @@
-.responsive-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 10px;
-  padding: 10px;
-}
-
-.thumbnail-img {
-  width: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.thumbnail-img-container {
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.profile-img {
-  width: 42px;
-  height: 42px;
-  border-radius: 100%;
-  order: -1;
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-//.profile-img-container {
-//  width: 42px;
-//  display: flex;
-//  align-items: center;
-//  margin-left: 12px;
-//  overflow: hidden;
-//}
 
 .card-content-container {
   padding: 4px;

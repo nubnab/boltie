@@ -64,18 +64,29 @@ export type SimpleMessageDto = {
 })
 
 export class StreamComponent implements OnInit, AfterViewChecked, OnDestroy {
+  private requestsService = inject(RequestsService);
+  private authService = inject(AuthService);
+  private route = inject(ActivatedRoute);
+  private rxStompService = inject(RxstompService);
+  private router = inject(Router);
+  private routeParamsSubscription!: Subscription;
+  private stompMessageSubscription!: Subscription;
+  private player: any;
+
   id: number = 0;
   username: string = '';
   isEditMode: boolean = false;
   isCategoryEditMode: boolean = false;
   categoryControl = new FormControl('');
   filteredOptions: Observable<Category[]> = new Observable<Category[]>();
-
   streamTitle: string = '';
   streamLink: string = '';
   categoryName: string = '';
   categoryUrl: string = '';
   tempTitle: string = '';
+  simpleMessage: SimpleMessageDto = { content: '' }
+  messages: MessageDto[] = [];
+  categories: Category[] = [];
 
   sendIcon: MenuItem = {
     icon: "chevron_right",
@@ -83,22 +94,12 @@ export class StreamComponent implements OnInit, AfterViewChecked, OnDestroy {
     route: ''
   }
 
-  testMessage: SimpleMessageDto = { content: '' }
-  messages: MessageDto[] = [];
-  categories: Category[] = [];
-
-  private requestsService = inject(RequestsService);
-  private authService = inject(AuthService);
-  private route = inject(ActivatedRoute);
-  private rxStompService = inject(RxstompService);
-  private router = inject(Router);
-
-  private routeParamsSubscription!: Subscription;
-  private stompMessageSubscription!: Subscription;
-  private player: any;
-
+  userIsStreamOwnerSignal = computed(() =>
+    this.username === this.authService.currentUserSignal());
 
   ngOnInit() {
+
+    this.rxStompService.initSock();
 
     this.requestsService.getCategories().subscribe(categories => {
       this.categories = categories;
@@ -155,16 +156,7 @@ export class StreamComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.rxStompService.disconnect();
   }
 
-  private _filter(value: string): Category[] {
-    const filterValue = value.toLowerCase();
 
-    return this.categories.filter(category =>
-      category.name.toLowerCase().includes(filterValue)
-    );
-  }
-
-  userIsStreamOwnerSignal = computed(() =>
-    this.username === this.authService.currentUserSignal());
 
   editTitle() {
     this.tempTitle = this.streamTitle;
@@ -176,7 +168,7 @@ export class StreamComponent implements OnInit, AfterViewChecked, OnDestroy {
       title: this.streamTitle,
     }
     this.requestsService.editStreamTitle(newTitle).subscribe(res => {
-      console.log(res); // return new title and set it
+      console.log(res); //todo: return new title and set it
     })
 
     this.isEditMode = false;
@@ -196,39 +188,10 @@ export class StreamComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   sendMessage() {
-    if(this.testMessage.content.trim()){
-      this.rxStompService.sendMessage('/app/chat/send/' + this.id, this.testMessage);
-      this.testMessage = { content: '' };
+    if(this.simpleMessage.content.trim()){
+      this.rxStompService.sendMessage('/app/chat/send/' + this.id, this.simpleMessage);
+      this.simpleMessage = { content: '' };
     }
-  }
-
-  private utcToLocal(message: MessageDto): MessageDto {
-    const utcTime = new Date(message.sentAt);
-    message.sentAt = utcTime.toLocaleTimeString('en-GB', {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    });
-
-    return message;
-  }
-
-  private autoScroll() {
-    const chatContainer = document.getElementById('chatContainer');
-
-    if(chatContainer) {
-      chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-  }
-
-  private initPlayer() {
-    this.player = OvenPlayer.create('player_id', {
-      sources: [{
-        label: 'webrtc',
-        type: 'webrtc',
-        file: this.streamLink,
-      }]
-    });
   }
 
   navigateToCategory(categoryUrl: string) {
@@ -243,7 +206,7 @@ export class StreamComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.isCategoryEditMode = false;
 
     this.requestsService.editStreamCategory(selectedCategory.id).subscribe(res => {
-      console.log(res);
+      console.log("Category changed.")
     })
   }
 
@@ -251,7 +214,41 @@ export class StreamComponent implements OnInit, AfterViewChecked, OnDestroy {
     return category?.name || '';
   }
 
-  //TODO: Stomp disconnect on destroy
-  //TODO: forbid empty messages
+  private _filter(value: string): Category[] {
+    const filterValue = value.toLowerCase();
+
+    return this.categories.filter(category =>
+      category.name.toLowerCase().includes(filterValue)
+    );
+  }
+
+  private initPlayer() {
+    this.player = OvenPlayer.create('player_id', {
+      sources: [{
+        label: 'webrtc',
+        type: 'webrtc',
+        file: this.streamLink,
+      }]
+    });
+  }
+
+  private autoScroll() {
+    const chatContainer = document.getElementById('chatContainer');
+
+    if(chatContainer) {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+  }
+
+  private utcToLocal(message: MessageDto): MessageDto {
+    const utcTime = new Date(message.sentAt);
+    message.sentAt = utcTime.toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
+
+    return message;
+  }
 
 }

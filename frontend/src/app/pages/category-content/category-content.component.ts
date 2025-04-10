@@ -20,14 +20,15 @@ import {MatTab, MatTabGroup} from '@angular/material/tabs';
   styleUrl: './category-content.component.scss'
 })
 export class CategoryContentComponent implements OnInit {
-
-  categoryUrl: string = '';
-  streams: StreamDetails[] = [];
-  recordings: RecordingData[] = [];
+  protected readonly window = window;
 
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private requestsService = inject(RequestsService);
+
+  categoryUrl: string = '';
+  streams: StreamDetails[] = [];
+  recordings: RecordingData[] = [];
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -35,11 +36,11 @@ export class CategoryContentComponent implements OnInit {
     });
 
     this.requestsService.getLiveStreamsFromCategory(this.categoryUrl).subscribe(res => {
-      this.streams = res;
+      this.streams = res.reverse();
     })
 
     this.requestsService.getCategoryContent(this.categoryUrl).subscribe(res => {
-      this.recordings = res;
+      this.recordings = res.reverse();
     })
   }
 
@@ -52,11 +53,7 @@ export class CategoryContentComponent implements OnInit {
   }
 
   generateThumbnail(username: string) {
-    //TODO: change api ip
-    return `http://192.168.1.2:20080/boltie/${username}_preview/thumb.jpg`;
+    return `${window.__env.thumbnailUrl}/boltie/${username}_preview/thumb.jpg`;
   }
-
-  protected readonly window = window;
-
 
 }

@@ -23,7 +23,6 @@ const env = window.__env;
 
 
 export class CategoriesComponent implements OnInit {
-
   protected readonly env = env;
 
   private requestsService = inject(RequestsService);
@@ -40,6 +39,4 @@ export class CategoriesComponent implements OnInit {
   navigateToCategory(categoryUrl: string) {
     this.router.navigate([`/categories/${categoryUrl}`]);
   }
-
-
 }

@@ -5,18 +5,6 @@
   padding: 10px;
 }
 
-.thumbnail-img {
-  width: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.thumbnail-img-container {
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-
 mat-card-title {
   padding-top: 10px;
   padding-bottom: 10px;
@@ -38,6 +26,4 @@ mat-card:hover {
   color: white;
   cursor: pointer;
   transform: translateY(-6px);
-  //border-left: 5px groove rgba(0, 92, 187, 0.8);
-  //border-bottom: 5px ridge rgba(0, 92, 187, 0.8);
 }

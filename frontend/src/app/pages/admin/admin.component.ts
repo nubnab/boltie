@@ -45,9 +45,10 @@ export type Role = {
   styleUrl: './admin.component.scss'
 })
 export class AdminComponent {
-  userFormControl = new FormControl('');
   private requestsService = inject(RequestsService);
   private _snackBar = inject(MatSnackBar);
+
+  userFormControl = new FormControl('');
   userRoles: UserRoles[] = [];
   filteredUsers: Observable<UserRoles[]> = new Observable<UserRoles[]>();
   selectedUser: UserRoles = { id: 0, username: '', role: '', };
@@ -62,29 +63,11 @@ export class AdminComponent {
     return '';
   }
 
-  private _filter(value: string | UserRoles): UserRoles[] {
-    if (typeof value !== 'string') {
-      return this.userRoles;
-    }
-    let filteredValue = value.toLowerCase();
-
-    return this.userRoles.filter(userRole =>
-      userRole.username.toLowerCase().includes(filteredValue)
-    );
-  }
-
   getUserRoles() {
     this.requestsService.getUserRoles().subscribe(userRoles => {
       this.userRoles = userRoles;
       this.initFilter();
     });
-  }
-
-  private initFilter() {
-    this.filteredUsers = this.userFormControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
-    );
   }
 
   onUserSelected(event: MatAutocompleteSelectedEvent): void {
@@ -99,6 +82,24 @@ export class AdminComponent {
 
   private openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {duration: 3000});
+  }
+
+  private _filter(value: string | UserRoles): UserRoles[] {
+    if (typeof value !== 'string') {
+      return this.userRoles;
+    }
+    let filteredValue = value.toLowerCase();
+
+    return this.userRoles.filter(userRole =>
+      userRole.username.toLowerCase().includes(filteredValue)
+    );
+  }
+
+  private initFilter() {
+    this.filteredUsers = this.userFormControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
+    );
   }
 
 }

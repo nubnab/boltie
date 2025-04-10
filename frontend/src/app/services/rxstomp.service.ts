@@ -9,12 +9,10 @@ const env = window.__env;
   providedIn: 'root'
 })
 export class RxstompService {
-
   private rxStomp: RxStomp = new RxStomp();
+  private wsUrl = env.wsChatUrl;
 
   token = '';
-
-  private wsUrl = env.wsChatUrl;
 
   constructor() {
     this.initSock();
@@ -43,5 +41,4 @@ export class RxstompService {
   disconnect() {
     this.rxStomp.deactivate().then(r => console.log(r));
   }
-
 }

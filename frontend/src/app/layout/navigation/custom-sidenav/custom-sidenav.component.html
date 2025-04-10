@@ -23,4 +23,19 @@
       <span matListItemTitle [class.hide-link-text]="getSidenavState.getState()">{{ item.label }}</span>
     </a>
   }
+  @if (authService.isLoggedIn()) {
+    @for (item of menuItemsLoggedIn(); track item.label) {
+      <a mat-list-item class="sidenav-links"
+         [routerLink]="item.route"
+         routerLinkActive="selected-sidenav-link"
+         #rla="routerLinkActive"
+         [routerLinkActiveOptions]="{exact: true}"
+         [activated]="rla.isActive"
+      >
+        <mat-icon [fontSet]="rla.isActive ? 'material-icons' : 'material-icons-outlined'"
+                  matListItemIcon class="sidenav-icon">{{ item.icon }}</mat-icon>
+        <span matListItemTitle [class.hide-link-text]="getSidenavState.getState()">{{ item.label }}</span>
+      </a>
+    }
+  }
 </mat-nav-list>

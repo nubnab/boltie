@@ -1,4 +1,4 @@
-import {Component, EventEmitter, inject, Output, signal} from '@angular/core';
+import {Component, EventEmitter, inject, Output} from '@angular/core';
 import {MatButton} from '@angular/material/button';
 import {MatDialog} from '@angular/material/dialog';
 import {RequestsService} from '../../services/requests.service';
@@ -18,10 +18,8 @@ export type StreamKey = {
 export class StreamKeyWarningComponent {
 
   requestsService = inject(RequestsService);
-
-  @Output() streamKeyInfo = new EventEmitter<string>();
-
   dialog = inject(MatDialog);
+  @Output() streamKeyInfo = new EventEmitter<string>();
 
   dialogClose() {
     this.dialog.closeAll()

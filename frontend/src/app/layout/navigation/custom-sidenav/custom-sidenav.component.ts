@@ -30,18 +30,19 @@ export type MenuItem = {
   styleUrl: './custom-sidenav.component.scss'
 })
 export class CustomSidenavComponent {
+  private sidenavState = inject(SidenavStateService);
 
+  authService = inject(AuthService);
+
+  profilePicSize = computed(() => this.sidenavState.getState() ? '32' : '100');
   currentUser = computed(() => this.authService.loginStateSignal() ?
     localStorage.getItem("username") : "Not logged in");
-
-  private sidenavState = inject(SidenavStateService);
-  private authService = inject(AuthService);
 
   get getSidenavState() {
     return this.sidenavState;
   }
 
-  profilePicSize = computed(() => this.sidenavState.getState() ? '32' : '100');
+
 
   menuItems = signal<MenuItem[]>([
     {
@@ -50,20 +51,18 @@ export class CustomSidenavComponent {
       route: ''
     },
     {
-      icon: 'radio_button_checked',
-      label: 'Live now',
-      route: 'live'
-    },
-    {
       icon: 'smart_display',
-      label: 'Videos',
-      route: 'videos'
+      label: 'Recordings',
+      route: 'recordings'
     },
     {
       icon: 'apps',
       label: 'Categories',
       route: 'categories'
     },
+  ]);
+
+  menuItemsLoggedIn = signal<MenuItem[]>([
     {
       icon: 'history',
       label: 'History',
@@ -73,11 +72,6 @@ export class CustomSidenavComponent {
       icon: 'watch_later',
       label: 'Watch Later',
       route: 'watch-later'
-    },
-    {
-      icon: 'help',
-      label: 'About',
-      route: 'about'
     },
   ]);
 

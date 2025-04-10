@@ -10,6 +10,8 @@ export type RecordingData = {
   userRecordingTrackingId: number,
   owner: string,
   title: string,
+  categoryName: string,
+  categoryUrl: string,
   folderName: string,
 }
 
@@ -20,14 +22,15 @@ export type RecordingData = {
   styleUrl: './watch-recording.component.scss'
 })
 export class WatchRecordingComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private requestsService = inject(RequestsService);
+  private router = inject(Router);
 
   username: string = '';
   recordingId: number = 0;
   title: string = '';
-
-  private route = inject(ActivatedRoute);
-  private requestsService = inject(RequestsService);
-  private router = inject(Router);
+  categoryName: string = '';
+  categoryUrl: string = '';
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -41,6 +44,8 @@ export class WatchRecordingComponent implements OnInit {
 
     this.requestsService.getRecordingByUsernameAndId(this.username, this.recordingId).subscribe(res => {
       this.title = res.title;
+      this.categoryName = res.categoryName;
+      this.categoryUrl = res.categoryUrl;
       const player = OvenPlayer.create('player_id', {
         sources: [{
           label: 'llhls-user-recordings',
@@ -49,5 +54,9 @@ export class WatchRecordingComponent implements OnInit {
         }]
       });
     })
+  }
+
+  navigateToCategory(categoryUrl: string) {
+    this.router.navigate(['/categories/', categoryUrl]);
   }
 }

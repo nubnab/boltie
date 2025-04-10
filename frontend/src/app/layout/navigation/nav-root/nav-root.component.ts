@@ -38,6 +38,10 @@ export class NavRootComponent {
   private sidenavState = inject(SidenavStateService);
   private authService = inject(AuthService);
 
+  loginState = this.authService.loginStateSignal;
+  sidenavWidth = computed(() =>
+    this.sidenavState.getState() ? '60px' : '250px');
+
   constructor(private matIconRegistry: MatIconRegistry,
               private domSanitizer: DomSanitizer) {
     this.matIconRegistry.addSvgIcon(
@@ -50,13 +54,9 @@ export class NavRootComponent {
     return this.authService;
   }
 
-  loginState = this.authService.loginStateSignal;
-
   toggleCollapse() {
     this.sidenavState.toggleCollapse();
   }
-
-  sidenavWidth = computed(() => this.sidenavState.getState() ? '60px' : '250px');
 
   openLoginModal() {
     const dialogRef = this.dialog.open(UserFormComponent, {

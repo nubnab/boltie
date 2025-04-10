@@ -17,11 +17,11 @@ import {Router} from '@angular/router';
 })
 
 export class HistoryComponent implements OnInit {
+  protected readonly window = window;
 
   private requestsService = inject(RequestsService);
   private router = inject(Router);
 
-  baseUrl: string = "http://192.168.1.2:9998";
   recordings: RecordingData[] = [];
 
 

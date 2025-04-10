@@ -49,5 +49,36 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-size: 6rem;
   font-weight: bolder;
   opacity: 30%;
+  text-align: center;
 }
+
+.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
+  padding: 10px;
+}
+
+.thumbnail-img {
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.thumbnail-img-container {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.profile-img {
+  width: 42px;
+  height: 42px;
+  border-radius: 100%;
+  order: -1;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+
+
 

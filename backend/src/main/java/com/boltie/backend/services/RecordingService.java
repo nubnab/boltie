@@ -97,4 +97,16 @@ public class RecordingService {
         throw new AppException(String.format("Recording for %s not found", username), HttpStatus.NOT_FOUND);
     }
 
+    public List<RecordingDto> getAllRecordings() {
+        List<Recording> recordingList = recordingRepository.findAll();
+        List<RecordingDto> recordingDtoList = new ArrayList<>();
+
+        if(!recordingList.isEmpty()) {
+            for (Recording recording : recordingList) {
+                recordingDtoList.add(recordingMapper.toRecordingDto(recording));
+            }
+            return recordingDtoList;
+        }
+        return recordingDtoList;
+    }
 }

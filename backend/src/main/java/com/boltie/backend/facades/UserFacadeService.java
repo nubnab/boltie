@@ -2,10 +2,10 @@ package com.boltie.backend.facades;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.boltie.backend.config.UserAuthProvider;
-import com.boltie.backend.dto.LoginDto;
-import com.boltie.backend.dto.RegisterDto;
-import com.boltie.backend.dto.UserDto;
+import com.boltie.backend.dto.*;
+import com.boltie.backend.entities.User;
 import com.boltie.backend.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -49,6 +49,18 @@ public class UserFacadeService {
 
     public UserDto registerUser(RegisterDto registerDto) {
         return userService.registerUser(registerDto);
+    }
+
+    public void changeUsername(UsernameChangeDto usernameChangeDto, HttpServletRequest request) {
+        String username = userAuthProvider.getUsernameFromRequest(request);
+        LoginDto authenticateUser = new LoginDto(username, usernameChangeDto.password());
+        UserDto userIsAuthenticated = userService.login(authenticateUser);
+
+        if(userIsAuthenticated != null) {
+            User user = userService.getUserByUsername(username);
+            user.setUsername(usernameChangeDto.newUsername());
+            userService.saveUser(user);
+        }
     }
 
 }

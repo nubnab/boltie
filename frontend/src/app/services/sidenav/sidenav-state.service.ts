@@ -4,10 +4,9 @@ import {Injectable, signal} from '@angular/core';
   providedIn: 'root'
 })
 export class SidenavStateService {
+  private isCollapsed = signal(false);
 
   constructor() { }
-
-  private isCollapsed = signal(false);
 
   get getState() {
     return this.isCollapsed;
