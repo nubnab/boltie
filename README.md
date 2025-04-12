@@ -40,7 +40,7 @@ docker compose down
 ---
 
 ## Usage
-To get started, open the webui at http://localhost:8080
+To get started, open the webui at http://localhost:4200
 
 In order to stream, you must make an account, then head to settings and copy your stream key. In OBS Studio, set the Stream Service to "Custom..." and paste your Stream key into the **Server** field.
 
