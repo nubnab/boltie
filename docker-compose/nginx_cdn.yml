@@ -1,9 +1,0 @@
-services:
-  nginx:
-    image: nginx:alpine
-    container_name: nginx_cdn
-    ports:
-      - "9998:9998"
-    volumes:
-    - backend-core-data:/var/www/files
-    - ./conf/nginx_cdn.conf:/etc/nginx/nginx.conf
