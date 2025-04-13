@@ -76,6 +76,6 @@ Several minor bugs, testing is currently underway, see [bugs](https://github.com
 ---
 
 ## Future plans
-Many features are still missing as the app is still in early development, check [enhancements](https://github.com/nubnab/boltie/issues?q=is%3Aissue%20state%3Aopen%20label%3Aenhancement) to see what is planned.
+Many features are still missing as the app is still in early development, check [enhancements](https://github.com/nubnab/boltie/issues?q=is%3Aissue%20state%3Aopen%20label%3Aenhancement) to see what is planned. Currently pending a full re-write to clean up code.
 
 
