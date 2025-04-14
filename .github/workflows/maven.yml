@@ -41,11 +41,4 @@ jobs:
       if: always()
       with:
         files:
-          ./target/surefire-reports/TEST-*xml
-
-    - name: Publish Integration Test Results
-      uses: EnricoMi/publish-unit-test-result-action/linux@v2
-      if: always()
-      with:
-        files:
-          ./target/failsafe-reports/TEST-*xml
+          ./backend/target/surefire-reports/TEST-*xml
