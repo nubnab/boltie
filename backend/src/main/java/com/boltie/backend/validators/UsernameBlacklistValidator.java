@@ -30,7 +30,6 @@ public class UsernameBlacklistValidator implements ConstraintValidator<NotBlackl
 
     @Override
     public boolean isValid(String username, ConstraintValidatorContext context) {
-        if (username == null) return true;
         return !blacklist.contains(username.toLowerCase().trim());
     }
 }

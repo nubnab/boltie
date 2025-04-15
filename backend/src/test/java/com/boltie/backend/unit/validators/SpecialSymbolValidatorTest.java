@@ -1,59 +1,44 @@
 package com.boltie.backend.unit.validators;
 
-import com.boltie.backend.validators.SpecialSymbolValidator;
-import jakarta.validation.ConstraintValidatorContext;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import com.boltie.backend.annotations.NoSpecialSymbols;
+import jakarta.validation.*;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
 public class SpecialSymbolValidatorTest {
 
-    private SpecialSymbolValidator validator;
+    private static Validator validator;
 
-    @Mock
-    private ConstraintValidatorContext context;
-
-    @Mock
-    private ConstraintValidatorContext.ConstraintViolationBuilder builder;
-
-    @BeforeEach
-    void setUp() {
-        validator = new SpecialSymbolValidator();
+    private record TestUser (
+            @NoSpecialSymbols
+            String username) {
     }
 
-    @Test
-    void isValid_ShouldReturnTrueForNullInput() {
-        assertThat(validator.isValid(null, context)).isTrue();
-        verifyNoInteractions(context);
+    @BeforeAll
+    static void setUp() {
+        try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
+            validator = factory.getValidator();
+        }
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"username", "user123", "123user", "a1b2c3", "1231user ", " user"})
     void isValid_shouldReturnTrueForValidUsernames(String validUsername) {
-        assertThat(validator.isValid(validUsername, context)).isTrue();
-        verifyNoInteractions(context);
+        Set<ConstraintViolation<TestUser>> violations = validator.validate(new TestUser(validUsername));
+        assertThat(violations).isEmpty();
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"user@name", "us-er123", "a1b2;c3", "user!", "USER", "user name"})
     void isValid_shouldReturnFalseForInvalidUsernames(String invalidUsername) {
-        when(context.buildConstraintViolationWithTemplate(anyString())).thenReturn(builder);
-
-        assertThat(validator.isValid(invalidUsername, context)).isFalse();
-
-        verify(context).disableDefaultConstraintViolation();
-        verify(context).buildConstraintViolationWithTemplate(
-                "Username can only contain lowercase letters and numbers (a-z, 0-9)");
-        verify(builder).addConstraintViolation();
+        Set<ConstraintViolation<TestUser>> violations = validator.validate(new TestUser(invalidUsername));
+        assertThat(violations).hasSize(1);
+        assertThat(violations.iterator().next().getMessage())
+                .isEqualTo("Username can only contain lowercase letters and numbers (a-z, 0-9)");
     }
-
-
 }

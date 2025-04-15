@@ -12,13 +12,12 @@ public class SpecialSymbolValidator implements ConstraintValidator<NoSpecialSymb
 
     @Override
     public boolean isValid(String username, ConstraintValidatorContext context) {
-        if (username == null) { return true; }
 
         if (!VALID_USERNAME.matcher(username.trim()).matches()) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
-                    "Username can only contain lowercase letters and numbers (a-z, 0-9)"
-            ).addConstraintViolation();
+                    "Username can only contain lowercase letters and numbers (a-z, 0-9)")
+                            .addConstraintViolation();
             return false;
         }
         return true;

@@ -17,5 +17,4 @@ public class AuthController {
         return ResponseEntity.created(URI.create("/auth/register")).body(registerDto);
     }
 
-
 }
