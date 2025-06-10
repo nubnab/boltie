@@ -71,7 +71,7 @@ WIP
 ---
 
 ## Bugs
-Several minor bugs, testing is currently underway, see [bugs](https://github.com/nubnab/boltie/issues?q=is%3Aissue%20state%3Aopen%20label%3Abug). 
+Several minor bugs, testing is currently underway, see [bugs](https://github.com/nubnab/boltie/issues?q=is%3Aissue%20state%3Aopen%20label%3Abug)
 
 ---
 
